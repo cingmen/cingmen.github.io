@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title | default: "Professional Portfolio" }}</title>
+    <meta name="description" content="{{ page.description | default: site.description | strip_html | normalize_whitespace | truncate: 160 }}">
+    <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+    <meta property="og:title" content="{{ page.title | default: site.title }}">
+    <meta property="og:description" content="{{ page.description | default: site.description | strip_html | truncate: 160 }}">
+    <meta property="og:url" content="{{ site.url }}{{ page.url }}">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #050505;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
+            --accent: #6366f1; 
+            --security: #10b981;
+            --text-main: #ffffff;
+            --text-dim: #94a3b8;
+            --glass: blur(16px);
+        }
+
+        * { box-sizing: border-box; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            background-image: radial-gradient(circle at 50% -20%, #1e1b4b, transparent);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.7;
+            padding-top: 7rem; 
+        }
+
+        .floating-nav {
+            position: fixed;
+            top: 1.5rem; 
+            left: 50%;
+            transform: translateX(-50%); 
+            width: 90%;
+            max-width: 700px; 
+            background: rgba(255, 255, 255, 0.02); 
+            backdrop-filter: var(--glass) saturate(180%); 
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+            border-radius: 50px; 
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            padding: 0.8rem 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); 
+        }
+
+        .nav-container { width: 100%; display: flex; justify-content: space-between; align-items: center; }
+        .nav-brand { color: var(--text-main); font-weight: 800; text-decoration: none; letter-spacing: -0.5px; font-size: 1.1rem; }
+        .nav-links { display: flex; gap: 1.8rem; }
+        .nav-links a { color: var(--text-dim); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: color 0.3s ease, text-shadow 0.3s ease; }
+        .nav-links a:hover { color: var(--text-main); text-shadow: 0 0 10px rgba(99, 102, 241, 0.7); }
+
+        .container { max-width: 1000px; width: 100%; padding: 2rem 1.5rem 4rem 1.5rem; }
+        
+        .article-card { 
+            background: var(--card-bg); 
+            border: 1px solid var(--border); 
+            border-radius: 28px; 
+            padding: 3.5rem 4rem; 
+            backdrop-filter: blur(12px); 
+            margin-bottom: 2rem; 
+        }
+        
+        .article-header { text-align: left; margin-bottom: 3rem; }
+        .article-title { font-size: 3rem; margin: 0 0 1rem 0; letter-spacing: -1.5px; font-weight: 800; line-height: 1.1; color: var(--text-main); }
+        .article-description { font-size: 1.2rem; color: var(--text-dim); margin: 0 0 2.5rem 0; line-height: 1.6; font-weight: 400; max-width: 800px; }
+
+        /* Empirical Metrics Dashboard */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            padding-top: 2.5rem;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .metric-block { display: flex; flex-direction: column; gap: 5px; }
+        .metric-title { color: var(--text-dim); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; }
+        .metric-value { color: var(--text-main); font-size: 1.1rem; font-weight: 600; }
+        .metric-highlight { color: var(--security); font-size: 1.1rem; font-weight: 800; }
+
+        .document-content { color: var(--text-dim); font-size: 1.15rem; line-height: 1.8; }
+        .document-content h2 { color: var(--text-main); font-size: 1.8rem; font-weight: 600; margin-top: 3rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; margin-bottom: 1.5rem; }
+        .document-content h3 { color: var(--text-main); font-size: 1.4rem; font-weight: 600; margin-top: 2rem; margin-bottom: 1rem; }
+        .document-content p { margin-bottom: 1.5rem; }
+        .document-content a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; }
+        .document-content a:hover { border-bottom: 1px solid var(--accent); }
+        .document-content ul { margin-bottom: 2rem; padding-left: 1.5rem; background: rgba(255, 255, 255, 0.02); padding: 1.5rem 1.5rem 1.5rem 2.5rem; border-radius: 12px; border: 1px solid var(--border); }
+        .document-content li { margin-bottom: 0.8rem; }
+        
+        @media (max-width: 768px) {
+            .article-card { padding: 2.5rem 2rem; }
+            .article-title { font-size: 2.2rem; }
+            .metrics-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="floating-nav">
+        <div class="nav-container">
+            <a href="/" class="nav-brand">Research Log</a>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/about/">Profile</a>
+                <a href="/blog/">Archive</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <article class="article-card">
+            <header class="article-header">
+                <h1 class="article-title">{{ page.title }}</h1>
+                {% if page.description %}
+                <p class="article-description">{{ page.description }}</p>
+                {% endif %}
+
+                <div class="metrics-grid">
+                    <div class="metric-block">
+                        <span class="metric-title">Operational Role</span>
+                        <span class="metric-value">{{ page.role | default: "Lead Engineer" }}</span>
+                    </div>
+                    <div class="metric-block">
+                        <span class="metric-title">Project Timeline</span>
+                        <span class="metric-value">{{ page.timeline | default: "Not Specified" }}</span>
+                    </div>
+                    <div class="metric-block">
+                        <span class="metric-title">Quantitative Impact</span>
+                        <span class="metric-highlight">{{ page.impact | default: "Pending Analysis" }}</span>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="document-content">
+                {{ content }}
+            </div>
+        </article>
+
+        <footer style="text-align: center; margin-top: 3rem; color: var(--text-dim); font-size: 0.8rem;">
+            &copy; 2026 — Engineered in Bandung
+        </footer>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

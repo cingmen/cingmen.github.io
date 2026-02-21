@@ -1,6 +1,5 @@
-title: Cingmen Research and Documentation
-description: An empirical and systematic repository focused on modern web development and technical documentation.
-baseurl: ""
+title: "Joesavat Donovan - Cybersecurity & IT Professional"
+description: "Engineering secure Information Technology infrastructure, constructing minimalist digital interfaces, and exploring new technological paradigms."
 url: "https://cingmen.github.io"
 markdown: kramdown
 permalink: /:year/:month/:day/:title/

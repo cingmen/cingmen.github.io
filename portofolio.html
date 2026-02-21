@@ -1,0 +1,161 @@
+---
+layout: null
+title: Applied Case Studies
+permalink: /portfolio/
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title }} - {{ site.title | default: "Professional Portfolio" }}</title>
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #050505;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
+            --accent: #6366f1; 
+            --security: #10b981;
+            --text-main: #ffffff;
+            --text-dim: #94a3b8;
+            --glass: blur(16px);
+        }
+
+        * { box-sizing: border-box; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            background-image: radial-gradient(circle at 50% -20%, #1e1b4b, transparent);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            line-height: 1.6;
+            padding-top: 7rem;
+        }
+
+        .floating-nav {
+            position: fixed;
+            top: 1.5rem; 
+            left: 50%;
+            transform: translateX(-50%); 
+            width: 90%;
+            max-width: 700px; 
+            background: rgba(255, 255, 255, 0.02); 
+            backdrop-filter: var(--glass) saturate(180%); 
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+            border-radius: 50px; 
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            padding: 0.8rem 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); 
+        }
+
+        .nav-container { width: 100%; display: flex; justify-content: space-between; align-items: center; }
+        .nav-brand { color: var(--text-main); font-weight: 800; text-decoration: none; letter-spacing: -0.5px; font-size: 1.1rem; }
+        .nav-links { display: flex; gap: 1.5rem; }
+        .nav-links a { color: var(--text-dim); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: color 0.3s ease, text-shadow 0.3s ease; }
+        .nav-links a:hover { color: var(--text-main); text-shadow: 0 0 10px rgba(99, 102, 241, 0.7); }
+
+        .container { max-width: 1000px; width: 100%; padding: 2rem 1.5rem 4rem 1.5rem; }
+        
+        .page-header { text-align: center; margin-bottom: 4rem; }
+        .page-header h1 { font-size: 3.5rem; margin: 0 0 1rem 0; letter-spacing: -2px; font-weight: 800; line-height: 1.1; }
+        .page-header p { color: var(--text-dim); font-size: 1.2rem; max-width: 600px; margin: 0 auto; }
+
+        .portfolio-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+
+        .case-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            padding: 2.5rem;
+            backdrop-filter: blur(12px);
+            text-decoration: none;
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .case-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--security);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.05);
+        }
+
+        .case-metric { font-size: 0.85rem; color: var(--security); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; display: block; }
+        .case-title { font-size: 1.6rem; font-weight: 700; margin: 0 0 1rem 0; line-height: 1.3; letter-spacing: -0.5px; }
+        .case-excerpt { color: var(--text-dim); font-size: 1.05rem; margin: 0 0 2rem 0; line-height: 1.6; flex-grow: 1; }
+        
+        .case-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+        .case-role { font-size: 0.85rem; color: var(--text-dim); font-weight: 600; }
+        .case-action { display: inline-flex; align-items: center; gap: 8px; color: var(--text-main); font-weight: 600; font-size: 0.9rem; transition: color 0.3s ease; }
+        .case-card:hover .case-action { color: var(--security); }
+
+        @media (max-width: 850px) {
+            .portfolio-grid { grid-template-columns: 1fr; }
+            .page-header h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="floating-nav">
+        <div class="nav-container">
+            <a href="/" class="nav-brand">Research Log</a>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/about/">Profile</a>
+                <a href="/portfolio/">Portfolio</a>
+                <a href="/blog/">Archive</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header class="page-header">
+            <h1>Applied Implementations</h1>
+            <p>Empirical case studies detailing specific structural design and security architecture projects, including methodologies and quantitative results.</p>
+        </header>
+
+        <section class="portfolio-grid">
+            {% assign case_studies = site.posts | where: "layout", "case-study" %}
+            {% for post in case_studies %}
+            <a href="{{ post.url }}" class="case-card">
+                <span class="case-metric">{{ post.impact | default: "Impact Analysis" }}</span>
+                <h2 class="case-title">{{ post.title }}</h2>
+                <p class="case-excerpt">{{ post.description | default: post.excerpt | strip_html | truncatewords: 25 }}</p>
+                <div class="case-footer">
+                    <span class="case-role">{{ post.role | default: "Lead Engineer" }}</span>
+                    <div class="case-action">Review Data <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i></div>
+                </div>
+            </a>
+            {% endfor %}
+            
+            {% if case_studies.size == 0 %}
+            <div style="grid-column: span 2; text-align: center; padding: 4rem; border: 1px dashed var(--border); border-radius: 28px;">
+                <p style="color: var(--text-dim); font-size: 1.1rem;">No applied case studies have been published to the directory yet.</p>
+            </div>
+            {% endif %}
+        </section>
+
+        <footer style="text-align: center; margin-top: 5rem; color: var(--text-dim); font-size: 0.8rem;">
+            &copy; 2026 — Engineered in Bandung
+        </footer>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
