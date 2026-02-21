@@ -233,7 +233,7 @@ layout: null
                     {% assign case_studies = site.posts | where: "layout", "case-study" %}
                     {% for post in case_studies limit:2 %}
                     <a href="{{ post.url }}" class="project-item">
-                        <div class="project-img" style="background-image: url('{{ post.image | default: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=500&q=80" }}')"></div>
+                        <div class="project-img" style="background-image: url('{{ post.image | default: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=500&q=80' }}')"></div>
                         <div class="project-info">
                             <h3>{{ post.title | truncatewords: 5 }}</h3>
                             <p>{{ post.role | default: "Security Architect" }}</p>
