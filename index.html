@@ -6,100 +6,150 @@ layout: null
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ site.title }}</title>
-    <script src="https://unpkg.com/lucide@latest"></script> <style>
+    <title>{{ site.title | default: "My Portfolio" }}</title>
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <style>
         :root {
             --bg: #050505;
             --card-bg: rgba(255, 255, 255, 0.03);
             --border: rgba(255, 255, 255, 0.08);
-            --accent: #6366f1; /* Indigo accent */
+            --accent: #6366f1; /* Indigo */
             --text-main: #ffffff;
             --text-dim: #94a3b8;
+            --glass: blur(12px);
         }
 
-        * { box-sizing: border-box; transition: all 0.3s ease; }
+        * { box-sizing: border-box; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        
         body {
-            font-family: 'Inter', -apple-system, sans-serif;
+            font-family: 'Inter', sans-serif;
             background-color: var(--bg);
             background-image: radial-gradient(circle at 50% -20%, #1e1b4b, transparent);
             color: var(--text-main);
             margin: 0;
             display: flex;
             justify-content: center;
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             width: 100%;
-            padding: 5rem 1.5rem;
+            padding: 4rem 1.5rem;
         }
 
-        /* Bento Grid Style */
+        /* Bento Grid Layout */
         .grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
+            grid-auto-rows: auto;
+            gap: 1.25rem;
         }
 
         .card {
             background: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 2rem;
-            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            padding: 1.5rem;
+            backdrop-filter: var(--glass);
+            overflow: hidden;
         }
 
-        .hero { grid-column: span 3; border-bottom: 2px solid var(--accent); }
-        .hero h1 { font-size: 3.5rem; margin: 0; letter-spacing: -2px; }
-        .hero p { font-size: 1.25rem; color: var(--text-dim); }
+        /* Section Specifics */
+        .hero { grid-column: span 3; padding: 3rem 2rem; border-bottom: 2px solid var(--accent); }
+        .hero h1 { font-size: clamp(2.5rem, 8vw, 4rem); margin: 0; letter-spacing: -3px; font-weight: 800; line-height: 1; }
+        .hero p { font-size: 1.2rem; color: var(--text-dim); max-width: 600px; }
 
         .projects { grid-column: span 2; }
         .blog-sidebar { grid-column: span 1; }
-        .contact { grid-column: span 3; text-align: center; }
+        .contact { grid-column: span 3; text-align: center; padding: 3rem; }
 
-        /* Project & Post Styling */
-        h2 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); margin-bottom: 1.5rem; }
-        
-        .project-item {
-            padding: 1rem 0;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        h2 { 
+            font-size: 0.75rem; 
+            text-transform: uppercase; 
+            letter-spacing: 0.2em; 
+            color: var(--accent); 
+            margin-top: 0;
+            margin-bottom: 1.5rem; 
         }
-        .project-item:last-child { border: none; }
 
+        /* Project Gallery Styling */
+        .gallery {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .project-item {
+            background: rgba(0,0,0,0.2);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .project-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .project-img {
+            height: 140px;
+            background-size: cover;
+            background-position: center;
+            border-bottom: 1px solid var(--border);
+            filter: grayscale(100%) brightness(0.7);
+        }
+
+        .project-item:hover .project-img { filter: grayscale(0%) brightness(1); }
+
+        .project-info { padding: 1rem; }
+        .project-info h3 { margin: 0; font-size: 1rem; }
+        .project-info p { margin: 5px 0 0; font-size: 0.8rem; color: var(--text-dim); }
+
+        /* Blog Styling */
+        .post-list { list-style: none; padding: 0; margin: 0; }
         .post-link {
-            display: block;
+            display: flex;
+            flex-direction: column;
             text-decoration: none;
             color: var(--text-main);
-            margin-bottom: 1rem;
-            font-size: 0.95rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
         }
-        .post-link:hover { color: var(--accent); transform: translateX(5px); }
-        .post-date { font-size: 0.75rem; color: var(--text-dim); display: block; }
+        .post-link:last-child { border: none; }
+        .post-link:hover { color: var(--accent); padding-left: 5px; }
+        .post-date { font-size: 0.7rem; color: var(--text-dim); font-weight: 600; }
 
-        /* Social Icons */
+        /* Contact & Socials */
         .social-links {
             display: flex;
             justify-content: center;
+            flex-wrap: wrap;
             gap: 2rem;
-            margin-top: 1rem;
+            margin-top: 2rem;
         }
         .social-links a {
             color: var(--text-dim);
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            font-weight: 500;
         }
-        .social-links a:hover { color: var(--accent); }
+        .social-links a:hover { color: var(--text-main); }
+        .social-links i { width: 20px; height: 20px; color: var(--accent); }
 
-        @media (max-width: 768px) {
+        /* Mobile Optimization */
+        @media (max-width: 850px) {
             .grid { grid-template-columns: 1fr; }
             .hero, .projects, .blog-sidebar, .contact { grid-column: span 1; }
-            .hero h1 { font-size: 2.5rem; }
+            .gallery { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -107,52 +157,70 @@ layout: null
 
     <div class="container">
         <div class="grid">
+            
             <section class="card hero">
-                <p style="margin-bottom: 0;">Available for projects</p>
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1rem;">
+                    <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block;"></span>
+                    <span style="font-size: 0.8rem; font-weight: 600; letter-spacing: 1px; color: #10b981;">AVAILABLE FOR HIRE</span>
+                </div>
                 <h1>I'm [Your Name].</h1>
-                <p>Digital architect crafting high-performance web experiences with code and coffee.</p>
+                <p>A full-stack developer specializing in minimalist interfaces and robust backend systems. Based in Indonesia.</p>
             </section>
 
             <section class="card projects">
-                <h2>Selected Work</h2>
-                <div class="project-item">
-                    <span>E-Commerce Engine</span>
-                    <a href="#">View Site ↗</a>
-                </div>
-                <div class="project-item">
-                    <span>AI Dashboard UI</span>
-                    <a href="#">Case Study ↗</a>
-                </div>
-                <div class="project-item">
-                    <span>Mobile Fitness App</span>
-                    <a href="#">Github ↗</a>
+                <h2>Featured Projects</h2>
+                <div class="gallery">
+                    <a href="#" class="project-item">
+                        <div class="project-img" style="background-image: url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=500&q=80')"></div>
+                        <div class="project-info">
+                            <h3>Project Alpha</h3>
+                            <p>E-commerce Solution</p>
+                        </div>
+                    </a>
+                    <a href="#" class="project-item">
+                        <div class="project-img" style="background-image: url('https://images.unsplash.com/photo-1551288049-bbbda5366391?auto=format&fit=crop&w=500&q=80')"></div>
+                        <div class="project-info">
+                            <h3>DataViz Tool</h3>
+                            <p>React + D3.js</p>
+                        </div>
+                    </a>
                 </div>
             </section>
 
             <section class="card blog-sidebar">
-                <h2>Writing</h2>
-                {% for post in site.posts limit:3 %}
-                <a href="{{ post.url }}" class="post-link">
-                    {{ post.title }}
-                    <span class="post-date">{{ post.date | date: "%B %Y" }}</span>
-                </a>
-                {% endfor %}
+                <h2>Latest Writing</h2>
+                <div class="post-list">
+                    {% for post in site.posts limit:4 %}
+                    <a href="{{ post.url }}" class="post-link">
+                        <span class="post-date">{{ post.date | date: "%b %d, %Y" }}</span>
+                        <span style="font-weight: 600;">{{ post.title }}</span>
+                    </a>
+                    {% endfor %}
+                    {% if site.posts.size == 0 %}
+                    <p style="color: var(--text-dim); font-size: 0.9rem;">No posts yet. Stay tuned!</p>
+                    {% endif %}
+                </div>
             </section>
 
             <section class="card contact">
-                <h2>Get In Touch</h2>
-                <p>Have a cool idea? Let's build it together.</p>
+                <h2>Let's Connect</h2>
+                <p style="font-size: 1.5rem; font-weight: 600;">Have a project in mind?</p>
                 <div class="social-links">
                     <a href="https://github.com/yourusername"><i data-lucide="github"></i> GitHub</a>
                     <a href="https://linkedin.com/in/yourname"><i data-lucide="linkedin"></i> LinkedIn</a>
                     <a href="mailto:hello@yourname.com"><i data-lucide="mail"></i> Email</a>
                 </div>
             </section>
+
         </div>
+        
+        <footer style="text-align: center; margin-top: 3rem; color: var(--text-dim); font-size: 0.8rem;">
+            &copy; 2026 — Built with Jekyll & GitHub Pages
+        </footer>
     </div>
 
     <script>
-        lucide.createIcons(); // Initialize icons
+        lucide.createIcons();
     </script>
 </body>
 </html>
