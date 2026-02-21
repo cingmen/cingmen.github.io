@@ -215,7 +215,7 @@ layout: null
                 </div>
                 
                 <h1>
-                    <span id="dynamic-text"></span><span class="cursor"></span>
+                    Joe is <span id="dynamic-text"></span><span class="cursor"></span>
                 </h1>
                 
                 <p>Engineering secure Information Technology infrastructure, constructing minimalist digital interfaces, and exploring new technological paradigms from a base in Bandung, Indonesia.</p>
@@ -301,8 +301,8 @@ layout: null
                 <h2>Communication</h2>
                 <div class="social-links">
                     <a href="https://github.com/cingmen"><i data-lucide="github"></i> Repository Access</a>
-                    <a href="https://linkedin.com/in/joesavatdonovan"><i data-lucide="linkedin"></i> Professional Network</a>
-                    <a href="mailto:joesavat@gmail.com"><i data-lucide="mail"></i> Encrypted Message</a>
+                    <a href="https://linkedin.com/in/yourname"><i data-lucide="linkedin"></i> Professional Network</a>
+                    <a href="mailto:hello@yourname.com"><i data-lucide="mail"></i> Encrypted Message</a>
                 </div>
             </section>
 
@@ -316,7 +316,8 @@ layout: null
     <script>
         lucide.createIcons();
 
-        const textArray = ["Cybersecurity Specialist.", "Interface Designer.", "Technology Explorer."];
+        // CRITICAL UPDATE: Modified timing for faster typing and longer pause
+        const textArray = ["a Cybersecurity Specialist.", "an Interface Designer.", "a Technology Explorer."];
         const typingElement = document.getElementById("dynamic-text");
         let arrayIndex = 0;
         let charIndex = 0;
@@ -331,9 +332,13 @@ layout: null
                 typingElement.textContent = currentString.substring(0, charIndex + 1);
                 charIndex++;
             }
-            let typingSpeed = isDeleting ? 50 : 100;
+            
+            // Faster typing speeds (30ms deleting, 60ms typing)
+            let typingSpeed = isDeleting ? 30 : 60;
+            
             if (!isDeleting && charIndex === currentString.length) {
-                typingSpeed = 2000; 
+                // Longer pause at the end (3.5 seconds)
+                typingSpeed = 3500; 
                 isDeleting = true;
             } else if (isDeleting && charIndex === 0) {
                 isDeleting = false;
