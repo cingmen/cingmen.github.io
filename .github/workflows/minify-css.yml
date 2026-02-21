@@ -1,0 +1,28 @@
+name: CSS Optimization Protocol
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '**.css'
+      - '**.html' # Scans for inline styles within HTML files
+
+jobs:
+  minify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Retrieve Repository Assets
+        uses: actions/checkout@v4
+
+      - name: Execute CSS Minification
+        uses: CSS-Minifier/minify-action@v1
+        with:
+          # Targets all CSS and HTML files for structural compression
+          include: 'css/**/*.css, *.html, _layouts/*.html' 
+          add_suffix: false
+
+      - name: Commit Optimized Assets
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "perf: optimize CSS delivery for accelerated loading"
+          branch: main
