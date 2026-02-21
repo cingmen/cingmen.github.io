@@ -22,11 +22,6 @@ A complete overhaul of the data handling lifecycle was executed to establish a z
 
 Here is the automated routing sequence:
 
-```python
-def intercept_traffic(target_address):
-    print("Initiating restricted routing protocol...")
-    return secure_handshake
-    
 ## The Quantitative Result
 
 The deployment successfully mitigated all identified attack vectors. Server response latency was optimized through efficient cryptographic key management, resulting in a 0% data exposure rate during simulated breach attempts and a 15% improvement in secure handshake speeds.
