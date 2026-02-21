@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: "Establishing an Empirical Baseline for Static Web Publishing"
 date: 2026-02-21 13:00:00 +0700
 categories: documentation
