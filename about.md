@@ -8,7 +8,7 @@ permalink: /about/
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ site.title | default: "Developer Profile" }} - Profile</title>
+    <title>{{ page.title }} - {{ site.title | default: "Developer Documentation" }}</title>
     
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -36,38 +36,45 @@ permalink: /about/
             display: flex;
             justify-content: center;
             line-height: 1.6;
+            padding-top: 5rem;
         }
+
+        /* Standardized Global Navigation */
+        .floating-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(5, 5, 5, 0.85);
+            backdrop-filter: var(--glass);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            padding: 1rem 1.5rem;
+        }
+
+        .nav-container {
+            max-width: 1000px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand { color: var(--text-main); font-weight: 800; text-decoration: none; letter-spacing: -0.5px; font-size: 1.2rem; }
+        .nav-links { display: flex; gap: 1.5rem; }
+        .nav-links a { color: var(--text-dim); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+        .nav-links a:hover { color: var(--text-main); }
 
         .container {
             max-width: 1000px;
             width: 100%;
-            padding: 4rem 1.5rem;
+            padding: 2rem 1.5rem 4rem 1.5rem;
         }
 
-        .nav-back {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--text-dim);
-            text-decoration: none;
-            margin-bottom: 2rem;
-            font-weight: 600;
-        }
-        .nav-back:hover { color: var(--accent); }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.25rem;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 28px;
-            padding: 2rem;
-            backdrop-filter: var(--glass);
-        }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 28px; padding: 2rem; backdrop-filter: var(--glass); }
 
         .profile-main { grid-column: span 2; }
         .location-card { grid-column: span 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;}
@@ -78,39 +85,11 @@ permalink: /about/
         h2 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-top: 0; margin-bottom: 1.5rem; }
         p { color: var(--text-dim); font-size: 1.1rem; }
 
-        .skill-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .tag {
-            background: rgba(99, 102, 241, 0.1);
-            color: var(--text-main);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        .skill-tags { display: flex; flex-wrap: wrap; gap: 10px; }
+        .tag { background: rgba(99, 102, 241, 0.1); color: var(--text-main); padding: 8px 16px; border-radius: 20px; font-size: 0.9rem; border: 1px solid rgba(99, 102, 241, 0.2); display: flex; align-items: center; gap: 8px; }
 
-        .timeline-item {
-            border-left: 2px solid var(--border);
-            padding-left: 20px;
-            margin-bottom: 20px;
-            position: relative;
-        }
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -6px;
-            top: 6px;
-            width: 10px;
-            height: 10px;
-            background: var(--accent);
-            border-radius: 50%;
-        }
+        .timeline-item { border-left: 2px solid var(--border); padding-left: 20px; margin-bottom: 20px; position: relative; }
+        .timeline-item::before { content: ''; position: absolute; left: -6px; top: 6px; width: 10px; height: 10px; background: var(--accent); border-radius: 50%; }
         .timeline-title { font-weight: 600; color: var(--text-main); font-size: 1.2rem; }
         .timeline-date { font-size: 0.85rem; color: var(--accent); margin-bottom: 5px; display: block; }
 
@@ -122,9 +101,18 @@ permalink: /about/
 </head>
 <body>
 
+    <nav class="floating-nav">
+        <div class="nav-container">
+            <a href="/" class="nav-brand">Research Log</a>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/about/">Profile</a>
+                <a href="/blog/">Archive</a>
+            </div>
+        </div>
+    </nav>
+
     <div class="container">
-        <a href="/" class="nav-back"><i data-lucide="arrow-left"></i> Return to Homepage</a>
-        
         <div class="grid">
             
             <section class="card profile-main">
