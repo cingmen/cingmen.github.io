@@ -266,28 +266,6 @@ layout: null
                 </div>
             </section>
 
-            <section class="card recon-pulse-container" style="grid-column: span 2; padding: 0; background: #000; border: 1px solid var(--border);">
-                <div class="terminal-header" style="background: rgba(255,255,255,0.03); padding: 10px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
-                    <div style="display: flex; gap: 8px; align-items: center;">
-                        <span style="width: 8px; height: 8px; background: #ef4444; border-radius: 50%; animation: pulse 1.5s infinite;"></span>
-                        <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text-main); font-weight: 700;">LIVE_RECON_FEED</span>
-                    </div>
-                    <span id="recon-timestamp" style="font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--text-dim);"></span>
-                </div>
-                <div id="recon-feed" style="height: 250px; padding: 15px; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: var(--security); overflow-y: hidden; display: flex; flex-direction: column; justify-content: flex-end;">
-                    </div>
-            </section>
-
-            <style>
-                @keyframes pulse {
-                    0% { opacity: 1; box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
-                    70% { opacity: 0.5; box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
-                    100% { opacity: 1; box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
-                }
-                .recon-line { margin-bottom: 4px; border-left: 2px solid var(--security); padding-left: 10px; opacity: 0; animation: fadeInLine 0.3s forwards; }
-                @keyframes fadeInLine { to { opacity: 1; } }
-            </style>
-
             <section class="card recon-widget">
                 <h2>Infrastructure Monitoring</h2>
                 <div class="radar-container">
@@ -373,52 +351,6 @@ layout: null
         document.addEventListener("DOMContentLoaded", () => {
             setTimeout(typeEffect, 1000);
         });
-    </script>
-    <script>
-        const reconFeed = document.getElementById('recon-feed');
-        const timestampElement = document.getElementById('recon-timestamp');
-
-        const reconLogs = [
-            "SYN_SCAN detected on [REDACTED]",
-            "TCP_HANDSHAKE: Handshake initiated with 192.168.1.104",
-            "PORT_OPEN: 443 (HTTPS) - Validating Certificate Path",
-            "ENCRYPTION_CHECK: AES-256-GCM verified",
-            "DNS_LOOKUP: Resolving infrastructure-node-01.internal",
-            "PACKET_INSPECT: Sequence ID 8842910 verified",
-            "FIREWALL_EVENT: Denied ICMP request from 10.0.4.22",
-            "LATENCY_CHECK: 12ms round-trip to Bandung-DC",
-            "AUTH_AUDIT: Success - root access verified via SSH-RSA",
-            "VULN_SCAN: CVE-2024-XXXX check: STATUS_CLEAN"
-        ];
-
-        function updateReconFeed() {
-            // Generate new log entry
-            const logLine = document.createElement('div');
-            logLine.className = 'recon-line';
-            
-            const now = new Date();
-            const timeStr = now.getHours().toString().padStart(2, '0') + ":" + 
-                            now.getMinutes().toString().padStart(2, '0') + ":" + 
-                            now.getSeconds().toString().padStart(2, '0');
-            
-            const randomLog = reconLogs[Math.floor(Math.random() * reconLogs.length)];
-            
-            logLine.innerHTML = `<span style="color: #555;">[${timeStr}]</span> ${randomLog}`;
-            
-            // Append and manage feed length
-            reconFeed.appendChild(logLine);
-            if (reconFeed.children.length > 8) {
-                reconFeed.removeChild(reconFeed.firstChild);
-            }
-
-            // Update top timestamp
-            timestampElement.innerText = now.toUTCString();
-
-            // Recursion with variable interval (800ms to 3500ms)
-            setTimeout(updateReconFeed, Math.random() * 2700 + 800);
-        }
-
-        document.addEventListener('DOMContentLoaded', updateReconFeed);
     </script>
 </body>
 </html>
