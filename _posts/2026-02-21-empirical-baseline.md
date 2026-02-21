@@ -2,6 +2,7 @@
 layout: post
 title: "Establishing an Empirical Baseline for Static Web Publishing"
 date: 2026-02-21 13:00:00 +0700
+description: "An analysis of performance enhancements achieved by removing dynamic database queries from the documentation delivery process."
 categories: documentation
 ---
 
