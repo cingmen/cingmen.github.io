@@ -12,7 +12,7 @@ permalink: /about/
     
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -21,7 +21,6 @@ permalink: /about/
             --border: rgba(255, 255, 255, 0.08);
             --accent: #6366f1; 
             --accent-secondary: #8b5cf6;
-            --security: #10b981;
             --text-main: #ffffff;
             --text-dim: #94a3b8;
             --glass: blur(16px);
@@ -105,15 +104,6 @@ permalink: /about/
         .skills-card { grid-column: span 3; }
         .experience-card { grid-column: span 3; }
 
-        /* Interactive Terminal Simulator Architecture */
-        .terminal-simulator { grid-column: span 3; padding: 0; background: #000000; border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 28px; overflow: hidden; display: flex; flex-direction: column; }
-        .terminal-header { background: rgba(255, 255, 255, 0.05); border-bottom: 1px solid var(--border); padding: 12px 20px; display: flex; align-items: center; gap: 10px; }
-        .terminal-dot { width: 12px; height: 12px; border-radius: 50%; background: #333; }
-        .terminal-body { padding: 20px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--security); height: 300px; overflow-y: auto; display: flex; flex-direction: column; }
-        .terminal-input-line { display: flex; align-items: center; margin-top: 10px; }
-        .terminal-prompt { color: var(--accent); margin-right: 10px; }
-        .terminal-input-field { background: transparent; border: none; outline: none; color: var(--text-main); font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; flex-grow: 1; caret-color: var(--text-main); }
-
         h1 { font-size: 3rem; margin: 0 0 1rem 0; letter-spacing: -2px; font-weight: 800; line-height: 1.1; }
         h2 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-top: 0; margin-bottom: 1.5rem; }
         p { color: var(--text-dim); font-size: 1.1rem; }
@@ -128,7 +118,7 @@ permalink: /about/
 
         @media (max-width: 850px) {
             .grid { grid-template-columns: 1fr; }
-            .profile-main, .location-card, .skills-card, .experience-card, .terminal-simulator { grid-column: span 1; }
+            .profile-main, .location-card, .skills-card, .experience-card { grid-column: span 1; }
         }
     </style>
 </head>
@@ -167,62 +157,7 @@ permalink: /about/
                 <p style="margin: 5px 0 0 0; font-size: 1rem;">West Java, Indonesia</p>
                 <p style="font-size: 0.8rem; margin-top: 15px; color: var(--accent);">Operational Base</p>
             </section>
-            <script>
-                lucide.createIcons();
 
-                // Interactive Command Line Simulator Logic
-                const terminalInput = document.getElementById('terminal-input');
-                const terminalHistory = document.getElementById('terminal-history');
-                const terminalContainer = document.getElementById('interactive-terminal');
-
-                const commandDatabase = {
-                    'help': 'Available execution commands:<br>- <b>whoami</b>: Extract professional summary<br>- <b>skills</b>: Enumerate technical competencies<br>- <b>experience</b>: Output operational timeline<br>- <b>clear</b>: Purge terminal display',
-                    'whoami': 'Identity Verified: Security Architect and Interface Designer.<br>Primary Objective: Engineer secure digital infrastructure and construct minimalist, high-performance web environments.',
-                    'skills': 'Validating primary competencies:<br>- Hypertext Markup Language<br>- Cascading Style Sheets<br>- JavaScript Programming<br>- Relational Database Management<br>- Server-side Network Architecture',
-                    'experience': 'Retrieving operational timeline:<br>[2023 - Present] Independent Software Developer<br>[2021 - 2023] Systems Application Engineer',
-                    'clear': 'CLEAR_SIGNAL'
-                };
-
-                terminalInput.addEventListener('keydown', function(event) {
-                    if (event.key === 'Enter') {
-                        const command = this.value.trim().toLowerCase();
-                        this.value = '';
-
-                        if (command === '') return;
-
-                        // Document the user input
-                        const echoLine = document.createElement('div');
-                        echoLine.innerHTML = `<span style="color: var(--accent); margin-right: 10px;">guest@server:~$</span><span style="color: var(--text-main);">${command}</span>`;
-                        echoLine.style.marginBottom = '5px';
-                        terminalHistory.appendChild(echoLine);
-
-                        // Process the command and generate a response
-                        if (command === 'clear') {
-                            terminalHistory.innerHTML = '';
-                        } else {
-                            const responseLine = document.createElement('div');
-                            responseLine.style.marginBottom = '15px';
-                            responseLine.style.color = 'var(--text-dim)';
-                            
-                            if (commandDatabase[command]) {
-                                responseLine.innerHTML = commandDatabase[command];
-                            } else {
-                                responseLine.innerHTML = `Directive not recognized: ${command}. Type 'help' to enumerate available commands.`;
-                            }
-                            terminalHistory.appendChild(responseLine);
-                        }
-
-                        // Force vertical scroll to follow new outputs
-                        terminalContainer.scrollTop = terminalContainer.scrollHeight;
-                    }
-                });
-
-                // Ensure the input field regains focus when a user clicks anywhere inside the terminal window
-                terminalContainer.addEventListener('click', () => {
-                    terminalInput.focus();
-                });
-            </script>
-            
             <section class="card skills-card">
                 <h2>Technical Competencies</h2>
                 <div class="skill-tags">
@@ -250,30 +185,15 @@ permalink: /about/
                     <p style="font-size: 0.95rem; margin-top: 5px;">Maintained legacy code systems while systematically converting them to modern syntax standards. Reduced server response latency through rigorous database indexing.</p>
                 </div>
             </section>
-
-            <section class="card terminal-simulator">
-                <div class="terminal-header">
-                    <div class="terminal-dot" style="background: #ef4444;"></div>
-                    <div class="terminal-dot" style="background: #eab308;"></div>
-                    <div class="terminal-dot" style="background: #10b981;"></div>
-                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-dim); margin-left: 10px;">guest@secure-server:~</span>
-                </div>
-                <div class="terminal-body" id="interactive-terminal">
-                    <div style="margin-bottom: 15px; color: var(--text-dim);">
-                        Interactive verification protocol initialized. Type 'help' to enumerate available directives.
-                    </div>
-                    <div id="terminal-history"></div>
-                    <div class="terminal-input-line">
-                        <span class="terminal-prompt">guest@server:~$</span>
-                        <input type="text" id="terminal-input" autocomplete="off" spellcheck="false" class="terminal-input-field">
-                    </div>
-                </div>
-            </section>
         </div>
         
         <footer style="text-align: center; margin-top: 3rem; color: var(--text-dim); font-size: 0.8rem;">
             &copy; 2026 — Engineered in Bandung
         </footer>
     </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 </html>
