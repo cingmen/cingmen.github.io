@@ -1,0 +1,91 @@
+---
+layout: default
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title }}</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --text: #f8fafc;
+            --accent: #38bdf8;
+            --secondary: #94a3b8;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        header { margin-bottom: 4rem; }
+        h1 { font-size: 3rem; margin-bottom: 0.5rem; color: var(--accent); }
+        .tagline { font-size: 1.2rem; color: var(--secondary); }
+        
+        section { margin-bottom: 3rem; }
+        h2 { border-bottom: 1px solid #1e293b; padding-bottom: 0.5rem; }
+        
+        .project-grid { display: grid; gap: 1rem; }
+        .card {
+            background: #1e293b;
+            padding: 1.5rem;
+            border-radius: 8px;
+            transition: transform 0.2s;
+            text-decoration: none;
+            color: inherit;
+        }
+        .card:hover { transform: translateY(-5px); border: 1px solid var(--accent); }
+        
+        .post-list { list-style: none; padding: 0; }
+        .post-item { margin-bottom: 1rem; display: flex; justify-content: space-between; }
+        .post-date { color: var(--secondary); font-family: monospace; }
+        
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hello, I'm [Your Name]</h1>
+            <p class="tagline">Developer • Designer • Writer</p>
+            <p>I build digital experiences that are fast, accessible, and beautiful.</p>
+        </header>
+
+        <section id="projects">
+            <h2>Featured Projects</h2>
+            <div class="project-grid">
+                <div class="card">
+                    <h3>Project One</h3>
+                    <p>A brief description of a cool thing you built using React or Python.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="blog">
+            <h2>Recent Thoughts</h2>
+            <ul class="post-list">
+                {% for post in site.posts limit:5 %}
+                <li class="post-item">
+                    <a href="{{ post.url }}">{{ post.title }}</a>
+                    <span class="post-date">{{ post.date | date: "%b %d, %Y" }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <footer>
+            <p>&copy; 2026 — Built with Jekyll & GitHub Pages</p>
+        </footer>
+    </div>
+</body>
+</html>
