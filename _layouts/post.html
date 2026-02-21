@@ -3,12 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title | default: "Developer Documentation" }}</title>
     <meta name="description" content="{{ page.description | default: site.description | strip_html | normalize_whitespace | truncate: 160 }}">
+    <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+    <meta property="og:title" content="{{ page.title | default: site.title }}">
+    <meta property="og:description" content="{{ page.description | default: site.description | strip_html | truncate: 160 }}">
+    <meta property="og:url" content="{{ site.url }}{{ page.url }}">
     
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
 
@@ -63,16 +69,16 @@
         .nav-links a { color: var(--text-dim); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: color 0.3s ease, text-shadow 0.3s ease; }
         .nav-links a:hover { color: var(--text-main); text-shadow: 0 0 10px rgba(99, 102, 241, 0.7); }
 
-        .container { max-width: 800px; width: 100%; padding: 2rem 1.5rem 4rem 1.5rem; }
+        /* Structural Correction: Expansion to 1000 pixels for absolute uniformity */
+        .container { max-width: 1000px; width: 100%; padding: 2rem 1.5rem 4rem 1.5rem; }
         
-        /* Corrected Document Container */
         .article-card { 
             background: var(--card-bg); 
             border: 1px solid var(--border); 
             border-radius: 28px; 
-            padding: 3rem 4rem; 
+            padding: 3.5rem 4rem; 
             backdrop-filter: blur(12px); 
-            margin-bottom: 2rem; 
+            margin-bottom: 1.5rem; 
         }
         
         .article-header { border-bottom: 1px solid var(--border); padding-bottom: 2rem; margin-bottom: 2.5rem; text-align: center; }
@@ -87,20 +93,53 @@
         .document-content p { margin-bottom: 1.5rem; }
         .document-content a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; }
         .document-content a:hover { border-bottom: 1px solid var(--accent); }
+        .document-content ul, .document-content ol { margin-bottom: 1.5rem; padding-left: 1.5rem; }
+        .document-content li { margin-bottom: 0.5rem; }
+        .document-content blockquote { border-left: 4px solid var(--accent); margin: 2rem 0; padding: 1.5rem; background: rgba(255, 255, 255, 0.02); border-radius: 0 12px 12px 0; font-style: italic; color: var(--text-main); }
 
-        .interaction-container { background: var(--card-bg); border: 1px solid var(--border); border-radius: 28px; padding: 2.5rem 4rem; backdrop-filter: blur(12px); display: flex; flex-direction: column; align-items: center; }
-        .interaction-heading { font-size: 1.1rem; color: var(--text-main); font-weight: 600; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; }
-        .interaction-subtitle { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 2rem; text-align: center; }
-        .metrics-wrapper { display: flex; align-items: center; justify-content: center; gap: 3rem; width: 100%; }
-        .reaction-zone { display: flex; flex-direction: column; align-items: center; gap: 10px; }
-        .share-buttons { display: flex; flex-direction: column; gap: 0.8rem; }
-        .share-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0.6rem 1.2rem; border-radius: 8px; background: rgba(255, 255, 255, 0.05); color: var(--text-main); text-decoration: none; font-weight: 600; font-size: 0.85rem; border: 1px solid var(--border); cursor: pointer; width: 100%; }
-        .share-btn:hover { background: var(--accent); border-color: var(--accent); }
+        /* Compact Horizontal Interaction Interface */
+        .compact-interaction { 
+            background: var(--card-bg); 
+            border: 1px solid var(--border); 
+            border-radius: 20px; 
+            padding: 1.25rem 2.5rem; 
+            backdrop-filter: blur(12px); 
+            display: flex; 
+            flex-direction: row; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        
+        .metric-group { display: flex; align-items: center; gap: 15px; }
+        .metric-label { color: var(--text-dim); font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+
+        .action-group { display: flex; gap: 1rem; align-items: center; }
+        
+        .utility-btn { 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px; 
+            padding: 0.6rem 1.2rem; 
+            border-radius: 8px; 
+            background: rgba(255, 255, 255, 0.05); 
+            color: var(--text-main); 
+            border: 1px solid var(--border); 
+            cursor: pointer; 
+            font-family: inherit;
+            font-weight: 600; 
+            font-size: 0.85rem; 
+            transition: background 0.3s ease, border-color 0.3s ease; 
+        }
+        
+        .utility-btn:hover { background: var(--accent); border-color: var(--accent); color: #ffffff; }
 
         @media (max-width: 768px) {
-            .article-card, .interaction-container { padding: 2rem 1.5rem; }
+            .article-card { padding: 2rem 1.5rem; }
             .article-title { font-size: 2rem; }
-            .metrics-wrapper { flex-direction: column; gap: 2rem; }
+            .compact-interaction { flex-direction: column; gap: 1.5rem; padding: 1.5rem; text-align: center; }
+            .action-group { width: 100%; }
+            .utility-btn { width: 100%; }
         }
     </style>
 </head>
@@ -118,6 +157,7 @@
     </nav>
 
     <div class="container">
+        
         <article class="article-card">
             <header class="article-header">
                 <div class="article-metadata">
@@ -145,24 +185,16 @@
             </div>
         </article>
 
-        <div class="interaction-container">
-            <h3 class="interaction-heading">Document Evaluation</h3>
-            <p class="interaction-subtitle">Record your validation of this research or distribute it to external networks.</p>
+        <div class="compact-interaction">
+            <div class="metric-group">
+                <applause-button style="width: 45px; height: 45px;" color="var(--accent)"></applause-button>
+                <span class="metric-label">Acknowledge</span>
+            </div>
             
-            <div class="metrics-wrapper">
-                <div class="reaction-zone">
-                    <applause-button style="width: 58px; height: 58px;" color="var(--accent)"></applause-button>
-                    <span style="color: var(--text-dim); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; margin-top: 5px;">Acknowledge</span>
-                </div>
-
-                <div class="share-buttons">
-                    <a href="https://twitter.com/intent/tweet?text={{ page.title | cgi_escape }}&url={{ site.url }}{{ page.url }}" target="_blank" rel="noopener noreferrer" class="share-btn">
-                        <i data-lucide="twitter" style="width: 16px; height: 16px;"></i> Distribute on X
-                    </a>
-                    <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ site.url }}{{ page.url }}&title={{ page.title | cgi_escape }}" target="_blank" rel="noopener noreferrer" class="share-btn">
-                        <i data-lucide="linkedin" style="width: 16px; height: 16px;"></i> Distribute on LinkedIn
-                    </a>
-                </div>
+            <div class="action-group">
+                <button onclick="navigator.clipboard.writeText(window.location.href); alert('Web address secured to clipboard.');" class="utility-btn">
+                    <i data-lucide="link" style="width: 16px; height: 16px;"></i> Secure Link
+                </button>
             </div>
         </div>
 
