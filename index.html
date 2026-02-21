@@ -1,91 +1,158 @@
 ---
-layout: default
+layout: null
 ---
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page.title }}</title>
-    <style>
+    <title>{{ site.title }}</title>
+    <script src="https://unpkg.com/lucide@latest"></script> <style>
         :root {
-            --bg: #0f172a;
-            --text: #f8fafc;
-            --accent: #38bdf8;
-            --secondary: #94a3b8;
+            --bg: #050505;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
+            --accent: #6366f1; /* Indigo accent */
+            --text-main: #ffffff;
+            --text-dim: #94a3b8;
         }
+
+        * { box-sizing: border-box; transition: all 0.3s ease; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: 'Inter', -apple-system, sans-serif;
             background-color: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
+            background-image: radial-gradient(circle at 50% -20%, #1e1b4b, transparent);
+            color: var(--text-main);
             margin: 0;
-            padding: 0;
+            display: flex;
+            justify-content: center;
+            line-height: 1.5;
         }
+
         .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
+            max-width: 900px;
+            width: 100%;
+            padding: 5rem 1.5rem;
         }
-        header { margin-bottom: 4rem; }
-        h1 { font-size: 3rem; margin-bottom: 0.5rem; color: var(--accent); }
-        .tagline { font-size: 1.2rem; color: var(--secondary); }
-        
-        section { margin-bottom: 3rem; }
-        h2 { border-bottom: 1px solid #1e293b; padding-bottom: 0.5rem; }
-        
-        .project-grid { display: grid; gap: 1rem; }
+
+        /* Bento Grid Style */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
         .card {
-            background: #1e293b;
-            padding: 1.5rem;
-            border-radius: 8px;
-            transition: transform 0.2s;
-            text-decoration: none;
-            color: inherit;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
         }
-        .card:hover { transform: translateY(-5px); border: 1px solid var(--accent); }
+
+        .hero { grid-column: span 3; border-bottom: 2px solid var(--accent); }
+        .hero h1 { font-size: 3.5rem; margin: 0; letter-spacing: -2px; }
+        .hero p { font-size: 1.25rem; color: var(--text-dim); }
+
+        .projects { grid-column: span 2; }
+        .blog-sidebar { grid-column: span 1; }
+        .contact { grid-column: span 3; text-align: center; }
+
+        /* Project & Post Styling */
+        h2 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); margin-bottom: 1.5rem; }
         
-        .post-list { list-style: none; padding: 0; }
-        .post-item { margin-bottom: 1rem; display: flex; justify-content: space-between; }
-        .post-date { color: var(--secondary); font-family: monospace; }
-        
-        a { color: var(--accent); text-decoration: none; }
-        a:hover { text-decoration: underline; }
+        .project-item {
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .project-item:last-child { border: none; }
+
+        .post-link {
+            display: block;
+            text-decoration: none;
+            color: var(--text-main);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+        .post-link:hover { color: var(--accent); transform: translateX(5px); }
+        .post-date { font-size: 0.75rem; color: var(--text-dim); display: block; }
+
+        /* Social Icons */
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+        .social-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .social-links a:hover { color: var(--accent); }
+
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; }
+            .hero, .projects, .blog-sidebar, .contact { grid-column: span 1; }
+            .hero h1 { font-size: 2.5rem; }
+        }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <header>
-            <h1>Hello, I'm [Your Name]</h1>
-            <p class="tagline">Developer • Designer • Writer</p>
-            <p>I build digital experiences that are fast, accessible, and beautiful.</p>
-        </header>
+        <div class="grid">
+            <section class="card hero">
+                <p style="margin-bottom: 0;">Available for projects</p>
+                <h1>I'm [Your Name].</h1>
+                <p>Digital architect crafting high-performance web experiences with code and coffee.</p>
+            </section>
 
-        <section id="projects">
-            <h2>Featured Projects</h2>
-            <div class="project-grid">
-                <div class="card">
-                    <h3>Project One</h3>
-                    <p>A brief description of a cool thing you built using React or Python.</p>
+            <section class="card projects">
+                <h2>Selected Work</h2>
+                <div class="project-item">
+                    <span>E-Commerce Engine</span>
+                    <a href="#">View Site ↗</a>
                 </div>
-            </div>
-        </section>
+                <div class="project-item">
+                    <span>AI Dashboard UI</span>
+                    <a href="#">Case Study ↗</a>
+                </div>
+                <div class="project-item">
+                    <span>Mobile Fitness App</span>
+                    <a href="#">Github ↗</a>
+                </div>
+            </section>
 
-        <section id="blog">
-            <h2>Recent Thoughts</h2>
-            <ul class="post-list">
-                {% for post in site.posts limit:5 %}
-                <li class="post-item">
-                    <a href="{{ post.url }}">{{ post.title }}</a>
-                    <span class="post-date">{{ post.date | date: "%b %d, %Y" }}</span>
-                </li>
+            <section class="card blog-sidebar">
+                <h2>Writing</h2>
+                {% for post in site.posts limit:3 %}
+                <a href="{{ post.url }}" class="post-link">
+                    {{ post.title }}
+                    <span class="post-date">{{ post.date | date: "%B %Y" }}</span>
+                </a>
                 {% endfor %}
-            </ul>
-        </section>
+            </section>
 
-        <footer>
-            <p>&copy; 2026 — Built with Jekyll & GitHub Pages</p>
-        </footer>
+            <section class="card contact">
+                <h2>Get In Touch</h2>
+                <p>Have a cool idea? Let's build it together.</p>
+                <div class="social-links">
+                    <a href="https://github.com/yourusername"><i data-lucide="github"></i> GitHub</a>
+                    <a href="https://linkedin.com/in/yourname"><i data-lucide="linkedin"></i> LinkedIn</a>
+                    <a href="mailto:hello@yourname.com"><i data-lucide="mail"></i> Email</a>
+                </div>
+            </section>
+        </div>
     </div>
+
+    <script>
+        lucide.createIcons(); // Initialize icons
+    </script>
 </body>
 </html>

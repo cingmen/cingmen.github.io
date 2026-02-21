@@ -6,6 +6,6 @@ baseurl: ""
 url: "https://cingmen.github.io"
 
 # Build settings
-theme: minima
+remote_theme: pages-themes/minimal@v0.2.0 # Standard GitHub engine
 plugins:
-  - jekyll-feed
+  - jekyll-remote-theme
