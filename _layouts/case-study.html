@@ -14,6 +14,9 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
+    <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
 
     <style>
         :root {
@@ -59,6 +62,8 @@
             justify-content: center;
             padding: 0.8rem 2rem;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); 
+            /* Constrains the dynamic progress bar */
+            overflow: hidden; 
         }
 
         .nav-container { width: 100%; display: flex; justify-content: space-between; align-items: center; }
@@ -66,6 +71,23 @@
         .nav-links { display: flex; gap: 1.8rem; }
         .nav-links a { color: var(--text-dim); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: color 0.3s ease, text-shadow 0.3s ease; }
         .nav-links a:hover { color: var(--text-main); text-shadow: 0 0 10px rgba(99, 102, 241, 0.7); }
+
+        /* Reading Progress Indicator Architecture */
+        .progress-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: transparent;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--security));
+            width: 0%;
+            transition: width 0.1s ease-out;
+        }
 
         .container { max-width: 1000px; width: 100%; padding: 2rem 1.5rem 4rem 1.5rem; }
         
@@ -75,14 +97,13 @@
             border-radius: 28px; 
             padding: 3.5rem 4rem; 
             backdrop-filter: blur(12px); 
-            margin-bottom: 2rem; 
+            margin-bottom: 1.5rem; 
         }
         
         .article-header { text-align: left; margin-bottom: 3rem; }
         .article-title { font-size: 3rem; margin: 0 0 1rem 0; letter-spacing: -1.5px; font-weight: 800; line-height: 1.1; color: var(--text-main); }
         .article-description { font-size: 1.2rem; color: var(--text-dim); margin: 0 0 2.5rem 0; line-height: 1.6; font-weight: 400; max-width: 800px; }
 
-        /* Empirical Metrics Dashboard */
         .metrics-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -108,10 +129,49 @@
         .document-content ul { margin-bottom: 2rem; padding-left: 1.5rem; background: rgba(255, 255, 255, 0.02); padding: 1.5rem 1.5rem 1.5rem 2.5rem; border-radius: 12px; border: 1px solid var(--border); }
         .document-content li { margin-bottom: 0.8rem; }
         
+        .compact-interaction { 
+            background: var(--card-bg); 
+            border: 1px solid var(--border); 
+            border-radius: 20px; 
+            padding: 1.25rem 2.5rem; 
+            backdrop-filter: blur(12px); 
+            display: flex; 
+            flex-direction: row; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        
+        .metric-group { display: flex; align-items: center; gap: 15px; }
+        .metric-label { color: var(--text-dim); font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+
+        .action-group { display: flex; gap: 1rem; align-items: center; }
+        
+        .utility-btn { 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px; 
+            padding: 0.6rem 1.2rem; 
+            border-radius: 8px; 
+            background: rgba(255, 255, 255, 0.05); 
+            color: var(--text-main); 
+            border: 1px solid var(--border); 
+            cursor: pointer; 
+            font-family: inherit;
+            font-weight: 600; 
+            font-size: 0.85rem; 
+            transition: background 0.3s ease, border-color 0.3s ease; 
+        }
+        
+        .utility-btn:hover { background: var(--accent); border-color: var(--accent); color: #ffffff; }
+
         @media (max-width: 768px) {
             .article-card { padding: 2.5rem 2rem; }
             .article-title { font-size: 2.2rem; }
             .metrics-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+            .compact-interaction { flex-direction: column; gap: 1.5rem; padding: 1.5rem; text-align: center; }
+            .action-group { width: 100%; }
+            .utility-btn { width: 100%; }
         }
     </style>
 </head>
@@ -126,6 +186,9 @@
                 <a href="/portfolio/">Portfolio</a>
                 <a href="/blog/">Archive</a>
             </div>
+        </div>
+        <div class="progress-container">
+            <div class="progress-bar" id="reading-progress"></div>
         </div>
     </nav>
 
@@ -159,6 +222,29 @@
             </div>
         </article>
 
+        <div class="compact-interaction">
+            <div class="metric-group">
+                <applause-button style="width: 45px; height: 45px;" color="var(--security)"></applause-button>
+                <span class="metric-label">Acknowledge</span>
+            </div>
+            
+            <div class="action-group">
+                <button onclick="navigator.clipboard.writeText(window.location.href); alert('Web address secured to clipboard.');" class="utility-btn">
+                    <i data-lucide="link" style="width: 16px; height: 16px;"></i> Secure Link
+                </button>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 1.5rem; padding: 0 1rem;">
+            <button onclick="window.history.length > 2 ? history.back() : window.location.href = '/portfolio/';" style="display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--text-dim); border: none; font-family: inherit; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: color 0.3s ease; padding: 0.5rem;" onmouseover="this.style.color='var(--text-main)'" onmouseout="this.style.color='var(--text-dim)'">
+                <i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i> Return to Portfolio
+            </button>
+            
+            <button onclick="window.scrollTo({ top: 0, behavior: 'smooth' });" style="display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--text-dim); border: none; font-family: inherit; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: color 0.3s ease; padding: 0.5rem;" onmouseover="this.style.color='var(--text-main)'" onmouseout="this.style.color='var(--text-dim)'">
+                Top of Document <i data-lucide="arrow-up" style="width: 16px; height: 16px;"></i>
+            </button>
+        </div>
+
         <footer style="text-align: center; margin-top: 3rem; color: var(--text-dim); font-size: 0.8rem;">
             &copy; 2026 — Engineered in Bandung
         </footer>
@@ -166,6 +252,14 @@
 
     <script>
         lucide.createIcons();
+
+        // Execution of the Dynamic Scrolling Metric
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("reading-progress").style.width = scrolled + "%";
+        });
     </script>
 </body>
 </html>
