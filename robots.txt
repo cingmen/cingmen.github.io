@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cingmen.github.io/sitemap.xml

@@ -1,9 +1,15 @@
-.<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page.title }} - {{ site.title | default: "Developer Documentation" }}</title>
+    
+    <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title | default: "Developer Documentation" }}</title>
+    <meta name="description" content="{{ page.description | default: site.description | strip_html | normalize_whitespace | truncate: 160 }}">
+    <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+    <meta property="og:title" content="{{ page.title | default: site.title }}">
+    <meta property="og:description" content="{{ page.description | default: site.description | strip_html | truncate: 160 }}">
+    <meta property="og:url" content="{{ site.url }}{{ page.url }}">
     
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,26 +35,63 @@
             color: var(--text-main);
             margin: 0;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
             line-height: 1.7;
+            padding-top: 5rem; 
+        }
+
+        .floating-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(5, 5, 5, 0.85);
+            backdrop-filter: var(--glass);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            padding: 1rem 1.5rem;
+        }
+
+        .nav-container {
+            max-width: 800px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            color: var(--text-main);
+            font-weight: 800;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+            font-size: 1.2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-main);
         }
 
         .container {
             max-width: 800px;
             width: 100%;
-            padding: 4rem 1.5rem;
+            padding: 2rem 1.5rem 4rem 1.5rem;
         }
-
-        .nav-back {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--text-dim);
-            text-decoration: none;
-            margin-bottom: 2rem;
-            font-weight: 600;
-        }
-        .nav-back:hover { color: var(--accent); }
 
         .article-card {
             background: var(--card-bg);
@@ -56,6 +99,7 @@
             border-radius: 28px;
             padding: 3rem 4rem;
             backdrop-filter: var(--glass);
+            margin-bottom: 2rem;
         }
 
         .article-header {
@@ -65,26 +109,44 @@
             text-align: center;
         }
 
+        .article-metadata {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 1rem;
+        }
+
         .article-date {
             font-size: 0.9rem;
             color: var(--accent);
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            display: block;
-            margin-bottom: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin: 0;
         }
 
         .article-title {
             font-size: 2.5rem;
-            margin: 0;
+            margin: 0 0 1rem 0;
             letter-spacing: -1.5px;
             font-weight: 800;
             line-height: 1.2;
             color: var(--text-main);
         }
 
-        /* Systematic Typography for Document Content */
+        .article-description {
+            font-size: 1.15rem;
+            color: var(--text-dim);
+            margin: 0 auto;
+            max-width: 90%;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
         .document-content {
             color: var(--text-dim);
             font-size: 1.1rem;
@@ -103,30 +165,11 @@
 
         .document-content h2 { font-size: 1.8rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
         .document-content h3 { font-size: 1.4rem; }
-
-        .document-content p {
-            margin-bottom: 1.5rem;
-        }
-
-        .document-content a {
-            color: var(--accent);
-            text-decoration: none;
-            border-bottom: 1px solid transparent;
-        }
-        
-        .document-content a:hover {
-            border-bottom: 1px solid var(--accent);
-        }
-
-        .document-content ul, 
-        .document-content ol {
-            margin-bottom: 1.5rem;
-            padding-left: 1.5rem;
-        }
-
-        .document-content li {
-            margin-bottom: 0.5rem;
-        }
+        .document-content p { margin-bottom: 1.5rem; }
+        .document-content a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; }
+        .document-content a:hover { border-bottom: 1px solid var(--accent); }
+        .document-content ul, .document-content ol { margin-bottom: 1.5rem; padding-left: 1.5rem; }
+        .document-content li { margin-bottom: 0.5rem; }
 
         .document-content blockquote {
             border-left: 4px solid var(--accent);
@@ -138,53 +181,86 @@
             color: var(--text-main);
         }
 
-        .document-content pre {
-            background-color: #000000;
+        /* Interaction Mechanics Section */
+        .interaction-container {
+            background: var(--card-bg);
             border: 1px solid var(--border);
-            padding: 1.5rem;
-            border-radius: 12px;
-            overflow-x: auto;
-            margin: 2rem 0;
+            border-radius: 28px;
+            padding: 2.5rem 4rem;
+            backdrop-filter: var(--glass);
         }
 
-        .document-content code {
-            font-family: monospace;
+        .share-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .share-heading {
+            font-size: 1rem;
+            color: var(--text-main);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .share-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 600;
             font-size: 0.9rem;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            color: #e2e8f0;
-        }
-
-        .document-content pre code {
-            background: transparent;
-            padding: 0;
-        }
-
-        .document-content img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 12px;
             border: 1px solid var(--border);
-            margin: 2rem 0;
+            cursor: pointer;
+        }
+
+        .share-btn:hover {
+            background: var(--accent);
+            border-color: var(--accent);
         }
 
         @media (max-width: 768px) {
-            .article-card { padding: 2rem 1.5rem; }
+            .article-card, .interaction-container { padding: 2rem 1.5rem; }
             .article-title { font-size: 2rem; }
+            .share-buttons { flex-wrap: wrap; justify-content: center; }
         }
     </style>
 </head>
 <body>
 
+    <nav class="floating-nav">
+        <div class="nav-container">
+            <a href="/" class="nav-brand">Research Log</a>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/about/">Profile</a>
+                <a href="/blog/">Archive</a>
+            </div>
+        </div>
+    </nav>
+
     <div class="container">
-        <a href="/blog/" class="nav-back"><i data-lucide="arrow-left"></i> Return to Archive</a>
-        
-        <header class="article-header">
-                <div style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 1rem;">
+        <article class="article-card">
+            <header class="article-header">
+                <div class="article-metadata">
                     <span class="article-date">{{ page.date | date: "%B %d, %Y" }}</span>
                     <span style="color: var(--border);">|</span>
-                    <span class="article-date" style="margin-bottom: 0; display: inline-flex; align-items: center; gap: 5px;">
+                    <span class="article-date">
                         <i data-lucide="clock" style="width: 14px; height: 14px;"></i>
                         {% assign word_count = content | number_of_words %}
                         {% assign reading_time = word_count | divided_by: 180 %}
@@ -196,7 +272,48 @@
                     </span>
                 </div>
                 <h1 class="article-title">{{ page.title }}</h1>
-        </header>
+                
+                {% if page.description %}
+                <p class="article-description">{{ page.description }}</p>
+                {% endif %}
+            </header>
+            
+            <div class="document-content">
+                {{ content }}
+            </div>
+        </article>
+
+        <div class="interaction-container">
+            
+            <div class="share-section">
+                <h3 class="share-heading">Distribute this Finding</h3>
+                <div class="share-buttons">
+                    <a href="https://twitter.com/intent/tweet?text={{ page.title | cgi_escape }}&url={{ site.url }}{{ page.url }}" target="_blank" rel="noopener noreferrer" class="share-btn">
+                        <i data-lucide="twitter" style="width: 18px; height: 18px;"></i> X Network
+                    </a>
+                    <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ site.url }}{{ page.url }}&title={{ page.title | cgi_escape }}" target="_blank" rel="noopener noreferrer" class="share-btn">
+                        <i data-lucide="linkedin" style="width: 18px; height: 18px;"></i> LinkedIn
+                    </a>
+                    <button onclick="navigator.clipboard.writeText(window.location.href); alert('Web address secured to clipboard.');" class="share-btn">
+                        <i data-lucide="link" style="width: 18px; height: 18px;"></i> Copy Address
+                    </button>
+                </div>
+            </div>
+
+            <div class="comment-section">
+                <h3 class="share-heading" style="text-align: center;">Peer Feedback and Reactions</h3>
+                <p style="text-align: center; color: var(--text-dim); font-size: 0.9rem; margin-bottom: 2rem;">Authentication is required to submit data or append reaction metrics.</p>
+                
+                <script src="https://utteranc.es/client.js"
+                        repo="cingmen/cingmen.github.io"
+                        issue-term="pathname"
+                        theme="github-dark"
+                        crossorigin="anonymous"
+                        async>
+                </script>
+            </div>
+
+        </div>
 
         <footer style="text-align: center; margin-top: 3rem; color: var(--text-dim); font-size: 0.8rem;">
             &copy; 2026 — Engineered in Bandung
