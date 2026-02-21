@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ site.title }}</title>
+    <meta name="description" content="{{ site.description }}">
+    <style>
+        body { 
+            font-family: system-ui, -apple-system, sans-serif; 
+            line-height: 1.6; 
+            margin: 0; 
+            padding: 0; 
+            color: #2c3e50; 
+            background-color: #f9f9f9;
+        }
+        header { 
+            background-color: #1a252f; 
+            color: #ffffff; 
+            padding: 3rem 1rem; 
+            text-align: center; 
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+        nav { 
+            display: flex; 
+            justify-content: center; 
+            gap: 2rem; 
+            padding: 1rem; 
+            background-color: #ffffff; 
+            border-bottom: 1px solid #e0e0e0;
+        }
+        nav a { 
+            color: #1a252f; 
+            text-decoration: none; 
+            font-weight: 600; 
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        main { 
+            max-width: 800px; 
+            margin: 3rem auto; 
+            padding: 0 2rem; 
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-radius: 8px;
+        }
+        footer { 
+            text-align: center; 
+            padding: 2rem; 
+            color: #7f8c8d;
+            margin-top: 3rem; 
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>{{ site.title }}</h1>
+        <p>{{ site.description }}</p>
+    </header>
+    
+    <nav>
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+    </nav>
+
+    <main>
+        {{ content }}
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Cingmen. All rights reserved.</p>
+    </footer>
+</body>
+</html>

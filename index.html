@@ -17,7 +17,7 @@ layout: null
             --bg: #050505;
             --card-bg: rgba(255, 255, 255, 0.03);
             --border: rgba(255, 255, 255, 0.08);
-            --accent: #6366f1; /* Indigo */
+            --accent: #6366f1; 
             --text-main: #ffffff;
             --text-dim: #94a3b8;
             --glass: blur(12px);
@@ -42,7 +42,6 @@ layout: null
             padding: 4rem 1.5rem;
         }
 
-        /* Bento Grid Layout */
         .grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -59,7 +58,6 @@ layout: null
             overflow: hidden;
         }
 
-        /* Section Specifics */
         .hero { grid-column: span 3; padding: 3rem 2rem; border-bottom: 2px solid var(--accent); }
         .hero h1 { font-size: clamp(2.5rem, 8vw, 4rem); margin: 0; letter-spacing: -3px; font-weight: 800; line-height: 1; }
         .hero p { font-size: 1.2rem; color: var(--text-dim); max-width: 600px; }
@@ -77,7 +75,6 @@ layout: null
             margin-bottom: 1.5rem; 
         }
 
-        /* Project Gallery Styling */
         .gallery {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -112,7 +109,6 @@ layout: null
         .project-info h3 { margin: 0; font-size: 1rem; }
         .project-info p { margin: 5px 0 0; font-size: 0.8rem; color: var(--text-dim); }
 
-        /* Blog Styling */
         .post-list { list-style: none; padding: 0; margin: 0; }
         .post-link {
             display: flex;
@@ -126,7 +122,6 @@ layout: null
         .post-link:hover { color: var(--accent); padding-left: 5px; }
         .post-date { font-size: 0.7rem; color: var(--text-dim); font-weight: 600; }
 
-        /* Contact & Socials */
         .social-links {
             display: flex;
             justify-content: center;
@@ -145,7 +140,6 @@ layout: null
         .social-links a:hover { color: var(--text-main); }
         .social-links i { width: 20px; height: 20px; color: var(--accent); }
 
-        /* Mobile Optimization */
         @media (max-width: 850px) {
             .grid { grid-template-columns: 1fr; }
             .hero, .projects, .blog-sidebar, .contact { grid-column: span 1; }
@@ -163,8 +157,8 @@ layout: null
                     <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block;"></span>
                     <span style="font-size: 0.8rem; font-weight: 600; letter-spacing: 1px; color: #10b981;">AVAILABLE FOR HIRE</span>
                 </div>
-                <h1>I'm [Your Name].</h1>
-                <p>A full-stack developer specializing in minimalist interfaces and robust backend systems. Based in Indonesia.</p>
+                <h1>I am {{ site.title | default: "a Developer" }}.</h1>
+                <p>A comprehensive developer specializing in minimalist interfaces and robust backend systems. Based in Bandung, West Java, Indonesia.</p>
             </section>
 
             <section class="card projects">
@@ -174,14 +168,14 @@ layout: null
                         <div class="project-img" style="background-image: url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=500&q=80')"></div>
                         <div class="project-info">
                             <h3>Project Alpha</h3>
-                            <p>E-commerce Solution</p>
+                            <p>Electronic Commerce Solution</p>
                         </div>
                     </a>
                     <a href="#" class="project-item">
                         <div class="project-img" style="background-image: url('https://images.unsplash.com/photo-1551288049-bbbda5366391?auto=format&fit=crop&w=500&q=80')"></div>
                         <div class="project-info">
-                            <h3>DataViz Tool</h3>
-                            <p>React + D3.js</p>
+                            <h3>Data Visualization Tool</h3>
+                            <p>React and JavaScript</p>
                         </div>
                     </a>
                 </div>
@@ -197,16 +191,16 @@ layout: null
                     </a>
                     {% endfor %}
                     {% if site.posts.size == 0 %}
-                    <p style="color: var(--text-dim); font-size: 0.9rem;">No posts yet. Stay tuned!</p>
+                    <p style="color: var(--text-dim); font-size: 0.9rem;">No documents published yet. Stay tuned.</p>
                     {% endif %}
                 </div>
             </section>
 
             <section class="card contact">
-                <h2>Let's Connect</h2>
-                <p style="font-size: 1.5rem; font-weight: 600;">Have a project in mind?</p>
+                <h2>Let Us Connect</h2>
+                <p style="font-size: 1.5rem; font-weight: 600;">Do you have a project in mind?</p>
                 <div class="social-links">
-                    <a href="https://github.com/yourusername"><i data-lucide="github"></i> GitHub</a>
+                    <a href="https://github.com/cingmen"><i data-lucide="github"></i> GitHub</a>
                     <a href="https://linkedin.com/in/yourname"><i data-lucide="linkedin"></i> LinkedIn</a>
                     <a href="mailto:hello@yourname.com"><i data-lucide="mail"></i> Email</a>
                 </div>
@@ -215,7 +209,7 @@ layout: null
         </div>
         
         <footer style="text-align: center; margin-top: 3rem; color: var(--text-dim); font-size: 0.8rem;">
-            &copy; 2026 — Built with Jekyll & GitHub Pages
+            &copy; 2026 — Built with modern static site generation
         </footer>
     </div>
 

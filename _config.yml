@@ -1,11 +1,8 @@
-title: Cingmen | Blog
-email: cingmen@gmail.com
-description: >-
-  Digital Creator & Developer. Building cool things on the web.
-baseurl: "" 
+title: Cingmen Research and Documentation
+description: An empirical and systematic repository focused on modern web development and technical documentation.
+baseurl: ""
 url: "https://cingmen.github.io"
-
-# Build settings
-remote_theme: pages-themes/minimal@v0.2.0 # Standard GitHub engine
+markdown: kramdown
+permalink: /:year/:month/:day/:title/
 plugins:
   - jekyll-remote-theme
