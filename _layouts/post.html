@@ -26,7 +26,7 @@
             --accent: #6366f1; 
             --text-main: #ffffff;
             --text-dim: #94a3b8;
-            --glass: blur(12px);
+            --glass: blur(16px);
         }
 
         * { box-sizing: border-box; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
@@ -41,131 +41,53 @@
             flex-direction: column;
             align-items: center;
             line-height: 1.7;
-            padding-top: 5rem; 
+            padding-top: 7rem; 
         }
 
         .floating-nav {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(5, 5, 5, 0.85);
-            backdrop-filter: var(--glass);
-            border-bottom: 1px solid var(--border);
+            top: 1.5rem; 
+            left: 50%;
+            transform: translateX(-50%); 
+            width: 90%;
+            max-width: 700px; 
+            background: rgba(255, 255, 255, 0.02); 
+            backdrop-filter: var(--glass) saturate(180%); 
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+            border-radius: 50px; 
             z-index: 1000;
             display: flex;
             justify-content: center;
-            padding: 1rem 1.5rem;
+            padding: 0.8rem 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); 
         }
 
-        .nav-container {
-            max-width: 800px;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .nav-container { width: 100%; display: flex; justify-content: space-between; align-items: center; }
+        .nav-brand { color: var(--text-main); font-weight: 800; text-decoration: none; letter-spacing: -0.5px; font-size: 1.1rem; }
+        .nav-links { display: flex; gap: 1.8rem; }
+        .nav-links a { 
+            color: var(--text-dim); 
+            text-decoration: none; 
+            font-weight: 600; 
+            font-size: 0.9rem; 
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+        .nav-links a:hover { 
+            color: var(--text-main); 
+            text-shadow: 0 0 10px rgba(99, 102, 241, 0.7);
         }
 
-        .nav-brand {
-            color: var(--text-main);
-            font-weight: 800;
-            text-decoration: none;
-            letter-spacing: -0.5px;
-            font-size: 1.2rem;
-        }
+        .container { max-width: 800px; width: 100%; padding: 2rem 1.5rem 4rem 1.5rem; }
+        .article-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 28px; padding: 3rem 4rem; backdrop-filter: blur(12px); margin-bottom: 2rem; }
+        .article-header { border-bottom: 1px solid var(--border); padding-bottom: 2rem; margin-bottom: 2.5rem; text-align: center; }
+        .article-metadata { display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 1rem; }
+        .article-date { font-size: 0.9rem; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; display: inline-flex; align-items: center; gap: 5px; margin: 0; }
+        .article-title { font-size: 2.5rem; margin: 0 0 1rem 0; letter-spacing: -1.5px; font-weight: 800; line-height: 1.2; color: var(--text-main); }
+        .article-description { font-size: 1.15rem; color: var(--text-dim); margin: 0 auto; max-width: 90%; line-height: 1.6; font-weight: 400; }
 
-        .nav-links {
-            display: flex;
-            gap: 1.5rem;
-        }
-
-        .nav-links a {
-            color: var(--text-dim);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        .nav-links a:hover {
-            color: var(--text-main);
-        }
-
-        .container {
-            max-width: 800px;
-            width: 100%;
-            padding: 2rem 1.5rem 4rem 1.5rem;
-        }
-
-        .article-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 28px;
-            padding: 3rem 4rem;
-            backdrop-filter: var(--glass);
-            margin-bottom: 2rem;
-        }
-
-        .article-header {
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 2rem;
-            margin-bottom: 2.5rem;
-            text-align: center;
-        }
-
-        .article-metadata {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 1rem;
-        }
-
-        .article-date {
-            font-size: 0.9rem;
-            color: var(--accent);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            margin: 0;
-        }
-
-        .article-title {
-            font-size: 2.5rem;
-            margin: 0 0 1rem 0;
-            letter-spacing: -1.5px;
-            font-weight: 800;
-            line-height: 1.2;
-            color: var(--text-main);
-        }
-
-        .article-description {
-            font-size: 1.15rem;
-            color: var(--text-dim);
-            margin: 0 auto;
-            max-width: 90%;
-            line-height: 1.6;
-            font-weight: 400;
-        }
-
-        .document-content {
-            color: var(--text-dim);
-            font-size: 1.1rem;
-        }
-
-        .document-content h1, 
-        .document-content h2, 
-        .document-content h3, 
-        .document-content h4 {
-            color: var(--text-main);
-            font-weight: 600;
-            margin-top: 2.5rem;
-            margin-bottom: 1rem;
-            line-height: 1.3;
-        }
-
+        .document-content { color: var(--text-dim); font-size: 1.1rem; }
+        .document-content h1, .document-content h2, .document-content h3, .document-content h4 { color: var(--text-main); font-weight: 600; margin-top: 2.5rem; margin-bottom: 1rem; line-height: 1.3; }
         .document-content h2 { font-size: 1.8rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
         .document-content h3 { font-size: 1.4rem; }
         .document-content p { margin-bottom: 1.5rem; }
@@ -173,29 +95,94 @@
         .document-content a:hover { border-bottom: 1px solid var(--accent); }
         .document-content ul, .document-content ol { margin-bottom: 1.5rem; padding-left: 1.5rem; }
         .document-content li { margin-bottom: 0.5rem; }
+        .document-content blockquote { border-left: 4px solid var(--accent); margin: 2rem 0; padding: 1.5rem; background: rgba(255, 255, 255, 0.02); border-radius: 0 12px 12px 0; font-style: italic; color: var(--text-main); }
 
-        .document-content blockquote {
-            border-left: 4px solid var(--accent);
-            margin: 2rem 0;
-            padding: 1.5rem;
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 0 12px 12px 0;
-            font-style: italic;
-            color: var(--text-main);
+        .interaction-container { background: var(--card-bg); border: 1px solid var(--border); border-radius: 28px; padding: 2.5rem 4rem; backdrop-filter: blur(12px); display: flex; flex-direction: column; align-items: center; }
+        .interaction-heading { font-size: 1.1rem; color: var(--text-main); font-weight: 600; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .interaction-subtitle { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 2rem; text-align: center; }
+        .metrics-wrapper { display: flex; align-items: center; justify-content: center; gap: 3rem; width: 100%; }
+        .reaction-zone { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .share-buttons { display: flex; flex-direction: column; gap: 0.8rem; }
+        .share-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0.6rem 1.2rem; border-radius: 8px; background: rgba(255, 255, 255, 0.05); color: var(--text-main); text-decoration: none; font-weight: 600; font-size: 0.85rem; border: 1px solid var(--border); cursor: pointer; width: 100%; }
+        .share-btn:hover { background: var(--accent); border-color: var(--accent); }
+
+        @media (max-width: 768px) {
+            .article-card, .interaction-container { padding: 2rem 1.5rem; }
+            .article-title { font-size: 2rem; }
+            .metrics-wrapper { flex-direction: column; gap: 2rem; }
         }
+    </style>
+</head>
+<body>
 
-        .interaction-container {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 28px;
-            padding: 2.5rem 4rem;
-            backdrop-filter: var(--glass);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    <nav class="floating-nav">
+        <div class="nav-container">
+            <a href="/" class="nav-brand">Research Log</a>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/about/">Profile</a>
+                <a href="/blog/">Archive</a>
+            </div>
+        </div>
+    </nav>
 
-        .interaction-heading {
-            font-size: 1.1rem;
-            color: var(--text-main);
-            font-weight: 600;
+    <div class="container">
+        <article class="article-card">
+            <header class="article-header">
+                <div class="article-metadata">
+                    <span class="article-date">{{ page.date | date: "%B %d, %Y" }}</span>
+                    <span style="color: var(--border);">|</span>
+                    <span class="article-date">
+                        <i data-lucide="clock" style="width: 14px; height: 14px;"></i>
+                        {% assign word_count = content | number_of_words %}
+                        {% assign reading_time = word_count | divided_by: 180 %}
+                        {% if reading_time == 0 %}
+                            1 minute read
+                        {% else %}
+                            {{ reading_time }} minute read
+                        {% endif %}
+                    </span>
+                </div>
+                <h1 class="article-title">{{ page.title }}</h1>
+                
+                {% if page.description %}
+                <p class="article-description">{{ page.description }}</p>
+                {% endif %}
+            </header>
+            
+            <div class="document-content">
+                {{ content }}
+            </div>
+        </article>
+
+        <div class="interaction-container">
+            <h3 class="interaction-heading">Document Evaluation</h3>
+            <p class="interaction-subtitle">Record your validation of this research or distribute it to external networks.</p>
+            
+            <div class="metrics-wrapper">
+                <div class="reaction-zone">
+                    <applause-button style="width: 58px; height: 58px;" color="var(--accent)"></applause-button>
+                    <span style="color: var(--text-dim); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; margin-top: 5px;">Acknowledge</span>
+                </div>
+
+                <div class="share-buttons">
+                    <a href="https://twitter.com/intent/tweet?text={{ page.title | cgi_escape }}&url={{ site.url }}{{ page.url }}" target="_blank" rel="noopener noreferrer" class="share-btn">
+                        <i data-lucide="twitter" style="width: 16px; height: 16px;"></i> Distribute on X
+                    </a>
+                    <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ site.url }}{{ page.url }}&title={{ page.title | cgi_escape }}" target="_blank" rel="noopener noreferrer" class="share-btn">
+                        <i data-lucide="linkedin" style="width: 16px; height: 16px;"></i> Distribute on LinkedIn
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <footer style="text-align: center; margin-top: 3rem; color: var(--text-dim); font-size: 0.8rem;">
+            &copy; 2026 — Engineered in Bandung
+        </footer>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

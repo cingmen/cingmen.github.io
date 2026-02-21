@@ -22,7 +22,7 @@ permalink: /about/
             --accent: #6366f1; 
             --text-main: #ffffff;
             --text-dim: #94a3b8;
-            --glass: blur(12px);
+            --glass: blur(16px);
         }
 
         * { box-sizing: border-box; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
@@ -36,45 +36,52 @@ permalink: /about/
             display: flex;
             justify-content: center;
             line-height: 1.6;
-            padding-top: 5rem;
+            padding-top: 7rem;
         }
 
-        /* Standardized Global Navigation */
         .floating-nav {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(5, 5, 5, 0.85);
-            backdrop-filter: var(--glass);
-            border-bottom: 1px solid var(--border);
+            top: 1.5rem; 
+            left: 50%;
+            transform: translateX(-50%); 
+            width: 90%;
+            max-width: 700px; 
+            background: rgba(255, 255, 255, 0.02); 
+            backdrop-filter: var(--glass) saturate(180%); 
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+            border-radius: 50px; 
             z-index: 1000;
             display: flex;
             justify-content: center;
-            padding: 1rem 1.5rem;
+            padding: 0.8rem 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); 
         }
 
         .nav-container {
-            max-width: 1000px;
             width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .nav-brand { color: var(--text-main); font-weight: 800; text-decoration: none; letter-spacing: -0.5px; font-size: 1.2rem; }
-        .nav-links { display: flex; gap: 1.5rem; }
-        .nav-links a { color: var(--text-dim); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
-        .nav-links a:hover { color: var(--text-main); }
-
-        .container {
-            max-width: 1000px;
-            width: 100%;
-            padding: 2rem 1.5rem 4rem 1.5rem;
+        .nav-brand { color: var(--text-main); font-weight: 800; text-decoration: none; letter-spacing: -0.5px; font-size: 1.1rem; }
+        .nav-links { display: flex; gap: 1.8rem; }
+        .nav-links a { 
+            color: var(--text-dim); 
+            text-decoration: none; 
+            font-weight: 600; 
+            font-size: 0.9rem; 
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+        .nav-links a:hover { 
+            color: var(--text-main); 
+            text-shadow: 0 0 10px rgba(99, 102, 241, 0.7);
         }
 
+        .container { max-width: 1000px; width: 100%; padding: 2rem 1.5rem 4rem 1.5rem; }
         .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
-        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 28px; padding: 2rem; backdrop-filter: var(--glass); }
+        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 28px; padding: 2rem; backdrop-filter: blur(12px); }
 
         .profile-main { grid-column: span 2; }
         .location-card { grid-column: span 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;}
@@ -114,7 +121,6 @@ permalink: /about/
 
     <div class="container">
         <div class="grid">
-            
             <section class="card profile-main">
                 <h2>The Engineer</h2>
                 <h1>Systematic Construction and Empirical Design.</h1>
@@ -144,7 +150,6 @@ permalink: /about/
 
             <section class="card experience-card">
                 <h2>Professional Timeline</h2>
-                
                 <div class="timeline-item">
                     <span class="timeline-date">2023 — Present</span>
                     <div class="timeline-title">Independent Software Developer</div>
@@ -156,9 +161,7 @@ permalink: /about/
                     <div class="timeline-title">Systems Application Engineer</div>
                     <p style="font-size: 0.95rem; margin-top: 5px;">Maintained legacy code systems while systematically converting them to modern syntax standards. Reduced server response latency through rigorous database indexing.</p>
                 </div>
-                
             </section>
-
         </div>
         
         <footer style="text-align: center; margin-top: 3rem; color: var(--text-dim); font-size: 0.8rem;">

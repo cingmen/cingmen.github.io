@@ -6,8 +6,13 @@ layout: null
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title | default: "Developer Documentation" }}</title>
     <meta name="description" content="{{ site.description | strip_html | normalize_whitespace | truncate: 160 }}">
+    <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+    <meta property="og:title" content="{{ site.title }}">
+    <meta property="og:description" content="{{ site.description | strip_html | truncate: 160 }}">
+    <meta property="og:url" content="{{ site.url }}{{ page.url }}">
     
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,7 +26,7 @@ layout: null
             --accent: #6366f1; 
             --text-main: #ffffff;
             --text-dim: #94a3b8;
-            --glass: blur(12px);
+            --glass: blur(16px);
         }
 
         * { box-sizing: border-box; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
@@ -35,26 +40,30 @@ layout: null
             display: flex;
             justify-content: center;
             line-height: 1.6;
-            padding-top: 5rem; /* Offset for global navigation */
+            padding-top: 7rem; /* Mandatory offset to accommodate the detached hovering bar */
         }
 
-        /* Standardized Global Navigation */
+        /* Detached Glass Capsule Navigation Interface */
         .floating-nav {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(5, 5, 5, 0.85);
-            backdrop-filter: var(--glass);
-            border-bottom: 1px solid var(--border);
+            top: 1.5rem; 
+            left: 50%;
+            transform: translateX(-50%); 
+            width: 90%;
+            max-width: 700px; 
+            background: rgba(255, 255, 255, 0.02); 
+            backdrop-filter: var(--glass) saturate(180%); 
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+            border-radius: 50px; 
             z-index: 1000;
             display: flex;
             justify-content: center;
-            padding: 1rem 1.5rem;
+            padding: 0.8rem 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); 
         }
 
         .nav-container {
-            max-width: 1000px;
             width: 100%;
             display: flex;
             justify-content: space-between;
@@ -66,12 +75,28 @@ layout: null
             font-weight: 800;
             text-decoration: none;
             letter-spacing: -0.5px;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
         }
 
-        .nav-links { display: flex; gap: 1.5rem; }
-        .nav-links a { color: var(--text-dim); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
-        .nav-links a:hover { color: var(--text-main); }
+        .nav-links {
+            display: flex;
+            gap: 1.8rem;
+        }
+
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            /* Implementation of the systematic luminescence transition */
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-main);
+            /* Generation of the observable blue-spectrum glow */
+            text-shadow: 0 0 10px rgba(99, 102, 241, 0.7);
+        }
 
         .container {
             max-width: 1000px;
@@ -90,7 +115,7 @@ layout: null
             border: 1px solid var(--border);
             border-radius: 28px;
             padding: 1.5rem;
-            backdrop-filter: var(--glass);
+            backdrop-filter: blur(12px);
             overflow: hidden;
         }
 
