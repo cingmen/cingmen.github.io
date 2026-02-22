@@ -24,17 +24,32 @@ permalink: /gallery/
         <section class="card" style="margin-bottom: 2rem;">
             <header style="border-bottom: 1px solid var(--border); padding-bottom: 2rem; margin-bottom: 2rem;">
                 <h1 style="font-size: 2.5rem; margin: 0 0 1rem 0; letter-spacing: -1.5px; font-weight: 800; color: var(--text-main);">Visual Reconnaissance</h1>
-                <p style="color: var(--text-dim); font-size: 1.15rem; max-width: 800px; margin: 0;">Scroll to initialize sequential data decryption. Utilize the tactical interface to isolate specific research parameters.</p>
+                <p style="color: var(--text-dim); font-size: 1.15rem; max-width: 800px; margin: 0;">Scroll to initialize sequential data decryption. Utilize the tactical interface to isolate specific research parameters and alter topological viewing states.</p>
             </header>
 
-            <div class="filter-controls">
-                <button class="tactical-btn active" data-filter="all">All Sectors</button>
-                <button class="tactical-btn" data-filter="hardware">Hardware Infrastructure</button>
-                <button class="tactical-btn" data-filter="schematics">System Schematics</button>
-                <button class="tactical-btn" data-filter="deployment">Field Deployment</button>
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2.5rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem;">
+                
+                <div class="filter-controls" style="margin-bottom: 0; padding-bottom: 0; border: none;">
+                    <button class="tactical-btn active" data-filter="all">All Sectors</button>
+                    <button class="tactical-btn" data-filter="hardware">Hardware</button>
+                    <button class="tactical-btn" data-filter="schematics">Schematics</button>
+                    <button class="tactical-btn" data-filter="deployment">Deployment</button>
+                </div>
+
+                <div class="view-controls" style="display: flex; gap: 0.5rem;">
+                    <button class="tactical-btn view-btn active" data-view="layout-grid" aria-label="Symmetrical Matrix">
+                        <i data-lucide="grid" style="width: 18px; height: 18px;"></i>
+                    </button>
+                    <button class="tactical-btn view-btn" data-view="layout-masonry" aria-label="Asymmetrical Masonry">
+                        <i data-lucide="columns" style="width: 18px; height: 18px;"></i>
+                    </button>
+                    <button class="tactical-btn view-btn" data-view="layout-feed" aria-label="Cinematic Feed">
+                        <i data-lucide="list" style="width: 18px; height: 18px;"></i>
+                    </button>
+                </div>
             </div>
 
-            <div class="photo-grid" id="gallery-grid">
+            <div class="photo-grid layout-grid" id="gallery-grid">
                 
                 <div class="photo-item" data-category="hardware" data-caption="Tactical Military Network: Hardware Routing Node">
                     <div class="photo-bg" style="background-image: url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1000&q=80');"></div>
@@ -93,7 +108,10 @@ permalink: /gallery/
             if (typeof lucide !== 'undefined') { lucide.createIcons(); }
 
             const galleryItems = document.querySelectorAll('.photo-item');
-            const filterBtns = document.querySelectorAll('.tactical-btn');
+            const filterBtns = document.querySelectorAll('.filter-controls .tactical-btn');
+            const viewBtns = document.querySelectorAll('.view-btn');
+            const galleryGrid = document.getElementById('gallery-grid');
+            
             const lightbox = document.getElementById('lightbox');
             const lightboxImg = document.getElementById('lightbox-img');
             const lightboxCaption = document.getElementById('lightbox-caption');
@@ -104,41 +122,32 @@ permalink: /gallery/
                 entries.forEach(entry => {
                     const targetNode = entry.target;
 
-                    // Temporal lock: Prevents the feedback loop during active coordinate transformation
+                    // Temporal lock: Prevents infinite loop during coordinate transformation
                     if (targetNode.dataset.animationLocked === "true") return;
 
                     if (entry.isIntersecting) {
-                        // Node enters the operational viewport
                         if (!targetNode.classList.contains('glitch-in')) {
-                            targetNode.dataset.animationLocked = "true"; // Engage lock
-                            
+                            targetNode.dataset.animationLocked = "true";
                             targetNode.classList.remove('glitch-standby', 'glitch-out');
                             targetNode.classList.add('glitch-in');
                             targetNode.dataset.initialized = "true";
-
-                            // Disengage lock exactly when the 500-millisecond CSS animation concludes
                             setTimeout(() => { targetNode.dataset.animationLocked = "false"; }, 500);
                         }
                     } else {
-                        // Node exits the operational viewport
                         if (targetNode.dataset.initialized === "true" && !targetNode.classList.contains('glitch-out')) {
-                            targetNode.dataset.animationLocked = "true"; // Engage lock
-                            
+                            targetNode.dataset.animationLocked = "true";
                             targetNode.classList.remove('glitch-in');
                             targetNode.classList.add('glitch-out');
-
-                            // Disengage lock exactly when the 400-millisecond CSS animation concludes
                             setTimeout(() => { targetNode.dataset.animationLocked = "false"; }, 400);
                         }
                     }
                 });
             }, { 
                 threshold: 0.1,
-                // Establishes a 50-pixel buffer zone to absorb the physical animation movement
                 rootMargin: "0px 0px -50px 0px" 
             });
 
-            // Target all items starting from the fourth grid node
+            // Isolate initial render from the observation buffer
             galleryItems.forEach((item, index) => {
                 if (index > 2) {
                     item.classList.add('glitch-standby');
@@ -149,7 +158,6 @@ permalink: /gallery/
             // 2. ALGORITHMIC SORTING PROTOCOL
             filterBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
-                    // Update active button state
                     filterBtns.forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
 
@@ -160,14 +168,12 @@ permalink: /gallery/
                         
                         if (filterValue === 'all' || itemCategory === filterValue) {
                             item.classList.remove('filtered-out');
-                            
-                            // Reset animation states to force a visual re-trigger when layout recalculates
                             item.classList.remove('glitch-in', 'glitch-out');
                             item.classList.add('glitch-standby');
                             item.dataset.initialized = "false";
                             
-                            // Re-observe the element
-                            viewportObserver.observe(item);
+                            viewportObserver.unobserve(item);
+                            setTimeout(() => { viewportObserver.observe(item); }, 50);
                         } else {
                             item.classList.add('filtered-out');
                             viewportObserver.unobserve(item);
@@ -176,11 +182,34 @@ permalink: /gallery/
                 });
             });
 
-            // 3. LIGHTBOX INTERACTION PROTOCOLS
+            // 3. TOPOLOGICAL VIEWPOINT ENGINE
+            viewBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    viewBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    galleryGrid.classList.remove('layout-grid', 'layout-masonry', 'layout-feed');
+                    const targetLayout = btn.getAttribute('data-view');
+                    galleryGrid.classList.add(targetLayout);
+
+                    galleryItems.forEach(item => {
+                        if (!item.classList.contains('filtered-out')) {
+                            item.dataset.initialized = "false";
+                            item.classList.remove('glitch-in', 'glitch-out');
+                            item.classList.add('glitch-standby');
+                            viewportObserver.unobserve(item);
+                            setTimeout(() => { viewportObserver.observe(item); }, 50);
+                        }
+                    });
+                });
+            });
+
+            // 4. LIGHTBOX INTERACTION PROTOCOLS
             galleryItems.forEach(item => {
                 item.addEventListener('click', () => {
                     const bgElement = item.querySelector('.photo-bg');
-                    const rawUrl = bgElement.style.backgroundImage.slice(5, -2);
+                    // Ensure robust extraction by stripping anomalous quotation marks
+                    const rawUrl = bgElement.style.backgroundImage.slice(5, -2).replace(/['"]/g, '');
                     const captionText = item.getAttribute('data-caption');
 
                     lightboxImg.src = rawUrl;
