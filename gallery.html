@@ -1,0 +1,128 @@
+---
+layout: null
+title: Visual Gallery
+permalink: /gallery/
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title }} - {{ site.title | default: "Developer Documentation" }}</title>
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+
+    {% include navigation.html %}
+
+    <div class="container">
+        <section class="card" style="margin-bottom: 2rem;">
+            <header style="border-bottom: 1px solid var(--border); padding-bottom: 2rem; margin-bottom: 2rem;">
+                <h1 style="font-size: 2.5rem; margin: 0 0 1rem 0; letter-spacing: -1.5px; font-weight: 800; color: var(--text-main);">Visual Reconnaissance</h1>
+                <p style="color: var(--text-dim); font-size: 1.15rem; max-width: 800px; margin: 0;">An empirical collection of structural photographs, architectural captures, and physical system deployments.</p>
+            </header>
+
+            <div class="photo-grid" id="gallery-grid">
+                
+                <div class="photo-item large" data-caption="Tactical Military Network: Hardware Routing Node">
+                    <div class="photo-bg" style="background-image: url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1000&q=80');"></div>
+                    <div class="photo-overlay"><i data-lucide="maximize-2"></i></div>
+                </div>
+
+                <div class="photo-item" data-caption="Quantum Sensor Integration Matrix">
+                    <div class="photo-bg" style="background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=500&q=80');"></div>
+                    <div class="photo-overlay"><i data-lucide="maximize-2"></i></div>
+                </div>
+
+                <div class="photo-item" data-caption="Stochastic Optimization Topology">
+                    <div class="photo-bg" style="background-image: url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=500&q=80');"></div>
+                    <div class="photo-overlay"><i data-lucide="maximize-2"></i></div>
+                </div>
+
+                <div class="photo-item wide" data-caption="Natural Disaster Early Warning System Deployment">
+                    <div class="photo-bg" style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80');"></div>
+                    <div class="photo-overlay"><i data-lucide="maximize-2"></i></div>
+                </div>
+
+                <div class="photo-item" data-caption="Conventional Sensor Array Diagnostics">
+                    <div class="photo-bg" style="background-image: url('https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=500&q=80');"></div>
+                    <div class="photo-overlay"><i data-lucide="maximize-2"></i></div>
+                </div>
+
+                <div class="photo-item" data-caption="Proactive Defense Server Rack">
+                    <div class="photo-bg" style="background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=500&q=80');"></div>
+                    <div class="photo-overlay"><i data-lucide="maximize-2"></i></div>
+                </div>
+
+            </div>
+        </section>
+        
+        {% include footer.html %}
+    </div>
+
+    <div id="lightbox" class="lightbox-hidden">
+        <button id="lightbox-close" aria-label="Close Lightbox"><i data-lucide="x" style="width: 32px; height: 32px;"></i></button>
+        <img id="lightbox-img" src="" alt="Expanded structural view">
+        <div id="lightbox-caption"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof lucide !== 'undefined') { lucide.createIcons(); }
+
+            const galleryItems = document.querySelectorAll('.photo-item');
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxCaption = document.getElementById('lightbox-caption');
+            const closeBtn = document.getElementById('lightbox-close');
+
+            // Extraction and Injection Protocol
+            galleryItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const bgElement = item.querySelector('.photo-bg');
+                    // Mathematically extract the raw URL string from the CSS property
+                    const rawUrl = bgElement.style.backgroundImage.slice(5, -2);
+                    const captionText = item.getAttribute('data-caption');
+
+                    lightboxImg.src = rawUrl;
+                    lightboxCaption.innerText = captionText;
+                    
+                    // Trigger the visual fade-in physics
+                    lightbox.classList.remove('lightbox-hidden');
+                    lightbox.classList.add('lightbox-active');
+                    document.body.style.overflow = 'hidden'; // Lock background scrolling
+                });
+            });
+
+            // Termination Protocols
+            const closeLightbox = () => {
+                lightbox.classList.remove('lightbox-active');
+                lightbox.classList.add('lightbox-hidden');
+                document.body.style.overflow = 'auto'; // Restore background scrolling
+                setTimeout(() => { lightboxImg.src = ''; }, 300); // Clear memory after animation
+            };
+
+            closeBtn.addEventListener('click', closeLightbox);
+            
+            // Close when clicking the blurred background layer
+            lightbox.addEventListener('click', (event) => {
+                if (event.target === lightbox) { closeLightbox(); }
+            });
+
+            // Close via hardware keyboard interaction
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && lightbox.classList.contains('lightbox-active')) {
+                    closeLightbox();
+                }
+            });
+        });
+    </script>
+
+    <script src="/assets/core.js"></script>
+</body>
+</html>
