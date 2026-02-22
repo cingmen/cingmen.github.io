@@ -138,8 +138,33 @@ h2 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; color
 .terminal-window .terminal-body { padding: 2.5rem; color: var(--alert); min-height: 350px; }
 .terminal-input-line { display: flex; align-items: center; margin-top: 10px; }
 .terminal-prompt { color: var(--accent); margin-right: 10px; }
-.terminal-input-field { background: transparent; border: none; outline: none; color: var(--text-main); font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; flex-grow: 1; caret-color: var(--text-main); }
+/* Terminal Input Aggressive Override */
+input[type="text"].terminal-input-field,
+.terminal-input-field { 
+    background-color: transparent !important; 
+    border: none !important; 
+    outline: none !important; 
+    box-shadow: none !important; 
+    color: var(--text-main) !important; 
+    font-family: 'JetBrains Mono', monospace !important; 
+    font-size: 0.9rem !important; 
+    flex-grow: 1 !important; 
+    caret-color: var(--text-main) !important; 
+    -webkit-appearance: none !important;
+}
 
+/* Encrypted Protocol Typography Enforcement */
+.document-content h2 { 
+    color: var(--text-main); 
+    font-size: 1.2rem; 
+    font-weight: 800; 
+    text-transform: uppercase; 
+    letter-spacing: 0.15em; 
+    margin-top: 3.5rem; 
+    border-bottom: 1px solid var(--border); 
+    padding-bottom: 0.8rem; 
+    margin-bottom: 1.5rem; 
+}
 /* Document and Case Study Layouts */
 .article-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 28px; padding: 3.5rem 4rem; backdrop-filter: blur(12px); margin-bottom: 1.5rem; width: 100%; }
 .article-header { border-bottom: 1px solid var(--border); padding-bottom: 2rem; margin-bottom: 2.5rem; text-align: center; }
