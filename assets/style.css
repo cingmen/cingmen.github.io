@@ -28,19 +28,31 @@ body {
     align-items: center;
     line-height: 1.7;
     padding-top: 7rem;
+    
+    /* Strictly animating opacity to prevent position: fixed failure */
     animation: fade-in-document 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     opacity: 0;
 }
 
 @keyframes fade-in-document {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 body.navigating-out {
     opacity: 0 !important;
-    transform: translateY(-10px) !important;
-    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Stripped the transform rule to maintain viewport lock */
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Re-applying the vertical glide exclusively to the content container */
+.container {
+    animation: glide-up 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes glide-up {
+    from { transform: translateY(10px); }
+    to { transform: translateY(0); }
 }
 
 /* Global Navigation Architecture */
