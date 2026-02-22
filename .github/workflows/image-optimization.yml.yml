@@ -1,0 +1,28 @@
+name: Automated Image Compression Protocol
+
+on:
+  push:
+    paths:
+      - 'assets/img/**'
+  pull_request:
+    paths:
+      - 'assets/img/**'
+
+jobs:
+  build:
+    name: Execute Compression Algorithms
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository Architecture
+        uses: actions/checkout@v4
+
+      - name: Initialize Calibre Compression Engine
+        uses: calibreapp/image-actions@main
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          compressOnly: true
+          jpegQuality: '80'
+          jpegProgressive: false
+          pngQuality: '80'
+          webpQuality: '80'

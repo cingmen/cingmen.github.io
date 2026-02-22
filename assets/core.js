@@ -73,4 +73,16 @@ document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
         }
     });
+        /* Background Interceptor Registration */
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/worker.js')
+                .then(registration => {
+                    // Registration successful
+                })
+                .catch(error => {
+                    // Registration exception
+                });
+        });
+    }
 });
