@@ -346,6 +346,57 @@ code[class*="language-"], pre[class*="language-"] { font-family: 'JetBrains Mono
     grid-auto-rows: 250px;
     gap: 1.5rem;
 }
+/* ==========================================================================
+   SCROLL-TRIGGERED GLITCH ANIMATION
+   ========================================================================== */
+
+/* Initial hidden state for images below the fold */
+.glitch-standby {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+}
+
+/* Active execution state */
+.glitch-trigger {
+    visibility: visible;
+    animation: cyber-glitch 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* Mathematical coordinate and color aberration slicing */
+@keyframes cyber-glitch {
+    0% { 
+        opacity: 0; 
+        transform: scale(1.05) translate3d(0, 10px, 0); 
+        filter: contrast(150%); 
+    }
+    20% { 
+        opacity: 1; 
+        transform: translate3d(-8px, 0, 0) skewX(5deg); 
+        box-shadow: -6px 0 0 rgba(239, 68, 68, 0.8), 6px 0 0 rgba(16, 185, 129, 0.8); 
+        clip-path: polygon(0 15%, 100% 15%, 100% 25%, 0 25%); 
+    }
+    40% { 
+        transform: translate3d(8px, 0, 0) skewX(-5deg); 
+        box-shadow: 6px 0 0 rgba(239, 68, 68, 0.8), -6px 0 0 rgba(99, 102, 241, 0.8); 
+        clip-path: polygon(0 65%, 100% 65%, 100% 80%, 0 80%); 
+    }
+    60% { 
+        transform: translate3d(-3px, 2px, 0); 
+        box-shadow: none; 
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); 
+    }
+    80% { 
+        transform: translate3d(2px, -2px, 0); 
+        filter: invert(10%);
+    }
+    100% { 
+        opacity: 1; 
+        transform: translate3d(0, 0, 0) scale(1); 
+        filter: none; 
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); 
+    }
+}
 
 .photo-item {
     position: relative;

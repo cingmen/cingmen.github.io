@@ -24,7 +24,7 @@ permalink: /gallery/
         <section class="card" style="margin-bottom: 2rem;">
             <header style="border-bottom: 1px solid var(--border); padding-bottom: 2rem; margin-bottom: 2rem;">
                 <h1 style="font-size: 2.5rem; margin: 0 0 1rem 0; letter-spacing: -1.5px; font-weight: 800; color: var(--text-main);">Visual Reconnaissance</h1>
-                <p style="color: var(--text-dim); font-size: 1.15rem; max-width: 800px; margin: 0;">An empirical collection of structural photographs, architectural captures, and physical system deployments.</p>
+                <p style="color: var(--text-dim); font-size: 1.15rem; max-width: 800px; margin: 0;">Scroll to initialize sequential data decryption. Expanding visual nodes triggers high-fidelity structural rendering.</p>
             </header>
 
             <div class="photo-grid" id="gallery-grid">
@@ -59,6 +59,16 @@ permalink: /gallery/
                     <div class="photo-overlay"><i data-lucide="maximize-2"></i></div>
                 </div>
 
+                <div class="photo-item large" data-caption="Encrypted Communication Relay">
+                    <div class="photo-bg" style="background-image: url('https://images.unsplash.com/photo-1510511459019-5efa3702464d?auto=format&fit=crop&w=1000&q=80');"></div>
+                    <div class="photo-overlay"><i data-lucide="maximize-2"></i></div>
+                </div>
+
+                <div class="photo-item" data-caption="Sub-Orbital Telemetry Data">
+                    <div class="photo-bg" style="background-image: url('https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=500&q=80');"></div>
+                    <div class="photo-overlay"><i data-lucide="maximize-2"></i></div>
+                </div>
+
             </div>
         </section>
         
@@ -81,40 +91,63 @@ permalink: /gallery/
             const lightboxCaption = document.getElementById('lightbox-caption');
             const closeBtn = document.getElementById('lightbox-close');
 
-            // Extraction and Injection Protocol
+            // 1. SCROLL OBSERVATION ENGINE (The Glitch Protocol)
+            // Initialize the observer to mathematically detect viewport intersections
+            const viewportObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    // When the image enters the user's screen
+                    if (entry.isIntersecting) {
+                        // Apply a tiny random delay so multiple images don't glitch on the exact same millisecond
+                        setTimeout(() => {
+                            entry.target.classList.remove('glitch-standby');
+                            entry.target.classList.add('glitch-trigger');
+                        }, Math.random() * 200);
+                        
+                        // Stop observing once the animation has fired
+                        viewportObserver.unobserve(entry.target);
+                    }
+                });
+            }, { 
+                threshold: 0.15 // Trigger when 15% of the image is visible
+            });
+
+            // Target only items starting from index 3 (the 4th item downwards)
+            galleryItems.forEach((item, index) => {
+                if (index > 2) {
+                    item.classList.add('glitch-standby');
+                    viewportObserver.observe(item);
+                }
+            });
+
+            // 2. LIGHTBOX INTERACTION PROTOCOLS
             galleryItems.forEach(item => {
                 item.addEventListener('click', () => {
                     const bgElement = item.querySelector('.photo-bg');
-                    // Mathematically extract the raw URL string from the CSS property
                     const rawUrl = bgElement.style.backgroundImage.slice(5, -2);
                     const captionText = item.getAttribute('data-caption');
 
                     lightboxImg.src = rawUrl;
                     lightboxCaption.innerText = captionText;
                     
-                    // Trigger the visual fade-in physics
                     lightbox.classList.remove('lightbox-hidden');
                     lightbox.classList.add('lightbox-active');
-                    document.body.style.overflow = 'hidden'; // Lock background scrolling
+                    document.body.style.overflow = 'hidden'; 
                 });
             });
 
-            // Termination Protocols
             const closeLightbox = () => {
                 lightbox.classList.remove('lightbox-active');
                 lightbox.classList.add('lightbox-hidden');
-                document.body.style.overflow = 'auto'; // Restore background scrolling
-                setTimeout(() => { lightboxImg.src = ''; }, 300); // Clear memory after animation
+                document.body.style.overflow = 'auto'; 
+                setTimeout(() => { lightboxImg.src = ''; }, 300); 
             };
 
             closeBtn.addEventListener('click', closeLightbox);
             
-            // Close when clicking the blurred background layer
             lightbox.addEventListener('click', (event) => {
                 if (event.target === lightbox) { closeLightbox(); }
             });
 
-            // Close via hardware keyboard interaction
             document.addEventListener('keydown', (event) => {
                 if (event.key === 'Escape' && lightbox.classList.contains('lightbox-active')) {
                     closeLightbox();
