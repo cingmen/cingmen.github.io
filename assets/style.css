@@ -547,6 +547,64 @@ code[class*="language-"], pre[class*="language-"] { font-family: 'JetBrains Mono
 /* ==========================================================================
    MOBILE VIEWPORT RECALIBRATION & TOUCH OPTIMIZATION
    ========================================================================== */
+/* ==========================================================================
+   DASHBOARD RECONNAISSANCE FEED STYLES
+   ========================================================================== */
+
+/* The specialized container aesthetic */
+.recon-feed-container {
+    background: linear-gradient(135deg, rgba(5, 5, 5, 0.8), rgba(15, 23, 42, 0.8)) !important;
+    border: 1px solid var(--accent) !important;
+    box-shadow: inset 0 0 30px rgba(99, 102, 241, 0.1), 0 0 20px rgba(99, 102, 241, 0.05);
+}
+
+[data-theme="light"] .recon-feed-container {
+     background: linear-gradient(135deg, rgba(248, 250, 252, 0.9), rgba(224, 231, 255, 0.9)) !important;
+}
+
+/* The desktop asymmetrical layout grid */
+.preview-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* 2 columns, left is twice as wide */
+    grid-template-rows: 200px 200px;
+    gap: 1rem;
+}
+
+/* The main image spans two rows on the left */
+.preview-grid .preview-main {
+    grid-column: 1 / 2;
+    grid-row: 1 / 3;
+}
+
+/* Specialized hover effect for the preview items */
+.recon-feed-container .photo-item {
+    border-color: rgba(99, 102, 241, 0.4);
+    background: #000;
+}
+.recon-feed-container .photo-item:hover {
+    border-color: var(--security);
+    box-shadow: 0 0 25px rgba(16, 185, 129, 0.3);
+}
+.recon-feed-container .photo-item:hover .photo-bg {
+    /* Add a slight digital noise filter on hover */
+    filter: grayscale(0%) brightness(1.1) contrast(1.2);
+}
+
+/* Digital Scanline Overlay */
+.recon-feed-container .photo-item::after {
+    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(99, 102, 241, 0.1) 3px);
+    pointer-events: none; z-index: 3; mix-blend-mode: overlay;
+}
+
+/* Technical Corner Brackets */
+.tech-corner { position: absolute; width: 15px; height: 15px; border-color: var(--accent); z-index: 4; opacity: 0.7; transition: all 0.3s ease; }
+.tech-corner.tl { top: 8px; left: 8px; border-top: 2px solid; border-left: 2px solid; }
+.tech-corner.tr { top: 8px; right: 8px; border-top: 2px solid; border-right: 2px solid; }
+.tech-corner.bl { bottom: 8px; left: 8px; border-bottom: 2px solid; border-left: 2px solid; }
+.tech-corner.br { bottom: 8px; right: 8px; border-bottom: 2px solid; border-right: 2px solid; }
+
+.photo-item:hover .tech-corner { border-color: var(--security); padding: 5px; opacity: 1; }
 
 @media (max-width: 850px) {
     .grid { grid-template-columns: 1fr; }
@@ -557,6 +615,18 @@ code[class*="language-"], pre[class*="language-"] { font-family: 'JetBrains Mono
     /* Viewpoint Recalibrations */
     .photo-grid.layout-masonry { column-count: 2; }
     .photo-grid.layout-feed { grid-auto-rows: 350px; }
+    
+    /* Force Recon Preview into vertical stack */
+    .preview-grid {
+        grid-template-columns: 1fr !important; /* Single column */
+        grid-template-rows: repeat(3, 240px) !important; /* 3 rows, fixed height */
+    }
+
+    /* Reset the main image span so it fits the stack */
+    .preview-grid .preview-main {
+        grid-column: span 1 !important;
+        grid-row: span 1 !important;
+    }
 }
 
 @media (max-width: 768px) {

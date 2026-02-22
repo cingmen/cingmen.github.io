@@ -55,7 +55,7 @@ permalink: /
                 <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--security); background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.2); display: flex; flex-direction: column; gap: 6px;">
                     <div style="display: flex; justify-content: space-between;"><span>THREAT VECTOR:</span> <span style="color: var(--text-main);">MINIMAL</span></div>
                     <div style="display: flex; justify-content: space-between;"><span>ACTIVE NODES:</span> <span id="telemetry-nodes" style="color: var(--text-main);">142</span></div>
-                    <div style="display: flex; justify-content: space-between;"><span>TRANSMISSION:</span> <span style="color: var(--text-main);"><span id="telemetry-ping">12</span> milliseconds</span></div>
+                    <div style="display: flex; justify-content: space-between;"><span>TRANSMISSION:</span> <span style="color: var(--text-main);"><span id="telemetry-ping">12</span> Ms</span></div>
                 </div>
             </section>
 
@@ -82,24 +82,35 @@ permalink: /
                 </div>
             </section>
 
-            <section class="card" style="grid-column: span 3; margin-top: 1rem;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
-                    <h2 style="margin: 0; font-size: 1.2rem; color: var(--text-main); letter-spacing: 0.05em;">Visual Reconnaissance</h2>
-                    <a href="/gallery/" class="utility-btn">Deploy Full Visual Archive <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i></a>
+            <section class="card recon-feed-container" style="grid-column: span 3; margin-top: 1rem; overflow: hidden; position: relative;">
+                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(0deg, rgba(99, 102, 241, 0.03) 0px, rgba(99, 102, 241, 0.03) 1px, transparent 1px, transparent 4px); pointer-events: none; z-index: 0;"></div>
+                <div style="position: absolute; top: -10px; right: 20px; font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--accent); opacity: 0.5;">FEED://LIVE.INCOMING</div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; position: relative; z-index: 2;">
+                    <h2 style="margin: 0; font-size: 1.2rem; color: var(--text-main); letter-spacing: 0.05em; display: flex; align-items: center; gap: 10px;">
+                        <i data-lucide="crosshair" style="color: var(--alert); width: 20px; height: 20px;"></i>
+                        Visual Reconnaissance Feed
+                    </h2>
+                    <a href="/gallery/" class="utility-btn" style="background: rgba(16, 185, 129, 0.1); border-color: var(--security); color: var(--security);">Acknowledge Data <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i></a>
                 </div>
                 
-                <div class="photo-grid" style="grid-template-columns: repeat(3, 1fr); grid-auto-rows: 220px; gap: 1rem;">
-                    <a href="/gallery/" class="photo-item" style="grid-column: span 2; grid-row: span 2;">
+                <div class="photo-grid preview-grid" style="position: relative; z-index: 2;">
+                    <a href="/gallery/" class="photo-item preview-main">
                         <div class="photo-bg" style="background-image: url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1000&q=80');"></div>
-                        <div class="photo-overlay"><i data-lucide="maximize-2"></i></div>
+                        <div class="photo-overlay recon-overlay">
+                            <span style="font-family: 'JetBrains Mono'; font-size: 0.8rem; letter-spacing: 0.1em;">TARGET ACQUIRED [MAXIMIZE]</span>
+                        </div>
+                        <div class="tech-corner tl"></div><div class="tech-corner tr"></div><div class="tech-corner bl"></div><div class="tech-corner br"></div>
                     </a>
                     <a href="/gallery/" class="photo-item">
                         <div class="photo-bg" style="background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=500&q=80');"></div>
                         <div class="photo-overlay"><i data-lucide="maximize-2"></i></div>
+                         <div class="tech-corner tl"></div><div class="tech-corner br"></div>
                     </a>
                     <a href="/gallery/" class="photo-item">
                         <div class="photo-bg" style="background-image: url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=500&q=80');"></div>
                         <div class="photo-overlay"><i data-lucide="maximize-2"></i></div>
+                        <div class="tech-corner tl"></div><div class="tech-corner br"></div>
                     </a>
                 </div>
             </section>
