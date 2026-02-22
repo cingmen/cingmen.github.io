@@ -1,19 +1,20 @@
 ---
 layout: null
+title: Command Center
+permalink: /
 ---
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta http-equiv="Cache-Control" content="public, max-age=31536000, immutable">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title | default: "Developer Documentation" }}</title>
+    <title>{{ site.title | default: "Developer Documentation" }}</title>
     
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="stylesheet" href="/assets/style.css?v={{ site.time | date: '%s' }}">
 </head>
 <body>
 
@@ -21,87 +22,87 @@ layout: null
 
     <div class="container">
         <div class="grid">
+            
             <section class="card hero">
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1.5rem;">
-                    <span style="width: 8px; height: 8px; background: var(--security); border-radius: 50%; display: inline-block; box-shadow: 0 0 10px var(--security);"></span>
-                    <span style="font-size: 0.8rem; font-weight: 600; letter-spacing: 1px; color: var(--security);">SYSTEMS OPERATIONAL</span>
-                </div>
-                <h1>Joe is <span id="dynamic-text"></span><span class="cursor"></span></h1>
-                <p>Engineering secure Information Technology infrastructure, constructing minimalist digital interfaces, and exploring new technological paradigms from a base in Bandung, Indonesia.</p>
-                <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
-                    <a href="/about/" style="display: inline-flex; align-items: center; gap: 8px; padding: 0.8rem 1.5rem; background-color: var(--accent); color: #ffffff; text-decoration: none; border-radius: 12px; font-weight: 600; font-size: 0.95rem; transition: background 0.3s ease;">
-                        Review Technical Credentials <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
-                    </a>
-                </div>
+                <h1>System Architecture <br><span style="color: var(--text-dim);">& Analytical Design</span><span class="cursor"></span></h1>
+                <p>An empirical archive of engineered solutions, security architecture analysis, and interface optimizations.</p>
             </section>
 
             <section class="card projects">
-                <h2>Applied Implementations</h2>
+                <h2>Active Deployments</h2>
                 <div class="gallery">
-                    {% assign case_studies = site.posts | where: "layout", "case-study" %}
-                    {% for post in case_studies limit:2 %}
+                    {% assign recent_cases = site.posts | where: "layout", "case-study" | limit: 2 %}
+                    {% for post in recent_cases %}
                     <a href="{{ post.url }}" class="project-item">
                         <div class="project-img" style="background-image: url('{{ post.image | default: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=500&q=80' }}')"></div>
-                        <div class="project-info"><h3>{{ post.title | truncatewords: 5 }}</h3><p>{{ post.role | default: "Security Architect" }}</p></div>
+                        <div class="project-info">
+                            <h3>{{ post.title }}</h3>
+                            <p>{{ post.role | default: "Security Architect" }}</p>
+                        </div>
                     </a>
                     {% endfor %}
-                    {% if case_studies.size == 0 %}
-                    <a href="/portfolio/" class="project-item">
-                        <div class="project-img" style="background-image: url('https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=500&q=80')"></div>
-                        <div class="project-info"><h3>Encrypted Data Protocol</h3><p>Security Architecture Analysis</p></div>
-                    </a>
-                    {% endif %}
                 </div>
-                <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
-                    <a href="/portfolio/" class="cta-btn">Access Complete Portfolio <i data-lucide="briefcase" style="width: 16px; height: 16px;"></i></a>
-                </div>
+                <a href="/portfolio/" class="cta-btn" style="margin-top: 1.5rem;">Initialize Full Portfolio <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i></a>
             </section>
 
             <section class="card recon-widget">
-                <h2>Infrastructure Monitoring</h2>
-                <div class="radar-container"><div class="radar-grid"></div><div class="radar-sweep"></div><i data-lucide="shield" style="width: 32px; height: 32px; color: var(--security); z-index: 10;"></i></div>
-                <p style="font-size: 0.85rem; color: var(--text-dim); text-align: center; margin: 0;">Continuous observation of network protocols and emerging design topologies.</p>
+                <h2>Network Telemetry</h2>
+                <div class="radar-container">
+                    <div class="radar-grid"></div>
+                    <div class="radar-sweep"></div>
+                    <i data-lucide="shield-check" style="position: absolute; z-index: 10; color: var(--security); width: 32px; height: 32px;"></i>
+                </div>
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--security); text-align: center;">
+                    STATUS: OPTIMAL<br>
+                    LATENCY: 12ms
+                </div>
             </section>
 
             <section class="card blog-sidebar">
-                <h2>Recent Systematic Logs</h2>
+                <h2>Systematic Logs</h2>
                 <div class="post-list">
-                    {% assign standard_posts = site.posts | where_exp: "item", "item.layout != 'case-study'" %}
-                    {% for post in standard_posts limit:3 %}
-                    <a href="{{ post.url }}" class="post-link"><span style="font-weight: 600; font-size: 1.05rem;">{{ post.title }}</span><span class="post-date">{{ post.date | date: "%b %d" }}</span></a>
+                    {% assign standard_posts = site.posts | where_exp: "item", "item.layout != 'case-study'" | limit: 3 %}
+                    {% for post in standard_posts %}
+                    <a href="{{ post.url }}" class="post-link">
+                        <span style="font-weight: 600;">{{ post.title }}</span>
+                        <span class="post-date">{{ post.date | date: "%b %d" }}</span>
+                    </a>
                     {% endfor %}
-                    {% if standard_posts.size == 0 %}<p style="color: var(--text-dim); font-size: 0.9rem; text-align: center; padding: 1rem 0;">No active logs detected.</p>{% endif %}
                 </div>
-                <div style="margin-top: 1.5rem; text-align: left;"><a href="/blog/" style="color: var(--text-dim); text-decoration: none; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; transition: color 0.3s ease;">Access Full Archive <i data-lucide="chevron-right" style="width: 14px; height: 14px;"></i></a></div>
+                <a href="/blog/" class="cta-btn" style="margin-top: 1.5rem;">Access Research Archive <i data-lucide="database" style="width: 16px; height: 16px;"></i></a>
             </section>
 
             <section class="card contact">
-                <h2>Communication</h2>
+                <h2>Secure Channels</h2>
                 <div class="social-links">
-                    <a href="https://github.com/cingmen"><i data-lucide="github"></i> Repository Access</a>
-                    <a href="mailto:hello@yourname.com"><i data-lucide="mail"></i> Encrypted Message</a>
+                    <a href="mailto:your.email@server.com"><i data-lucide="mail"></i> Encrypted Comm</a>
+                    <a href="https://github.com/yourusername"><i data-lucide="github"></i> Git Repository</a>
+                    <a href="https://linkedin.com/in/yourusername"><i data-lucide="linkedin"></i> Professional File</a>
                 </div>
             </section>
+
+            <section class="terminal-simulator" style="grid-column: span 3; margin-top: 1rem;">
+                <div class="terminal-header">
+                    <div style="display: flex; gap: 8px;">
+                        <div class="terminal-dot close"></div>
+                        <div class="terminal-dot" style="background: #eab308;"></div>
+                        <div class="terminal-dot" style="background: #10b981;"></div>
+                    </div>
+                    <span class="terminal-title">guest@secure-server:~</span>
+                </div>
+                <div class="terminal-body" id="terminal-output">
+                    <div>Interactive verification protocol initialized. Type 'help'.</div>
+                    <div class="terminal-input-line">
+                        <span class="terminal-prompt">guest@server:~$</span>
+                        <input type="text" class="terminal-input-field" id="terminal-input" autocomplete="off" spellcheck="false" autofocus>
+                    </div>
+                </div>
+            </section>
+
         </div>
         
         {% include footer.html %}
     </div>
-
-    <script>
-        const textArray = ["a Cybersecurity Specialist.", "an Interface Designer.", "a Technology Explorer."];
-        const typingElement = document.getElementById("dynamic-text");
-        let arrayIndex = 0, charIndex = 0, isDeleting = false;
-        function typeEffect() {
-            const currentString = textArray[arrayIndex];
-            if (isDeleting) { typingElement.textContent = currentString.substring(0, charIndex - 1); charIndex--; }
-            else { typingElement.textContent = currentString.substring(0, charIndex + 1); charIndex++; }
-            let typingSpeed = isDeleting ? 30 : 60;
-            if (!isDeleting && charIndex === currentString.length) { typingSpeed = 3500; isDeleting = true; }
-            else if (isDeleting && charIndex === 0) { isDeleting = false; arrayIndex = (arrayIndex + 1) % textArray.length; typingSpeed = 500; }
-            setTimeout(typeEffect, typingSpeed);
-        }
-        document.addEventListener("DOMContentLoaded", () => { setTimeout(typeEffect, 1000); });
-    </script>
 
     <script src="/assets/core.js"></script>
 </body>
