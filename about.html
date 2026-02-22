@@ -27,6 +27,23 @@ permalink: /about/
         </div>
 
         <div class="grid">
+            <section class="card terminal-simulator">
+                <div class="terminal-header">
+                    <div class="terminal-dot" style="background: #ef4444;"></div>
+                    <div class="terminal-dot" style="background: #eab308;"></div>
+                    <div class="terminal-dot" style="background: #10b981;"></div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-dim); margin-left: 10px;">guest@secure-server:~</span>
+                </div>
+                <div class="terminal-body" id="interactive-terminal">
+                    <div style="margin-bottom: 15px; color: var(--text-dim);">Interactive verification protocol initialized. Type 'help'.</div>
+                    <div id="terminal-history"></div>
+                    <div class="terminal-input-line">
+                        <span class="terminal-prompt">guest@server:~$</span>
+                        <input type="text" id="terminal-input" autocomplete="off" spellcheck="false" class="terminal-input-field" autofocus>
+                    </div>
+                </div>
+            </section>
+            
             <section class="card profile-main">
                 <h2>The Engineer</h2>
                 <h1>Systematic Construction and Empirical Design.</h1>
@@ -46,23 +63,6 @@ permalink: /about/
                     <span class="tag"><i data-lucide="code"></i> Hypertext Markup Language</span>
                     <span class="tag"><i data-lucide="palette"></i> Cascading Style Sheets</span>
                     <span class="tag"><i data-lucide="file-json"></i> JavaScript Programming</span>
-                </div>
-            </section>
-
-            <section class="card terminal-simulator">
-                <div class="terminal-header">
-                    <div class="terminal-dot" style="background: #ef4444;"></div>
-                    <div class="terminal-dot" style="background: #eab308;"></div>
-                    <div class="terminal-dot" style="background: #10b981;"></div>
-                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-dim); margin-left: 10px;">guest@secure-server:~</span>
-                </div>
-                <div class="terminal-body" id="interactive-terminal">
-                    <div style="margin-bottom: 15px; color: var(--text-dim);">Interactive verification protocol initialized. Type 'help'.</div>
-                    <div id="terminal-history"></div>
-                    <div class="terminal-input-line">
-                        <span class="terminal-prompt">guest@server:~$</span>
-                        <input type="text" id="terminal-input" autocomplete="off" spellcheck="false" class="terminal-input-field" autofocus>
-                    </div>
                 </div>
             </section>
         </div>
