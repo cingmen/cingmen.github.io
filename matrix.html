@@ -1,0 +1,287 @@
+---
+layout: null
+title: Strategic Defense Dashboard
+permalink: /matrix/
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title }} - {{ site.title | default: "Developer Documentation" }}</title>
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/assets/style.css">
+
+    <style>
+        /* Interactive Control Parameters */
+        .control-panel { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; margin-bottom: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+        .slider-container { display: flex; align-items: center; gap: 15px; width: 100%; }
+        .threat-slider { -webkit-appearance: none; width: 100%; height: 6px; background: rgba(255, 255, 255, 0.1); border-radius: 5px; outline: none; transition: background 0.3s; }
+        .threat-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--alert); cursor: pointer; transition: transform 0.2s ease; }
+        .threat-slider::-webkit-slider-thumb:hover { transform: scale(1.2); }
+        .threat-slider::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; background: var(--alert); cursor: pointer; border: none; }
+        
+        /* Execution Matrix Geometry */
+        .matrix-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 3rem; }
+        .strategy-btn { background: var(--card-bg); border: 1px solid var(--border); padding: 1.5rem; text-align: left; border-radius: 12px; cursor: pointer; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: center; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .strategy-btn:hover { border-color: var(--accent); box-shadow: 0 0 20px rgba(99, 102, 241, 0.15); transform: translateY(-2px); }
+        .strategy-btn:active { transform: translateY(1px); }
+        .strategy-title { font-size: 1.1rem; font-weight: 700; color: var(--text-main); margin-bottom: 5px; display: flex; justify-content: space-between; align-items: center; }
+        .strategy-desc { font-size: 0.85rem; color: var(--text-dim); }
+        
+        .outcome-highlight { animation: flash-outcome 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        @keyframes flash-outcome { 0% { background: rgba(16, 185, 129, 0.4); border-color: var(--security); } 100% { background: var(--card-bg); border-color: var(--border); } }
+        .outcome-highlight-critical { animation: flash-critical 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        @keyframes flash-critical { 0% { background: rgba(239, 68, 68, 0.4); border-color: var(--alert); } 100% { background: var(--card-bg); border-color: var(--border); } }
+
+        /* Tactical Network Topology */
+        .topology-container { height: 300px; border: 1px solid var(--border); border-radius: 16px; position: relative; background: radial-gradient(circle at center, rgba(99, 102, 241, 0.05) 0%, transparent 80%); margin-bottom: 2rem; overflow: hidden; }
+        .network-node { position: absolute; width: 14px; height: 14px; background: var(--text-dim); border-radius: 50%; transition: all 0.5s ease; z-index: 2; }
+        .network-node.secure { background: var(--security); box-shadow: 0 0 15px var(--security); }
+        .network-node.compromised { background: var(--alert); box-shadow: 0 0 15px var(--alert); animation: pulse-node 1s infinite alternate; }
+        @keyframes pulse-node { from { transform: scale(1); opacity: 0.8; } to { transform: scale(1.4); opacity: 1; } }
+
+        /* Topological Curve Physics */
+        .network-link { fill: none; stroke: var(--accent); stroke-width: 1.5; opacity: 0.3; stroke-dasharray: 6 8; animation: data-transmission 30s linear infinite; }
+        @keyframes data-transmission { to { stroke-dashoffset: -200; } }
+
+        /* Stochastic Probability Feed */
+        .stochastic-log { height: 220px; overflow-y: hidden; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: var(--text-dim); background: #000000; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(99, 102, 241, 0.3); display: flex; flex-direction: column; justify-content: flex-end; }
+        .log-entry { margin-top: 8px; border-left: 2px solid var(--accent); padding-left: 12px; opacity: 0; animation: fade-in-log 0.4s forwards; line-height: 1.5; }
+        @keyframes fade-in-log { to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    {% include navigation.html %}
+
+    <div class="container">
+        <section class="card" style="margin-bottom: 2rem;">
+            <header style="border-bottom: 1px solid var(--border); padding-bottom: 2rem; margin-bottom: 2rem;">
+                <h1 style="font-size: 2.5rem; margin: 0 0 1rem 0; letter-spacing: -1.5px; font-weight: 800; color: var(--text-main);">Proactive Defense Matrix</h1>
+                <p style="color: var(--text-dim); font-size: 1.15rem; max-width: 800px; margin: 0;">Execute active defensive postures to mathematically counter simulated infiltration attempts across the tactical military network.</p>
+            </header>
+
+            <div class="control-panel">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: 700; color: var(--text-main); font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.1em;">Environmental Threat Probability</span>
+                    <span style="font-family: 'JetBrains Mono', monospace; color: var(--alert); font-weight: 800; font-size: 1.1rem;" id="threat-display">0.65</span>
+                </div>
+                <div class="slider-container">
+                    <span style="font-size: 0.8rem; color: var(--text-dim);">Low</span>
+                    <input type="range" min="0.1" max="0.9" step="0.05" value="0.65" class="threat-slider" id="threat-slider">
+                    <span style="font-size: 0.8rem; color: var(--text-dim);">Critical</span>
+                </div>
+            </div>
+
+            <h2 style="font-size: 1.1rem; color: var(--text-main); font-weight: 700;">Execute Defensive Posture</h2>
+            <div class="matrix-grid">
+                <button class="strategy-btn" id="btn-proactive">
+                    <div class="strategy-title">Proactive Neutralization <i data-lucide="shield" style="color: var(--security); width: 20px; height: 20px;"></i></div>
+                    <div class="strategy-desc">Preemptively isolates suspected routing paths. Highly effective against direct infiltration, vulnerable to systematic disruption.</div>
+                </button>
+                
+                <button class="strategy-btn" id="btn-reactive">
+                    <div class="strategy-title">Reactive Reallocation <i data-lucide="refresh-cw" style="color: var(--accent); width: 20px; height: 20px;"></i></div>
+                    <div class="strategy-desc">Dynamically shifts data transmission post-breach. Mitigates disruption tactics, but allows initial infiltration vectors to succeed.</div>
+                </button>
+            </div>
+            
+            <h2 style="font-size: 1.1rem; color: var(--text-main); font-weight: 700;">Tactical Network Topology</h2>
+            <div class="topology-container" id="network-map">
+                <svg id="network-links" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;"></svg>
+                </div>
+
+            <h2 style="font-size: 1.1rem; color: var(--text-main); font-weight: 700;">Simulation Telemetry</h2>
+            <div class="stochastic-log" id="simulation-log">
+                <div class="log-entry" style="opacity: 1;"><span style="color: var(--accent);">[SYSTEM]</span> Tactical military network initialized. Awaiting defensive commands.</div>
+            </div>
+        </section>
+        
+        {% include footer.html %}
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+
+            // 1. Environmental Control Logic
+            const threatSlider = document.getElementById('threat-slider');
+            const threatDisplay = document.getElementById('threat-display');
+            let currentThreatProbability = 0.65;
+
+            threatSlider.addEventListener('input', (event) => {
+                currentThreatProbability = parseFloat(event.target.value);
+                threatDisplay.innerText = currentThreatProbability.toFixed(2);
+                
+                // Color shift based on danger level
+                if (currentThreatProbability > 0.75) {
+                    threatDisplay.style.color = 'var(--alert)';
+                } else if (currentThreatProbability < 0.4) {
+                    threatDisplay.style.color = 'var(--security)';
+                } else {
+                    threatDisplay.style.color = '#eab308';
+                }
+            });
+
+            // 2. Tactical Network Topology Engine
+            const mapContainer = document.getElementById('network-map');
+            const svgLayer = document.getElementById('network-links');
+            const nodeTotal = 15;
+            const nodes = [];
+            const nodeCoordinates = [];
+
+            for (let i = 0; i < nodeTotal; i++) {
+                const node = document.createElement('div');
+                node.className = 'network-node secure'; // Start secure
+                const leftPercent = Math.floor(Math.random() * 90) + 5;
+                const topPercent = Math.floor(Math.random() * 80) + 10;
+                
+                node.style.left = `${leftPercent}%`;
+                node.style.top = `${topPercent}%`;
+                mapContainer.appendChild(node);
+                nodes.push(node);
+                nodeCoordinates.push({ xPercent: leftPercent, yPercent: topPercent });
+            }
+
+            function drawTopologicalLinks() {
+                svgLayer.innerHTML = '';
+                const width = mapContainer.clientWidth;
+                const height = mapContainer.clientHeight;
+                
+                const pixelNodes = nodeCoordinates.map(coord => ({
+                    x: (coord.xPercent / 100) * width + 7,
+                    y: (coord.yPercent / 100) * height + 7
+                }));
+
+                for (let i = 0; i < pixelNodes.length; i++) {
+                    let distances = [];
+                    for (let j = 0; j < pixelNodes.length; j++) {
+                        if (i !== j) {
+                            const dx = pixelNodes[i].x - pixelNodes[j].x;
+                            const dy = pixelNodes[i].y - pixelNodes[j].y;
+                            distances.push({ index: j, dist: Math.sqrt(dx * dx + dy * dy) });
+                        }
+                    }
+                    distances.sort((a, b) => a.dist - b.dist);
+
+                    for (let k = 0; k < 2; k++) {
+                        const target = pixelNodes[distances[k].index];
+                        const midX = (pixelNodes[i].x + target.x) / 2;
+                        const midY = (pixelNodes[i].y + target.y) / 2;
+                        const dx = target.x - pixelNodes[i].x;
+                        const dy = target.y - pixelNodes[i].y;
+                        const controlX = midX - (dy * 0.15); 
+                        const controlY = midY + (dx * 0.15);
+
+                        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                        path.setAttribute("d", `M ${pixelNodes[i].x} ${pixelNodes[i].y} Q ${controlX} ${controlY} ${target.x} ${target.y}`);
+                        path.setAttribute("class", "network-link");
+                        svgLayer.appendChild(path);
+                    }
+                }
+            }
+            drawTopologicalLinks();
+            window.addEventListener('resize', drawTopologicalLinks);
+
+            // Passive Network Decay (Background threat)
+            setInterval(() => {
+                const randomNode = nodes[Math.floor(Math.random() * nodes.length)];
+                if (Math.random() < (currentThreatProbability * 0.3)) {
+                    randomNode.className = 'network-node compromised';
+                }
+            }, 2000);
+
+            // 3. Execution Engine & Telemetry Log
+            const logContainer = document.getElementById('simulation-log');
+            const btnProactive = document.getElementById('btn-proactive');
+            const btnReactive = document.getElementById('btn-reactive');
+
+            function appendLog(message, isCritical = false) {
+                const logEntry = document.createElement('div');
+                logEntry.className = 'log-entry';
+                if (isCritical) {
+                    logEntry.style.borderLeftColor = 'var(--alert)';
+                }
+                const timestamp = new Date().toISOString().substring(11, 23);
+                logEntry.innerHTML = `<span style="color: ${isCritical ? 'var(--alert)' : 'var(--security)'};">[${timestamp}]</span> ${message}`;
+                logContainer.appendChild(logEntry);
+                if (logContainer.children.length > 7) {
+                    logContainer.removeChild(logContainer.firstChild);
+                }
+            }
+
+            function processTurn(defenderChoice, buttonElement) {
+                // Remove previous animation states
+                btnProactive.classList.remove('outcome-highlight', 'outcome-highlight-critical');
+                btnReactive.classList.remove('outcome-highlight', 'outcome-highlight-critical');
+                
+                // Mathematical determination of attacker strategy
+                const attackerRoll = Math.random();
+                const attackerChoice = attackerRoll < currentThreatProbability ? 'infiltration' : 'disruption';
+                
+                let outcomeSuccess = false;
+                let logMessage = "";
+
+                // Game-Theoretic Evaluation
+                if (defenderChoice === 'proactive') {
+                    if (attackerChoice === 'infiltration') {
+                        outcomeSuccess = true;
+                        logMessage = "Attacker attempted INFILTRATION. Proactive Neutralization SUCCESSFUL. Network secured.";
+                    } else {
+                        outcomeSuccess = false;
+                        logMessage = "Attacker attempted DISRUPTION. Proactive Neutralization BYPASSED. Nodes compromised.";
+                    }
+                } else if (defenderChoice === 'reactive') {
+                    if (attackerChoice === 'disruption') {
+                        outcomeSuccess = true;
+                        logMessage = "Attacker attempted DISRUPTION. Reactive Reallocation SUCCESSFUL. Data preserved.";
+                    } else {
+                        outcomeSuccess = false;
+                        logMessage = "Attacker attempted INFILTRATION. Reactive strategy too slow. Nodes compromised.";
+                    }
+                }
+
+                // Execute Visual and Structural Consequences
+                if (outcomeSuccess) {
+                    buttonElement.classList.add('outcome-highlight');
+                    appendLog(logMessage, false);
+                    
+                    // Secure up to 4 compromised nodes
+                    let cured = 0;
+                    nodes.forEach(node => {
+                        if (node.className.includes('compromised') && cured < 4) {
+                            node.className = 'network-node secure';
+                            cured++;
+                        }
+                    });
+                } else {
+                    buttonElement.classList.add('outcome-highlight-critical');
+                    appendLog(logMessage, true);
+                    
+                    // Compromise up to 3 secure nodes
+                    let breached = 0;
+                    nodes.forEach(node => {
+                        if (node.className.includes('secure') && breached < 3) {
+                            node.className = 'network-node compromised';
+                            breached++;
+                        }
+                    });
+                }
+            }
+
+            // Bind Event Listeners
+            btnProactive.addEventListener('click', () => { processTurn('proactive', btnProactive); });
+            btnReactive.addEventListener('click', () => { processTurn('reactive', btnReactive); });
+        });
+    </script>
+
+    <script src="/assets/core.js"></script>
+</body>
+</html>
