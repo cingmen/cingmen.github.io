@@ -13,98 +13,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     
     <link rel="stylesheet" href="/assets/style.css">
-
-    <style>
-        .container { max-width: 1000px; width: 100%; padding: 2rem 1.5rem 4rem 1.5rem; }
-        
-        .article-card { 
-            background: var(--card-bg); 
-            border: 1px solid var(--border); 
-            border-radius: 28px; 
-            padding: 3.5rem 4rem; 
-            backdrop-filter: blur(12px); 
-            margin-bottom: 1.5rem; 
-        }
-        
-        .article-header { border-bottom: 1px solid var(--border); padding-bottom: 2rem; margin-bottom: 2.5rem; text-align: center; }
-        .article-metadata { display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 1rem; }
-        .article-date { font-size: 0.9rem; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; display: inline-flex; align-items: center; gap: 5px; margin: 0; }
-        .article-title { font-size: 2.5rem; margin: 0 0 1rem 0; letter-spacing: -1.5px; font-weight: 800; line-height: 1.2; color: var(--text-main); }
-        .article-description { font-size: 1.15rem; color: var(--text-dim); margin: 0 auto; max-width: 90%; line-height: 1.6; font-weight: 400; }
-
-        .document-content { color: var(--text-dim); font-size: 1.1rem; }
-        .document-content h1, .document-content h2, .document-content h3, .document-content h4 { color: var(--text-main); font-weight: 600; margin-top: 2.5rem; margin-bottom: 1rem; line-height: 1.3; }
-        .document-content h2 { font-size: 1.8rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
-        .document-content p { margin-bottom: 1.5rem; }
-        .document-content a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; }
-        .document-content a:hover { border-bottom: 1px solid var(--accent); }
-        .document-content ul, .document-content ol { margin-bottom: 1.5rem; padding-left: 1.5rem; }
-        .document-content li { margin-bottom: 0.5rem; }
-        .document-content blockquote { border-left: 4px solid var(--accent); margin: 2rem 0; padding: 1.5rem; background: rgba(255, 255, 255, 0.02); border-radius: 0 12px 12px 0; font-style: italic; color: var(--text-main); }
-
-        .compact-interaction { 
-            background: var(--card-bg); 
-            border: 1px solid var(--border); 
-            border-radius: 20px; 
-            padding: 1.25rem 2.5rem; 
-            backdrop-filter: blur(12px); 
-            display: flex; 
-            flex-direction: row; 
-            justify-content: space-between; 
-            align-items: center; 
-        }
-        
-        .metric-group { display: flex; align-items: center; gap: 15px; }
-        .metric-label { color: var(--text-dim); font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-        .action-group { display: flex; gap: 1rem; align-items: center; }
-        
-        .utility-btn { 
-            display: inline-flex; align-items: center; justify-content: center; gap: 8px; 
-            padding: 0.6rem 1.2rem; border-radius: 8px; background: rgba(255, 255, 255, 0.05); 
-            color: var(--text-main); border: 1px solid var(--border); cursor: pointer; 
-            font-family: inherit; font-weight: 600; font-size: 0.85rem; transition: background 0.3s ease, border-color 0.3s ease; 
-        }
-        .utility-btn:hover { background: var(--accent); border-color: var(--accent); color: #ffffff; }
-
-        pre[class*="language-"] {
-            background: #000000 !important; border: 1px solid rgba(255, 255, 255, 0.1) !important;
-            border-radius: 12px !important; padding: 1.5rem !important; margin: 2rem 0 !important;
-            box-shadow: inset 0 2px 10px rgba(0,0,0,0.5); overflow-x: auto;
-        }
-        code[class*="language-"], pre[class*="language-"] {
-            font-family: 'JetBrains Mono', monospace !important; font-size: 0.9rem !important;
-            text-shadow: none !important; line-height: 1.6;
-        }
-        :not(pre) > code[class*="language-"], .document-content p > code {
-            background: rgba(255, 255, 255, 0.05); padding: 0.2rem 0.4rem; border-radius: 6px;
-            border: 1px solid rgba(255, 255, 255, 0.1); font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem; color: var(--security);
-        }
-
-        @media (max-width: 768px) {
-            .article-card { padding: 2rem 1.5rem; }
-            .article-title { font-size: 2rem; }
-            .compact-interaction { flex-direction: column; gap: 1.5rem; padding: 1.5rem; text-align: center; }
-            .action-group, .utility-btn { width: 100%; }
-        }
-    </style>
 </head>
 <body>
 
-    <nav class="floating-nav">
-        <div class="nav-container">
-            <a href="/" class="nav-brand">Research Log</a>
-            <div class="nav-links">
-                <a href="/">Home</a>
-                <a href="/about/">Profile</a>
-                <a href="/portfolio/">Portfolio</a>
-                <a href="/blog/">Archive</a>
-            </div>
-        </div>
-        <div class="progress-container">
-            <div class="progress-bar" id="reading-progress"></div>
-        </div>
-    </nav>
+    {% include navigation.html %}
 
     <div class="container">
         <article class="article-card">
@@ -145,32 +57,21 @@
                 Top of Document <i data-lucide="arrow-up" style="width: 16px; height: 16px;"></i>
             </button>
         </div>
-        <footer style="text-align: center; margin-top: 3rem; color: var(--text-dim); font-size: 0.8rem;">&copy; 2026 — Engineered in Bandung</footer>
+        
+        {% include footer.html %}
     </div>
 
     <script>
-        lucide.createIcons();
         window.addEventListener('scroll', () => {
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             const scrolled = (winScroll / height) * 100;
             document.getElementById("reading-progress").style.width = scrolled + "%";
         });
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            const internalLinks = document.querySelectorAll('a[href^="/"], a[href^="' + window.location.origin + '"]');
-            internalLinks.forEach(link => {
-                link.addEventListener('click', function(event) {
-                    if (this.target === '_blank' || this.getAttribute('href').startsWith('#')) return;
-                    event.preventDefault();
-                    const targetAddress = this.href;
-                    document.body.classList.add('navigating-out');
-                    setTimeout(() => { window.location.href = targetAddress; }, 300);
-                });
-            });
-        });
-        window.addEventListener('pageshow', (event) => { if (event.persisted) document.body.classList.remove('navigating-out'); });
     </script>
+    
+    <script src="/assets/core.js"></script>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </body>

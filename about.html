@@ -15,60 +15,10 @@ permalink: /about/
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="/assets/style.css">
-
-    <style>
-        .container { max-width: 1000px; width: 100%; padding: 2rem 1.5rem 4rem 1.5rem; }
-        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
-        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 28px; padding: 2rem; backdrop-filter: blur(12px); position: relative; overflow: hidden; }
-
-        .visual-header { grid-column: span 3; height: 200px; background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2)); display: flex; justify-content: center; align-items: center; border: 1px solid var(--border); border-radius: 28px; margin-bottom: 1.25rem; position: relative; overflow: hidden; }
-        .gradient-orb { position: absolute; width: 300px; height: 300px; background: radial-gradient(circle, var(--accent) 0%, transparent 70%); opacity: 0.4; filter: blur(40px); animation: pulse 8s infinite alternate; }
-        @keyframes pulse { 0% { transform: scale(1) translate(0, 0); opacity: 0.3; } 50% { transform: scale(1.2) translate(50px, -20px); opacity: 0.5; } 100% { transform: scale(0.9) translate(-50px, 20px); opacity: 0.3; } }
-
-        .profile-main { grid-column: span 2; }
-        .location-card { grid-column: span 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;}
-        .skills-card { grid-column: span 3; }
-        .experience-card { grid-column: span 3; }
-
-        .terminal-simulator { grid-column: span 3; padding: 0; background: #000000; border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 28px; overflow: hidden; display: flex; flex-direction: column; }
-        .terminal-header { background: rgba(255, 255, 255, 0.05); border-bottom: 1px solid var(--border); padding: 12px 20px; display: flex; align-items: center; gap: 10px; }
-        .terminal-dot { width: 12px; height: 12px; border-radius: 50%; background: #333; }
-        .terminal-body { padding: 20px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--security); height: 300px; overflow-y: auto; display: flex; flex-direction: column; }
-        .terminal-input-line { display: flex; align-items: center; margin-top: 10px; }
-        .terminal-prompt { color: var(--accent); margin-right: 10px; }
-        .terminal-input-field { background: transparent; border: none; outline: none; color: var(--text-main); font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; flex-grow: 1; caret-color: var(--text-main); }
-
-        h1 { font-size: 3rem; margin: 0 0 1rem 0; letter-spacing: -2px; font-weight: 800; line-height: 1.1; }
-        h2 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-top: 0; margin-bottom: 1.5rem; }
-        p { color: var(--text-dim); font-size: 1.1rem; }
-
-        .skill-tags { display: flex; flex-wrap: wrap; gap: 10px; }
-        .tag { background: rgba(99, 102, 241, 0.1); color: var(--text-main); padding: 8px 16px; border-radius: 20px; font-size: 0.9rem; border: 1px solid rgba(99, 102, 241, 0.2); display: flex; align-items: center; gap: 8px; }
-
-        .timeline-item { border-left: 2px solid var(--border); padding-left: 20px; margin-bottom: 20px; position: relative; }
-        .timeline-item::before { content: ''; position: absolute; left: -6px; top: 6px; width: 10px; height: 10px; background: var(--accent); border-radius: 50%; }
-        .timeline-title { font-weight: 600; color: var(--text-main); font-size: 1.2rem; }
-        .timeline-date { font-size: 0.85rem; color: var(--accent); margin-bottom: 5px; display: block; }
-
-        @media (max-width: 850px) {
-            .grid { grid-template-columns: 1fr; }
-            .profile-main, .location-card, .skills-card, .experience-card, .terminal-simulator { grid-column: span 1; }
-        }
-    </style>
 </head>
 <body>
 
-    <nav class="floating-nav">
-        <div class="nav-container">
-            <a href="/" class="nav-brand">Research Log</a>
-            <div class="nav-links">
-                <a href="/">Home</a>
-                <a href="/about/">Profile</a>
-                <a href="/portfolio/">Portfolio</a>
-                <a href="/blog/">Archive</a>
-            </div>
-        </div>
-    </nav>
+    {% include navigation.html %}
 
     <div class="container">
         <div class="visual-header">
@@ -116,13 +66,11 @@ permalink: /about/
                 </div>
             </section>
         </div>
-        <footer style="text-align: center; margin-top: 3rem; color: var(--text-dim); font-size: 0.8rem;">&copy; 2026 — Engineered in Bandung</footer>
+        
+        {% include footer.html %}
     </div>
 
     <script>
-        lucide.createIcons();
-
-        // Terminal Logic
         const terminalInput = document.getElementById('terminal-input');
         const terminalHistory = document.getElementById('terminal-history');
         const terminalContainer = document.getElementById('interactive-terminal');
@@ -157,20 +105,8 @@ permalink: /about/
             }
         });
         terminalContainer.addEventListener('click', () => { terminalInput.focus(); });
-
-        // Seamless Navigation Script
-        document.addEventListener('DOMContentLoaded', () => {
-            const internalLinks = document.querySelectorAll('a[href^="/"], a[href^="' + window.location.origin + '"]');
-            internalLinks.forEach(link => {
-                link.addEventListener('click', function(event) {
-                    if (this.target === '_blank' || this.getAttribute('href').startsWith('#')) return;
-                    event.preventDefault();
-                    document.body.classList.add('navigating-out');
-                    setTimeout(() => { window.location.href = this.href; }, 300);
-                });
-            });
-        });
-        window.addEventListener('pageshow', (event) => { if (event.persisted) document.body.classList.remove('navigating-out'); });
     </script>
+
+    <script src="/assets/core.js"></script>
 </body>
 </html>
