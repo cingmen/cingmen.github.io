@@ -12,7 +12,10 @@
     --glass: blur(16px);
 }
 
-/* Light Theme Empirical Override */
+/* ==========================================================================
+   DAYLIGHT ENVIRONMENT (THEME INVERSION)
+   ========================================================================== */
+
 [data-theme="light"] {
     --bg: #f8fafc;
     --card-bg: #ffffff;
@@ -25,22 +28,67 @@
 [data-theme="light"] body { background-image: radial-gradient(circle at 50% -20%, #e0e7ff, transparent); }
 [data-theme="light"] .floating-nav { background: rgba(255, 255, 255, 0.7); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05); }
 
-/* Enforcing strict dark mode on the terminal and code blocks to preserve the security aesthetic */
+/* Light Theme Terminal Architecture */
 [data-theme="light"] .terminal-simulator,
-[data-theme="light"] .terminal-window,
-[data-theme="light"] pre[class*="language-"] {
-    --text-main: #ffffff;
-    --text-dim: #94a3b8;
-    background: #000000 !important;
-    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+[data-theme="light"] .terminal-window {
+    background: #ffffff !important;
+    border: 1px solid var(--border) !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08) !important;
 }
 
-* {
-    box-sizing: border-box;
+[data-theme="light"] .terminal-header {
+    background: #f8fafc !important;
+    border-bottom: 1px solid var(--border) !important;
 }
+
+[data-theme="light"] .terminal-body { color: var(--text-main) !important; }
+[data-theme="light"] .terminal-title { color: var(--text-dim) !important; }
+
+[data-theme="light"] input[type="text"].terminal-input-field,
+[data-theme="light"] .terminal-input-field {
+    color: var(--text-main) !important;
+    caret-color: var(--text-main) !important;
+}
+
+/* Light Theme Syntax Highlighting Override Matrix */
+[data-theme="light"] pre[class*="language-"] {
+    background: #f1f5f9 !important;
+    border: 1px solid var(--border) !important;
+    box-shadow: inset 0 2px 10px rgba(0,0,0,0.02) !important;
+    color: var(--text-main) !important;
+}
+
+[data-theme="light"] code[class*="language-"],
+[data-theme="light"] pre[class*="language-"] code {
+    color: var(--text-main) !important;
+    text-shadow: none !important;
+}
+
+[data-theme="light"] :not(pre) > code[class*="language-"], 
+[data-theme="light"] .document-content p > code {
+    background: rgba(0, 0, 0, 0.04) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    color: var(--accent) !important;
+}
+
+/* Prism Token High-Contrast Inversions */
+[data-theme="light"] .token.comment, [data-theme="light"] .token.prolog, [data-theme="light"] .token.doctype, [data-theme="light"] .token.cdata { color: #64748b !important; }
+[data-theme="light"] .token.punctuation { color: #334155 !important; }
+[data-theme="light"] .token.property, [data-theme="light"] .token.tag, [data-theme="light"] .token.boolean, [data-theme="light"] .token.number, [data-theme="light"] .token.constant, [data-theme="light"] .token.symbol, [data-theme="light"] .token.deleted { color: #ef4444 !important; }
+[data-theme="light"] .token.selector, [data-theme="light"] .token.attr-name, [data-theme="light"] .token.string, [data-theme="light"] .token.char, [data-theme="light"] .token.builtin, [data-theme="light"] .token.inserted { color: #059669 !important; }
+[data-theme="light"] .token.operator, [data-theme="light"] .token.entity, [data-theme="light"] .token.url, [data-theme="light"] .language-css .token.string, [data-theme="light"] .style .token.string { color: #7c3aed !important; }
+[data-theme="light"] .token.atrule, [data-theme="light"] .token.attr-value, [data-theme="light"] .token.keyword { color: #4f46e5 !important; }
+[data-theme="light"] .token.function, [data-theme="light"] .token.class-name { color: #db2777 !important; }
+[data-theme="light"] .token.regex, [data-theme="light"] .token.important, [data-theme="light"] .token.variable { color: #ea580c !important; }
+
+/* ==========================================================================
+   GLOBAL PHYSICS & FOUNDATION
+   ========================================================================== */
+
+* { box-sizing: border-box; }
 
 /* Empirical Theme Transition Protocol */
-body, .card, .floating-nav, .terminal-window, .compact-interaction, .utility-btn, .project-item, .document-content h1, .document-content h2, .document-content h3, .document-content p, .nav-brand {
+body, .card, .floating-nav, .terminal-window, .terminal-simulator, .terminal-header, .compact-interaction, .utility-btn, .project-item, .document-content h1, .document-content h2, .document-content h3, .document-content p, .nav-brand, pre[class*="language-"] {
     transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1), color 0.6s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.6s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
@@ -95,6 +143,10 @@ body {
     display: flex; 
     flex-direction: column; 
 }
+
+/* ==========================================================================
+   INTERFACE COMPONENTS
+   ========================================================================== */
 
 /* Global Navigation Architecture */
 .floating-nav { position: fixed; top: 1.5rem; left: 50%; transform: translateX(-50%); width: 90%; max-width: 700px; background: rgba(255, 255, 255, 0.02); backdrop-filter: var(--glass) saturate(180%); -webkit-backdrop-filter: blur(16px) saturate(180%); border: 1px solid var(--border); border-radius: 50px; z-index: 1000; display: flex; justify-content: center; padding: 0.8rem 2rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); overflow: hidden; }
@@ -189,7 +241,10 @@ input[type="text"].terminal-input-field,
     -webkit-appearance: none !important;
 }
 
-/* Document and Case Study Layouts */
+/* ==========================================================================
+   DOCUMENT & CASE STUDY LAYOUTS
+   ========================================================================== */
+
 .article-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 28px; padding: 3.5rem 4rem; backdrop-filter: blur(12px); margin-bottom: 1.5rem; width: 100%; }
 .article-header { border-bottom: 1px solid var(--border); padding-bottom: 2rem; margin-bottom: 2.5rem; text-align: center; }
 .article-metadata { display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 1rem; }
@@ -234,11 +289,15 @@ input[type="text"].terminal-input-field,
 .utility-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0.6rem 1.2rem; border-radius: 8px; background: rgba(255, 255, 255, 0.05); color: var(--text-main); border: 1px solid var(--border); cursor: pointer; font-family: inherit; font-weight: 600; font-size: 0.85rem; transition: background 0.3s ease, border-color 0.3s ease; }
 .utility-btn:hover { background: var(--accent); border-color: var(--accent); color: #ffffff; }
 
+/* Default Prism Dark Theme Fallbacks (Active when Daylight Environment is OFF) */
 pre[class*="language-"] { background: #000000 !important; border: 1px solid rgba(255, 255, 255, 0.1) !important; border-radius: 12px !important; padding: 1.5rem !important; margin: 2rem 0 !important; box-shadow: inset 0 2px 10px rgba(0,0,0,0.5); overflow-x: auto; }
 code[class*="language-"], pre[class*="language-"] { font-family: 'JetBrains Mono', monospace !important; font-size: 0.9rem !important; text-shadow: none !important; line-height: 1.6; }
 :not(pre) > code[class*="language-"], .document-content p > code { background: rgba(255, 255, 255, 0.05); padding: 0.2rem 0.4rem; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.1); font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: var(--security); }
 
-/* Proactive Defense Matrix Elements */
+/* ==========================================================================
+   PROACTIVE DEFENSE MATRIX DASHBOARD
+   ========================================================================== */
+
 .control-panel { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; margin-bottom: 2rem; display: flex; flex-direction: column; gap: 1rem; }
 .slider-container { display: flex; align-items: center; gap: 15px; width: 100%; }
 .threat-slider { -webkit-appearance: none; width: 100%; height: 6px; background: rgba(255, 255, 255, 0.1); border-radius: 5px; outline: none; transition: background 0.3s; }
@@ -277,7 +336,10 @@ code[class*="language-"], pre[class*="language-"] { font-family: 'JetBrains Mono
 .log-entry { margin-top: 8px; border-left: 2px solid var(--accent); padding-left: 12px; opacity: 0; animation: fade-in-log 0.4s forwards; line-height: 1.5; }
 @keyframes fade-in-log { to { opacity: 1; } }
 
-/* Mobile Viewport Recalibration */
+/* ==========================================================================
+   MOBILE VIEWPORT RECALIBRATION
+   ========================================================================== */
+
 @media (max-width: 850px) {
     .grid { grid-template-columns: 1fr; }
     .hero, .projects, .recon-widget, .blog-sidebar, .contact, .profile-main, .location-card, .skills-card, .experience-card, .terminal-simulator { grid-column: span 1; }
