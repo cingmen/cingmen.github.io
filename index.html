@@ -6,87 +6,18 @@ layout: null
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title | default: "Developer Documentation" }}</title>
-    <meta name="description" content="{{ site.description | strip_html | normalize_whitespace | truncate: 160 }}">
-    <link rel="canonical" href="{{ site.url }}{{ page.url }}">
-    <meta property="og:title" content="{{ site.title }}">
-    <meta property="og:description" content="{{ site.description | strip_html | truncate: 160 }}">
-    <meta property="og:url" content="{{ site.url }}{{ page.url }}">
     
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/assets/style.css">
 
     <style>
-        :root {
-            --bg: #050505;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.08);
-            --accent: #6366f1; 
-            --security: #10b981;
-            --text-main: #ffffff;
-            --text-dim: #94a3b8;
-            --glass: blur(16px);
-        }
-
-        * { box-sizing: border-box; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg);
-            background-image: radial-gradient(circle at 50% -20%, #1e1b4b, transparent);
-            color: var(--text-main);
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            line-height: 1.6;
-            padding-top: 7rem; 
-        }
-
-        .floating-nav {
-            position: fixed;
-            top: 1.5rem; 
-            left: 50%;
-            transform: translateX(-50%); 
-            width: 90%;
-            max-width: 700px; 
-            background: rgba(255, 255, 255, 0.02); 
-            backdrop-filter: var(--glass) saturate(180%); 
-            -webkit-backdrop-filter: blur(16px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.08); 
-            border-radius: 50px; 
-            z-index: 1000;
-            display: flex;
-            justify-content: center;
-            padding: 0.8rem 2rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); 
-        }
-
-        .nav-container { width: 100%; display: flex; justify-content: space-between; align-items: center; }
-        .nav-brand { color: var(--text-main); font-weight: 800; text-decoration: none; letter-spacing: -0.5px; font-size: 1.1rem; }
-        .nav-links { display: flex; gap: 1.8rem; }
-        .nav-links a { color: var(--text-dim); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: color 0.3s ease, text-shadow 0.3s ease; }
-        .nav-links a:hover { color: var(--text-main); text-shadow: 0 0 10px rgba(99, 102, 241, 0.7); }
-
         .container { max-width: 1000px; width: 100%; padding: 2rem 1.5rem 4rem 1.5rem; }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.25rem;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 28px;
-            padding: 2rem;
-            backdrop-filter: blur(12px);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 28px; padding: 2rem; backdrop-filter: blur(12px); overflow: hidden; display: flex; flex-direction: column; }
 
         .hero { grid-column: span 3; padding: 3rem 2.5rem; border-bottom: 2px solid var(--accent); }
         .projects { grid-column: span 2; }
@@ -97,51 +28,12 @@ layout: null
         .hero h1 { font-size: clamp(2.5rem, 8vw, 3.5rem); margin: 0; letter-spacing: -2px; font-weight: 800; line-height: 1.1; min-height: 4rem; }
         .hero p { font-size: 1.15rem; color: var(--text-dim); max-width: 700px; margin-top: 1.5rem; }
 
-        .cursor {
-            display: inline-block;
-            width: 3px;
-            height: 1em;
-            background-color: var(--accent);
-            animation: blink 1s step-end infinite;
-            vertical-align: text-bottom;
-            margin-left: 5px;
-        }
+        .cursor { display: inline-block; width: 3px; height: 1em; background-color: var(--accent); animation: blink 1s step-end infinite; vertical-align: text-bottom; margin-left: 5px; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-        .radar-container {
-            position: relative;
-            width: 100%;
-            height: 140px;
-            border-radius: 20px;
-            background: radial-gradient(circle at center, rgba(16, 185, 129, 0.1) 0%, transparent 70%);
-            border: 1px solid rgba(16, 185, 129, 0.15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            margin-bottom: 1.5rem;
-        }
-        
-        .radar-sweep {
-            position: absolute;
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            background: conic-gradient(from 0deg, transparent 70%, rgba(16, 185, 129, 0.6) 100%);
-            animation: scan 4s linear infinite;
-        }
-
-        .radar-grid {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(16, 185, 129, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(16, 185, 129, 0.1) 1px, transparent 1px);
-            background-size: 20px 20px;
-            opacity: 0.5;
-        }
-
+        .radar-container { position: relative; width: 100%; height: 140px; border-radius: 20px; background: radial-gradient(circle at center, rgba(16, 185, 129, 0.1) 0%, transparent 70%); border: 1px solid rgba(16, 185, 129, 0.15); display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 1.5rem; }
+        .radar-sweep { position: absolute; width: 140px; height: 140px; border-radius: 50%; background: conic-gradient(from 0deg, transparent 70%, rgba(16, 185, 129, 0.6) 100%); animation: scan 4s linear infinite; }
+        .radar-grid { position: absolute; width: 100%; height: 100%; background-image: linear-gradient(rgba(16, 185, 129, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(16, 185, 129, 0.1) 1px, transparent 1px); background-size: 20px 20px; opacity: 0.5; }
         @keyframes scan { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         h2 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-top: 0; margin-bottom: 1.5rem; }
@@ -166,22 +58,7 @@ layout: null
         .social-links a { color: var(--text-dim); text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 500; padding: 0.8rem; border: 1px solid var(--border); border-radius: 12px; background: rgba(255,255,255,0.02); transition: all 0.3s ease; }
         .social-links a:hover { color: var(--text-main); border-color: var(--accent); background: rgba(99, 102, 241, 0.05); }
 
-        .cta-btn {
-            display: inline-flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 8px; 
-            padding: 0.7rem 1.4rem; 
-            background: rgba(255, 255, 255, 0.05); 
-            border: 1px solid var(--border); 
-            color: var(--text-main); 
-            text-decoration: none; 
-            border-radius: 10px; 
-            font-weight: 600; 
-            font-size: 0.9rem; 
-            transition: all 0.3s ease;
-            width: 100%;
-        }
+        .cta-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0.7rem 1.4rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); color: var(--text-main); text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 0.9rem; transition: all 0.3s ease; width: 100%; }
         .cta-btn:hover { background: var(--accent); border-color: var(--accent); color: #ffffff; }
 
         @media (max-width: 850px) {
@@ -207,19 +84,13 @@ layout: null
 
     <div class="container">
         <div class="grid">
-            
             <section class="card hero">
                 <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1.5rem;">
                     <span style="width: 8px; height: 8px; background: var(--security); border-radius: 50%; display: inline-block; box-shadow: 0 0 10px var(--security);"></span>
                     <span style="font-size: 0.8rem; font-weight: 600; letter-spacing: 1px; color: var(--security);">SYSTEMS OPERATIONAL</span>
                 </div>
-                
-                <h1>
-                    Joe is <span id="dynamic-text"></span><span class="cursor"></span>
-                </h1>
-                
+                <h1>Joe is <span id="dynamic-text"></span><span class="cursor"></span></h1>
                 <p>Engineering secure Information Technology infrastructure, constructing minimalist digital interfaces, and exploring new technological paradigms from a base in Bandung, Indonesia.</p>
-                
                 <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
                     <a href="/about/" style="display: inline-flex; align-items: center; gap: 8px; padding: 0.8rem 1.5rem; background-color: var(--accent); color: #ffffff; text-decoration: none; border-radius: 12px; font-weight: 600; font-size: 0.95rem; transition: background 0.3s ease;">
                         Review Technical Credentials <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
@@ -234,45 +105,24 @@ layout: null
                     {% for post in case_studies limit:2 %}
                     <a href="{{ post.url }}" class="project-item">
                         <div class="project-img" style="background-image: url('{{ post.image | default: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=500&q=80' }}')"></div>
-                        <div class="project-info">
-                            <h3>{{ post.title | truncatewords: 5 }}</h3>
-                            <p>{{ post.role | default: "Security Architect" }}</p>
-                        </div>
+                        <div class="project-info"><h3>{{ post.title | truncatewords: 5 }}</h3><p>{{ post.role | default: "Security Architect" }}</p></div>
                     </a>
                     {% endfor %}
-                    
                     {% if case_studies.size == 0 %}
                     <a href="/portfolio/" class="project-item">
                         <div class="project-img" style="background-image: url('https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=500&q=80')"></div>
-                        <div class="project-info">
-                            <h3>Encrypted Data Protocol</h3>
-                            <p>Security Architecture Analysis</p>
-                        </div>
-                    </a>
-                    <a href="/portfolio/" class="project-item">
-                        <div class="project-img" style="background-image: url('https://images.unsplash.com/photo-1551288049-bbbda5366391?auto=format&fit=crop&w=500&q=80')"></div>
-                        <div class="project-info">
-                            <h3>Interface Optimization</h3>
-                            <p>Visual Hierarchy Framework</p>
-                        </div>
+                        <div class="project-info"><h3>Encrypted Data Protocol</h3><p>Security Architecture Analysis</p></div>
                     </a>
                     {% endif %}
                 </div>
-                
                 <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
-                    <a href="/portfolio/" class="cta-btn">
-                        Access Complete Portfolio <i data-lucide="briefcase" style="width: 16px; height: 16px;"></i>
-                    </a>
+                    <a href="/portfolio/" class="cta-btn">Access Complete Portfolio <i data-lucide="briefcase" style="width: 16px; height: 16px;"></i></a>
                 </div>
             </section>
 
             <section class="card recon-widget">
                 <h2>Infrastructure Monitoring</h2>
-                <div class="radar-container">
-                    <div class="radar-grid"></div>
-                    <div class="radar-sweep"></div>
-                    <i data-lucide="shield" style="width: 32px; height: 32px; color: var(--security); z-index: 10;"></i>
-                </div>
+                <div class="radar-container"><div class="radar-grid"></div><div class="radar-sweep"></div><i data-lucide="shield" style="width: 32px; height: 32px; color: var(--security); z-index: 10;"></i></div>
                 <p style="font-size: 0.85rem; color: var(--text-dim); text-align: center; margin: 0;">Continuous observation of network protocols and emerging design topologies.</p>
             </section>
 
@@ -281,76 +131,53 @@ layout: null
                 <div class="post-list">
                     {% assign standard_posts = site.posts | where_exp: "item", "item.layout != 'case-study'" %}
                     {% for post in standard_posts limit:3 %}
-                    <a href="{{ post.url }}" class="post-link">
-                        <span style="font-weight: 600; font-size: 1.05rem;">{{ post.title }}</span>
-                        <span class="post-date">{{ post.date | date: "%b %d" }}</span>
-                    </a>
+                    <a href="{{ post.url }}" class="post-link"><span style="font-weight: 600; font-size: 1.05rem;">{{ post.title }}</span><span class="post-date">{{ post.date | date: "%b %d" }}</span></a>
                     {% endfor %}
-                    {% if standard_posts.size == 0 %}
-                    <p style="color: var(--text-dim); font-size: 0.9rem; text-align: center; padding: 1rem 0;">No active logs detected in the directory.</p>
-                    {% endif %}
+                    {% if standard_posts.size == 0 %}<p style="color: var(--text-dim); font-size: 0.9rem; text-align: center; padding: 1rem 0;">No active logs detected.</p>{% endif %}
                 </div>
-                <div style="margin-top: 1.5rem; text-align: left;">
-                    <a href="/blog/" style="color: var(--text-dim); text-decoration: none; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; transition: color 0.3s ease;">
-                        Access Full Archive <i data-lucide="chevron-right" style="width: 14px; height: 14px;"></i>
-                    </a>
-                </div>
+                <div style="margin-top: 1.5rem; text-align: left;"><a href="/blog/" style="color: var(--text-dim); text-decoration: none; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; transition: color 0.3s ease;">Access Full Archive <i data-lucide="chevron-right" style="width: 14px; height: 14px;"></i></a></div>
             </section>
 
             <section class="card contact">
                 <h2>Communication</h2>
                 <div class="social-links">
                     <a href="https://github.com/cingmen"><i data-lucide="github"></i> Repository Access</a>
-                    <a href="https://linkedin.com/in/yourname"><i data-lucide="linkedin"></i> Professional Network</a>
                     <a href="mailto:hello@yourname.com"><i data-lucide="mail"></i> Encrypted Message</a>
                 </div>
             </section>
-
         </div>
-        
-        <footer style="text-align: center; margin-top: 4rem; color: var(--text-dim); font-size: 0.8rem;">
-            &copy; 2026 — Engineered in Bandung
-        </footer>
+        <footer style="text-align: center; margin-top: 4rem; color: var(--text-dim); font-size: 0.8rem;">&copy; 2026 — Engineered in Bandung</footer>
     </div>
 
     <script>
         lucide.createIcons();
-
-        // CRITICAL UPDATE: Modified timing for faster typing and longer pause
-        const textArray = ["a Cybersecurity Specialist.", "a Technology Explorer.","an Adventurer"];
+        const textArray = ["a Cybersecurity Specialist.", "an Interface Designer.", "a Technology Explorer."];
         const typingElement = document.getElementById("dynamic-text");
-        let arrayIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
-        
+        let arrayIndex = 0, charIndex = 0, isDeleting = false;
         function typeEffect() {
             const currentString = textArray[arrayIndex];
-            if (isDeleting) {
-                typingElement.textContent = currentString.substring(0, charIndex - 1);
-                charIndex--;
-            } else {
-                typingElement.textContent = currentString.substring(0, charIndex + 1);
-                charIndex++;
-            }
-            
-            // Faster typing speeds (30ms deleting, 60ms typing)
+            if (isDeleting) { typingElement.textContent = currentString.substring(0, charIndex - 1); charIndex--; }
+            else { typingElement.textContent = currentString.substring(0, charIndex + 1); charIndex++; }
             let typingSpeed = isDeleting ? 30 : 60;
-            
-            if (!isDeleting && charIndex === currentString.length) {
-                // Longer pause at the end (3.5 seconds)
-                typingSpeed = 3500; 
-                isDeleting = true;
-            } else if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                arrayIndex = (arrayIndex + 1) % textArray.length;
-                typingSpeed = 500; 
-            }
+            if (!isDeleting && charIndex === currentString.length) { typingSpeed = 3500; isDeleting = true; }
+            else if (isDeleting && charIndex === 0) { isDeleting = false; arrayIndex = (arrayIndex + 1) % textArray.length; typingSpeed = 500; }
             setTimeout(typeEffect, typingSpeed);
         }
-        
-        document.addEventListener("DOMContentLoaded", () => {
-            setTimeout(typeEffect, 1000);
+        document.addEventListener("DOMContentLoaded", () => { setTimeout(typeEffect, 1000); });
+
+        // Seamless Navigation Script
+        document.addEventListener('DOMContentLoaded', () => {
+            const internalLinks = document.querySelectorAll('a[href^="/"], a[href^="' + window.location.origin + '"]');
+            internalLinks.forEach(link => {
+                link.addEventListener('click', function(event) {
+                    if (this.target === '_blank' || this.getAttribute('href').startsWith('#')) return;
+                    event.preventDefault();
+                    document.body.classList.add('navigating-out');
+                    setTimeout(() => { window.location.href = this.href; }, 300);
+                });
+            });
         });
+        window.addEventListener('pageshow', (event) => { if (event.persisted) document.body.classList.remove('navigating-out'); });
     </script>
 </body>
 </html>

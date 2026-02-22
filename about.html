@@ -13,99 +13,23 @@ permalink: /about/
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/assets/style.css">
 
     <style>
-        :root {
-            --bg: #050505;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.08);
-            --accent: #6366f1; 
-            --accent-secondary: #8b5cf6;
-            --security: #10b981;
-            --text-main: #ffffff;
-            --text-dim: #94a3b8;
-            --glass: blur(16px);
-        }
-
-        * { box-sizing: border-box; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg);
-            background-image: radial-gradient(circle at 50% -20%, #1e1b4b, transparent);
-            color: var(--text-main);
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            line-height: 1.6;
-            padding-top: 7rem;
-        }
-
-        .floating-nav {
-            position: fixed;
-            top: 1.5rem; 
-            left: 50%;
-            transform: translateX(-50%); 
-            width: 90%;
-            max-width: 700px; 
-            background: rgba(255, 255, 255, 0.02); 
-            backdrop-filter: var(--glass) saturate(180%); 
-            -webkit-backdrop-filter: blur(16px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.08); 
-            border-radius: 50px; 
-            z-index: 1000;
-            display: flex;
-            justify-content: center;
-            padding: 0.8rem 2rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); 
-        }
-
-        .nav-container { width: 100%; display: flex; justify-content: space-between; align-items: center; }
-        .nav-brand { color: var(--text-main); font-weight: 800; text-decoration: none; letter-spacing: -0.5px; font-size: 1.1rem; }
-        .nav-links { display: flex; gap: 1.8rem; }
-        .nav-links a { color: var(--text-dim); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: color 0.3s ease, text-shadow 0.3s ease; }
-        .nav-links a:hover { color: var(--text-main); text-shadow: 0 0 10px rgba(99, 102, 241, 0.7); }
-
         .container { max-width: 1000px; width: 100%; padding: 2rem 1.5rem 4rem 1.5rem; }
         .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
         .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 28px; padding: 2rem; backdrop-filter: blur(12px); position: relative; overflow: hidden; }
 
-        .visual-header {
-            grid-column: span 3;
-            height: 200px;
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: 1px solid var(--border);
-            border-radius: 28px;
-            margin-bottom: 1.25rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .gradient-orb {
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
-            opacity: 0.4;
-            filter: blur(40px);
-            animation: pulse 8s infinite alternate;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1) translate(0, 0); opacity: 0.3; }
-            50% { transform: scale(1.2) translate(50px, -20px); opacity: 0.5; }
-            100% { transform: scale(0.9) translate(-50px, 20px); opacity: 0.3; }
-        }
+        .visual-header { grid-column: span 3; height: 200px; background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2)); display: flex; justify-content: center; align-items: center; border: 1px solid var(--border); border-radius: 28px; margin-bottom: 1.25rem; position: relative; overflow: hidden; }
+        .gradient-orb { position: absolute; width: 300px; height: 300px; background: radial-gradient(circle, var(--accent) 0%, transparent 70%); opacity: 0.4; filter: blur(40px); animation: pulse 8s infinite alternate; }
+        @keyframes pulse { 0% { transform: scale(1) translate(0, 0); opacity: 0.3; } 50% { transform: scale(1.2) translate(50px, -20px); opacity: 0.5; } 100% { transform: scale(0.9) translate(-50px, 20px); opacity: 0.3; } }
 
         .profile-main { grid-column: span 2; }
         .location-card { grid-column: span 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;}
         .skills-card { grid-column: span 3; }
         .experience-card { grid-column: span 3; }
 
-        /* Interactive Terminal Simulator Architecture */
         .terminal-simulator { grid-column: span 3; padding: 0; background: #000000; border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 28px; overflow: hidden; display: flex; flex-direction: column; }
         .terminal-header { background: rgba(255, 255, 255, 0.05); border-bottom: 1px solid var(--border); padding: 12px 20px; display: flex; align-items: center; gap: 10px; }
         .terminal-dot { width: 12px; height: 12px; border-radius: 50%; background: #333; }
@@ -147,37 +71,16 @@ permalink: /about/
     </nav>
 
     <div class="container">
-        
         <div class="visual-header">
             <div class="gradient-orb"></div>
-            <i data-lucide="terminal" style="width: 108px; height: 108px; color: rgba(255,255,255,0.8); z-index: 10;"></i>
+            <i data-lucide="terminal" style="width: 64px; height: 64px; color: rgba(255,255,255,0.8); z-index: 10;"></i>
         </div>
 
         <div class="grid">
-            <section class="card terminal-simulator">
-                <div class="terminal-header">
-                    <div class="terminal-dot" style="background: #ef4444;"></div>
-                    <div class="terminal-dot" style="background: #eab308;"></div>
-                    <div class="terminal-dot" style="background: #10b981;"></div>
-                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-dim); margin-left: 10px;">guest@secure-server:~</span>
-                </div>
-                <div class="terminal-body" id="interactive-terminal">
-                    <div style="margin-bottom: 15px; color: var(--text-dim);">
-                        Interactive verification protocol initialized. Type 'help' to enumerate available directives.
-                    </div>
-                    <div id="terminal-history"></div>
-                    <div class="terminal-input-line">
-                        <span class="terminal-prompt">guest@server:~$</span>
-                        <input type="text" id="terminal-input" autocomplete="off" spellcheck="false" class="terminal-input-field">
-                    </div>
-                </div>
-            </section>
-
             <section class="card profile-main">
                 <h2>The Engineer</h2>
                 <h1>Systematic Construction and Empirical Design.</h1>
-                <p>My objective is to engineer software that processes data efficiently and presents information clearly. I construct digital architecture strictly through observable testing and measurable performance metrics, eliminating unverified methodologies.</p>
-                <p>By avoiding heavy commercial frameworks where possible, I ensure that the foundational code remains secure, significantly fast, and completely understandable for future maintenance.</p>
+                <p>My objective is to engineer software that processes data efficiently and presents information clearly.</p>
             </section>
 
             <section class="card location-card">
@@ -193,89 +96,81 @@ permalink: /about/
                     <span class="tag"><i data-lucide="code"></i> Hypertext Markup Language</span>
                     <span class="tag"><i data-lucide="palette"></i> Cascading Style Sheets</span>
                     <span class="tag"><i data-lucide="file-json"></i> JavaScript Programming</span>
-                    <span class="tag"><i data-lucide="server"></i> Backend Architecture</span>
-                    <span class="tag"><i data-lucide="database"></i> Relational Database Management</span>
-                    <span class="tag"><i data-lucide="search"></i> Search Engine Optimization</span>
-                    <span class="tag"><i data-lucide="git-branch"></i> Version Control Integration</span>
                 </div>
             </section>
 
-            <section class="card experience-card">
-                <h2>Professional Timeline</h2>
-                <div class="timeline-item">
-                    <span class="timeline-date">2023 — Present</span>
-                    <div class="timeline-title">Independent Software Developer</div>
-                    <p style="font-size: 0.95rem; margin-top: 5px;">Designing high-performance static websites and robust server architecture. Focusing entirely on measurable loading speed reductions and structural code integrity.</p>
+            <section class="card terminal-simulator">
+                <div class="terminal-header">
+                    <div class="terminal-dot" style="background: #ef4444;"></div>
+                    <div class="terminal-dot" style="background: #eab308;"></div>
+                    <div class="terminal-dot" style="background: #10b981;"></div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-dim); margin-left: 10px;">guest@secure-server:~</span>
                 </div>
-
-                <div class="timeline-item">
-                    <span class="timeline-date">2021 — 2023</span>
-                    <div class="timeline-title">Systems Application Engineer</div>
-                    <p style="font-size: 0.95rem; margin-top: 5px;">Maintained legacy code systems while systematically converting them to modern syntax standards. Reduced server response latency through rigorous database indexing.</p>
+                <div class="terminal-body" id="interactive-terminal">
+                    <div style="margin-bottom: 15px; color: var(--text-dim);">Interactive verification protocol initialized. Type 'help'.</div>
+                    <div id="terminal-history"></div>
+                    <div class="terminal-input-line">
+                        <span class="terminal-prompt">guest@server:~$</span>
+                        <input type="text" id="terminal-input" autocomplete="off" spellcheck="false" class="terminal-input-field" autofocus>
+                    </div>
                 </div>
             </section>
         </div>
-        
-        <footer style="text-align: center; margin-top: 3rem; color: var(--text-dim); font-size: 0.8rem;">
-            &copy; 2026 — Engineered in Bandung
-        </footer>
+        <footer style="text-align: center; margin-top: 3rem; color: var(--text-dim); font-size: 0.8rem;">&copy; 2026 — Engineered in Bandung</footer>
     </div>
+
     <script>
-                lucide.createIcons();
+        lucide.createIcons();
 
-                // Interactive Command Line Simulator Logic
-                const terminalInput = document.getElementById('terminal-input');
-                const terminalHistory = document.getElementById('terminal-history');
-                const terminalContainer = document.getElementById('interactive-terminal');
+        // Terminal Logic
+        const terminalInput = document.getElementById('terminal-input');
+        const terminalHistory = document.getElementById('terminal-history');
+        const terminalContainer = document.getElementById('interactive-terminal');
+        const commandDatabase = {
+            'help': 'Available execution commands:<br>- <b>whoami</b>: Extract professional summary<br>- <b>skills</b>: Enumerate technical competencies<br>- <b>experience</b>: Output operational timeline<br>- <b>clear</b>: Purge terminal display',
+            'whoami': 'Identity Verified: Security Architect and Interface Designer.',
+            'skills': 'Validating primary competencies:<br>- Hypertext Markup Language<br>- Cascading Style Sheets<br>- JavaScript Programming',
+            'experience': 'Retrieving operational timeline:<br>[2023 - Present] Independent Software Developer',
+            'clear': 'CLEAR_SIGNAL'
+        };
 
-                const commandDatabase = {
-                    'help': 'Available execution commands:<br>- <b>whoami</b>: Extract professional summary<br>- <b>skills</b>: Enumerate technical competencies<br>- <b>experience</b>: Output operational timeline<br>- <b>clear</b>: Purge terminal display',
-                    'whoami': 'Identity Verified: Security Architect and Interface Designer.<br>Primary Objective: Engineer secure digital infrastructure and construct minimalist, high-performance web environments.',
-                    'skills': 'Validating primary competencies:<br>- Hypertext Markup Language<br>- Cascading Style Sheets<br>- JavaScript Programming<br>- Relational Database Management<br>- Server-side Network Architecture',
-                    'experience': 'Retrieving operational timeline:<br>[2023 - Present] Independent Software Developer<br>[2021 - 2023] Systems Application Engineer',
-                    'clear': 'CLEAR_SIGNAL',
-                    'cingmen' : 'MEOW',
-                    'kucing' : '(=ↀωↀ=)✧', 'kucing2' : 'ฅ^•ﻌ•^ฅ', 'kucing3' : '(=^･ω･^=)', 'kucing4' : 'ʕ•ᴥ•ʔ', 'kucing5' : '(=^･ｪ･^=)', 'kucing6' : 'ฅ(＾・ω・＾ฅ)', 'kucing7' : '(=^･ω･^)y＝', 'kucing8' : 'ƪ(˘⌣˘)ʃ', 'kucing9' : '(=^･ω･^)y＝', 'kucing10' : 'ƪ(˘⌣˘)ʃ', 'kucing11' : "STOP!",
-                };
+        terminalInput.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                const command = this.value.trim().toLowerCase();
+                this.value = '';
+                if (command === '') return;
 
-                terminalInput.addEventListener('keydown', function(event) {
-                    if (event.key === 'Enter') {
-                        const command = this.value.trim().toLowerCase();
-                        this.value = '';
+                const echoLine = document.createElement('div');
+                echoLine.style.marginBottom = '5px';
+                echoLine.innerHTML = `<span style="color: var(--accent); margin-right: 10px;">guest@server:~$</span><span style="color: var(--text-main);">${command}</span>`;
+                terminalHistory.appendChild(echoLine);
 
-                        if (command === '') return;
+                if (command === 'clear') { terminalHistory.innerHTML = ''; } 
+                else {
+                    const responseLine = document.createElement('div');
+                    responseLine.style.marginBottom = '15px';
+                    responseLine.style.color = 'var(--text-dim)';
+                    responseLine.innerHTML = commandDatabase[command] ? commandDatabase[command] : `Directive not recognized: ${command}.`;
+                    terminalHistory.appendChild(responseLine);
+                }
+                terminalContainer.scrollTop = terminalContainer.scrollHeight;
+            }
+        });
+        terminalContainer.addEventListener('click', () => { terminalInput.focus(); });
 
-                        // Document the user input
-                        const echoLine = document.createElement('div');
-                        echoLine.innerHTML = `<span style="color: var(--accent); margin-right: 10px;">guest@server:~$</span><span style="color: var(--text-main);">${command}</span>`;
-                        echoLine.style.marginBottom = '5px';
-                        terminalHistory.appendChild(echoLine);
-
-                        // Process the command and generate a response
-                        if (command === 'clear') {
-                            terminalHistory.innerHTML = '';
-                        } else {
-                            const responseLine = document.createElement('div');
-                            responseLine.style.marginBottom = '15px';
-                            responseLine.style.color = 'var(--text-dim)';
-                            
-                            if (commandDatabase[command]) {
-                                responseLine.innerHTML = commandDatabase[command];
-                            } else {
-                                responseLine.innerHTML = `Directive not recognized: ${command}. Type 'help' to enumerate available commands.`;
-                            }
-                            terminalHistory.appendChild(responseLine);
-                        }
-
-                        // Force vertical scroll to follow new outputs
-                        terminalContainer.scrollTop = terminalContainer.scrollHeight;
-                    }
+        // Seamless Navigation Script
+        document.addEventListener('DOMContentLoaded', () => {
+            const internalLinks = document.querySelectorAll('a[href^="/"], a[href^="' + window.location.origin + '"]');
+            internalLinks.forEach(link => {
+                link.addEventListener('click', function(event) {
+                    if (this.target === '_blank' || this.getAttribute('href').startsWith('#')) return;
+                    event.preventDefault();
+                    document.body.classList.add('navigating-out');
+                    setTimeout(() => { window.location.href = this.href; }, 300);
                 });
-
-                // Ensure the input field regains focus when a user clicks anywhere inside the terminal window
-                terminalContainer.addEventListener('click', () => {
-                    terminalInput.focus();
-                });
-            </script>
+            });
+        });
+        window.addEventListener('pageshow', (event) => { if (event.persisted) document.body.classList.remove('navigating-out'); });
+    </script>
 </body>
 </html>

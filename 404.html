@@ -7,172 +7,41 @@ layout: null
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <title>404 - Unauthorized Access - {{ site.title | default: "Developer Documentation" }}</title>
     
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet" href="/assets/style.css">
+
     <style>
-        :root {
-            --bg: #050505;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.08);
-            --accent: #6366f1; 
-            --security: #10b981;
-            --alert: #ef4444; /* High-contrast red for security violations */
-            --text-main: #ffffff;
-            --text-dim: #94a3b8;
-            --glass: blur(16px);
-        }
-
-        * { box-sizing: border-box; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        
+        /* Document Specific Override for 404 Emergency Atmosphere */
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg);
-            background-image: radial-gradient(circle at 50% 50%, #2a0a0a, transparent 70%); /* Subtle red radial gradient */
-            color: var(--text-main);
-            margin: 0;
-            display: flex;
+            background-image: radial-gradient(circle at 50% 50%, #2a0a0a, transparent 70%);
             justify-content: center;
-            align-items: center; /* Center the terminal vertically */
             min-height: 100vh;
-            line-height: 1.6;
-            padding-top: 7rem;
-            padding-bottom: 2rem;
         }
-
-        .floating-nav {
-            position: fixed;
-            top: 1.5rem; 
-            left: 50%;
-            transform: translateX(-50%); 
-            width: 90%;
-            max-width: 700px; 
-            background: rgba(255, 255, 255, 0.02); 
-            backdrop-filter: var(--glass) saturate(180%); 
-            -webkit-backdrop-filter: blur(16px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.08); 
-            border-radius: 50px; 
-            z-index: 1000;
-            display: flex;
-            justify-content: center;
-            padding: 0.8rem 2rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); 
-        }
-
-        .nav-container { width: 100%; display: flex; justify-content: space-between; align-items: center; }
-        .nav-brand { color: var(--text-main); font-weight: 800; text-decoration: none; letter-spacing: -0.5px; font-size: 1.1rem; }
-        .nav-links { display: flex; gap: 1.8rem; }
-        .nav-links a { color: var(--text-dim); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: color 0.3s ease, text-shadow 0.3s ease; }
-        .nav-links a:hover { color: var(--text-main); text-shadow: 0 0 10px rgba(99, 102, 241, 0.7); }
 
         .container { max-width: 800px; width: 100%; padding: 0 1.5rem; }
 
-        /* Terminal Window Architecture */
-        .terminal-window {
-            background: #000000;
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 10px 40px rgba(239, 68, 68, 0.1);
-            position: relative;
-        }
-
-        .terminal-header {
-            background: rgba(239, 68, 68, 0.05);
-            border-bottom: 1px solid rgba(239, 68, 68, 0.2);
-            padding: 12px 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
+        .terminal-window { background: #000000; border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 16px; overflow: hidden; box-shadow: 0 10px 40px rgba(239, 68, 68, 0.1); position: relative; }
+        .terminal-header { background: rgba(239, 68, 68, 0.05); border-bottom: 1px solid rgba(239, 68, 68, 0.2); padding: 12px 20px; display: flex; align-items: center; gap: 10px; }
         .terminal-dot { width: 12px; height: 12px; border-radius: 50%; background: #333; }
         .terminal-dot.close { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
+        .terminal-title { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--alert); margin-left: 10px; letter-spacing: 0.1em; text-transform: uppercase; }
 
-        .terminal-title {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
-            color: var(--alert);
-            margin-left: 10px;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
-
-        .terminal-body {
-            padding: 2.5rem;
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--alert);
-            min-height: 350px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .sys-output {
-            margin: 0 0 10px 0;
-            font-size: 0.95rem;
-            line-height: 1.5;
-            text-shadow: 0 0 5px rgba(239, 68, 68, 0.5);
-            opacity: 0; /* Hidden initially for the JS typing effect */
-        }
-
-        .sys-prompt {
-            color: #555;
-            margin-right: 10px;
-        }
-
-        .terminal-cursor {
-            display: inline-block;
-            width: 10px;
-            height: 1.2em;
-            background-color: var(--alert);
-            vertical-align: middle;
-            animation: blink 1s step-end infinite;
-        }
-
+        .terminal-body { padding: 2.5rem; font-family: 'JetBrains Mono', monospace; color: var(--alert); min-height: 350px; display: flex; flex-direction: column; }
+        .sys-output { margin: 0 0 10px 0; font-size: 0.95rem; line-height: 1.5; text-shadow: 0 0 5px rgba(239, 68, 68, 0.5); opacity: 0; }
+        .sys-prompt { color: #555; margin-right: 10px; }
+        .terminal-cursor { display: inline-block; width: 10px; height: 1.2em; background-color: var(--alert); vertical-align: middle; animation: blink 1s step-end infinite; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-        /* Safe Routing Call to Action */
-        .terminal-action {
-            margin-top: auto;
-            padding-top: 2rem;
-            opacity: 0;
-            animation: fadeIn 0.5s ease forwards;
-            animation-delay: 3s; /* Appears after typing sequence */
-            display: flex;
-            justify-content: flex-start;
-        }
-
+        .terminal-action { margin-top: auto; padding-top: 2rem; opacity: 0; animation: fadeIn 0.5s ease forwards; animation-delay: 3s; display: flex; justify-content: flex-start; }
         @keyframes fadeIn { to { opacity: 1; } }
 
-        .safe-route-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: transparent;
-            border: 1px solid var(--alert);
-            color: var(--alert);
-            padding: 12px 24px;
-            border-radius: 4px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.9rem;
-            font-weight: 700;
-            text-decoration: none;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .safe-route-btn:hover {
-            background: var(--alert);
-            color: #000000;
-            box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
-        }
-
+        .safe-route-btn { display: inline-flex; align-items: center; gap: 10px; background: transparent; border: 1px solid var(--alert); color: var(--alert); padding: 12px 24px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; font-weight: 700; text-decoration: none; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer; transition: all 0.3s ease; }
+        .safe-route-btn:hover { background: var(--alert); color: #000000; box-shadow: 0 0 15px rgba(239, 68, 68, 0.4); }
     </style>
 </head>
 <body>
@@ -190,7 +59,6 @@ layout: null
     </nav>
 
     <div class="container">
-        
         <div class="terminal-window">
             <div class="terminal-header">
                 <div class="terminal-dot close"></div>
@@ -198,56 +66,26 @@ layout: null
                 <div class="terminal-dot"></div>
                 <div class="terminal-title">Exception Protocol: 404</div>
             </div>
-            
-            <div class="terminal-body" id="terminal-screen">
-                </div>
+            <div class="terminal-body" id="terminal-screen"></div>
         </div>
-
     </div>
 
     <script>
         lucide.createIcons();
-
-        // Sequential Terminal Simulation Protocol
         const terminalScreen = document.getElementById('terminal-screen');
-        
-        const sequence = [
-            "[!] CONNECTION TERMINATED",
-            "[-] ERROR 404: RESOURCE NOT FOUND",
-            "[-] TARGET DIRECTORY DOES NOT EXIST AT THIS ADDRESS",
-            "[!] UNAUTHORIZED ACCESS ATTEMPT LOGGED",
-            "[*] INITIATING SAFE ROUTING PROTOCOLS..."
-        ];
-
+        const sequence = ["[!] CONNECTION TERMINATED", "[-] ERROR 404: RESOURCE NOT FOUND", "[-] TARGET DIRECTORY DOES NOT EXIST AT THIS ADDRESS", "[!] UNAUTHORIZED ACCESS ATTEMPT LOGGED", "[*] INITIATING SAFE ROUTING PROTOCOLS..."];
         let lineIndex = 0;
 
         function renderLine() {
             if (lineIndex < sequence.length) {
                 const line = document.createElement('div');
                 line.className = 'sys-output';
-                
-                // Add the prompt prefix
-                const prompt = document.createElement('span');
-                prompt.className = 'sys-prompt';
-                prompt.innerText = 'root@system:~#';
-                
-                // Add the text
-                const text = document.createElement('span');
-                text.innerText = " " + sequence[lineIndex];
-                
-                line.appendChild(prompt);
-                line.appendChild(text);
-                
-                // Fade effect
+                line.innerHTML = `<span class="sys-prompt">root@system:~#</span><span> ${sequence[lineIndex]}</span>`;
                 line.style.opacity = 1;
-                
                 terminalScreen.appendChild(line);
                 lineIndex++;
-                
-                // Variable speed for realism
                 setTimeout(renderLine, Math.random() * 400 + 300);
             } else {
-                // Add the blinking cursor and the safe routing button
                 const finalLine = document.createElement('div');
                 finalLine.innerHTML = '<span class="sys-prompt">root@system:~#</span> <span class="terminal-cursor"></span>';
                 finalLine.style.marginTop = '10px';
@@ -255,20 +93,26 @@ layout: null
 
                 const actionDiv = document.createElement('div');
                 actionDiv.className = 'terminal-action';
-                actionDiv.innerHTML = `
-                    <a href="/" class="safe-route-btn">
-                        <i data-lucide="shield-alert" style="width: 18px; height: 18px;"></i> Execute Safe Return
-                    </a>
-                `;
+                actionDiv.innerHTML = `<a href="/" class="safe-route-btn"><i data-lucide="shield-alert" style="width: 18px; height: 18px;"></i> Execute Safe Return</a>`;
                 terminalScreen.appendChild(actionDiv);
                 lucide.createIcons();
             }
         }
+        document.addEventListener("DOMContentLoaded", () => { setTimeout(renderLine, 500); });
 
-        // Initialize the sequence after a brief delay
-        document.addEventListener("DOMContentLoaded", () => {
-            setTimeout(renderLine, 500);
+        // Seamless Navigation Script
+        document.addEventListener('DOMContentLoaded', () => {
+            const internalLinks = document.querySelectorAll('a[href^="/"], a[href^="' + window.location.origin + '"]');
+            internalLinks.forEach(link => {
+                link.addEventListener('click', function(event) {
+                    if (this.target === '_blank' || this.getAttribute('href').startsWith('#')) return;
+                    event.preventDefault();
+                    document.body.classList.add('navigating-out');
+                    setTimeout(() => { window.location.href = this.href; }, 300);
+                });
+            });
         });
+        window.addEventListener('pageshow', (event) => { if (event.persisted) document.body.classList.remove('navigating-out'); });
     </script>
 </body>
 </html>
