@@ -339,6 +339,48 @@ code[class*="language-"], pre[class*="language-"] { font-family: 'JetBrains Mono
 /* ==========================================================================
    VISUAL GALLERY & LIGHTBOX ARCHITECTURE
    ========================================================================== */
+/* ==========================================================================
+   TACTICAL SORTING INTERFACE
+   ========================================================================== */
+
+.filter-controls {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+}
+
+.tactical-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 0.6rem 1.4rem;
+    border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tactical-btn:hover {
+    border-color: var(--accent);
+    color: var(--text-main);
+}
+
+.tactical-btn.active {
+    background: rgba(99, 102, 241, 0.1);
+    border-color: var(--accent);
+    color: var(--text-main);
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
+}
+
+/* Logical omission class for the filtering algorithm */
+.photo-item.filtered-out {
+    display: none !important;
+}
 
 .photo-grid {
     display: grid;
@@ -347,55 +389,46 @@ code[class*="language-"], pre[class*="language-"] { font-family: 'JetBrains Mono
     gap: 1.5rem;
 }
 /* ==========================================================================
-   SCROLL-TRIGGERED GLITCH ANIMATION
+   BIDIRECTIONAL GLITCH ANIMATION PROTOCOL
    ========================================================================== */
 
-/* Initial hidden state for images below the fold */
+/* Initial hidden state for images outside the viewport */
 .glitch-standby {
     opacity: 0;
     visibility: hidden;
     transform: translateY(20px);
 }
 
-/* Active execution state */
-.glitch-trigger {
+/* Execution state when entering the viewport */
+.glitch-in {
     visibility: visible;
-    animation: cyber-glitch 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation: cyber-glitch-in 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
-/* Mathematical coordinate and color aberration slicing */
-@keyframes cyber-glitch {
-    0% { 
-        opacity: 0; 
-        transform: scale(1.05) translate3d(0, 10px, 0); 
-        filter: contrast(150%); 
-    }
-    20% { 
-        opacity: 1; 
-        transform: translate3d(-8px, 0, 0) skewX(5deg); 
-        box-shadow: -6px 0 0 rgba(239, 68, 68, 0.8), 6px 0 0 rgba(16, 185, 129, 0.8); 
-        clip-path: polygon(0 15%, 100% 15%, 100% 25%, 0 25%); 
-    }
-    40% { 
-        transform: translate3d(8px, 0, 0) skewX(-5deg); 
-        box-shadow: 6px 0 0 rgba(239, 68, 68, 0.8), -6px 0 0 rgba(99, 102, 241, 0.8); 
-        clip-path: polygon(0 65%, 100% 65%, 100% 80%, 0 80%); 
-    }
-    60% { 
-        transform: translate3d(-3px, 2px, 0); 
-        box-shadow: none; 
-        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); 
-    }
-    80% { 
-        transform: translate3d(2px, -2px, 0); 
-        filter: invert(10%);
-    }
-    100% { 
-        opacity: 1; 
-        transform: translate3d(0, 0, 0) scale(1); 
-        filter: none; 
-        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); 
-    }
+/* Execution state when exiting the viewport */
+.glitch-out {
+    visibility: visible;
+    animation: cyber-glitch-out 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* Forward Aberration Matrix */
+@keyframes cyber-glitch-in {
+    0% { opacity: 0; transform: scale(1.05) translate3d(0, 15px, 0); filter: contrast(150%); }
+    20% { opacity: 1; transform: translate3d(-8px, 0, 0) skewX(5deg); box-shadow: -6px 0 0 rgba(239, 68, 68, 0.8), 6px 0 0 rgba(16, 185, 129, 0.8); clip-path: polygon(0 15%, 100% 15%, 100% 25%, 0 25%); }
+    40% { transform: translate3d(8px, 0, 0) skewX(-5deg); box-shadow: 6px 0 0 rgba(239, 68, 68, 0.8), -6px 0 0 rgba(99, 102, 241, 0.8); clip-path: polygon(0 65%, 100% 65%, 100% 80%, 0 80%); }
+    60% { transform: translate3d(-3px, 2px, 0); box-shadow: none; clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+    80% { transform: translate3d(2px, -2px, 0); filter: invert(10%); }
+    100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: none; clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+}
+
+/* Reverse Aberration Matrix */
+@keyframes cyber-glitch-out {
+    0% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: none; clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+    20% { transform: translate3d(2px, -2px, 0); filter: invert(10%); }
+    40% { transform: translate3d(-3px, 2px, 0); box-shadow: none; clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+    60% { transform: translate3d(8px, 0, 0) skewX(-5deg); box-shadow: 6px 0 0 rgba(239, 68, 68, 0.8), -6px 0 0 rgba(99, 102, 241, 0.8); clip-path: polygon(0 65%, 100% 65%, 100% 80%, 0 80%); }
+    80% { opacity: 1; transform: translate3d(-8px, 0, 0) skewX(5deg); box-shadow: -6px 0 0 rgba(239, 68, 68, 0.8), 6px 0 0 rgba(16, 185, 129, 0.8); clip-path: polygon(0 15%, 100% 15%, 100% 25%, 0 25%); }
+    100% { opacity: 0; transform: scale(1.05) translate3d(0, -15px, 0); filter: contrast(150%); visibility: hidden; }
 }
 
 .photo-item {

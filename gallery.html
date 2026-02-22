@@ -6,7 +6,6 @@ permalink: /gallery/
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta http-equiv="Cache-Control" content="public, max-age=31536000, immutable">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ page.title }} - {{ site.title | default: "Developer Documentation" }}</title>
@@ -25,51 +24,54 @@ permalink: /gallery/
         <section class="card" style="margin-bottom: 2rem;">
             <header style="border-bottom: 1px solid var(--border); padding-bottom: 2rem; margin-bottom: 2rem;">
                 <h1 style="font-size: 2.5rem; margin: 0 0 1rem 0; letter-spacing: -1.5px; font-weight: 800; color: var(--text-main);">Visual Reconnaissance</h1>
-                <p style="color: var(--text-dim); font-size: 1.15rem; max-width: 800px; margin: 0;">Scroll to initialize sequential data decryption. Expanding visual nodes triggers high-fidelity structural rendering.</p>
+                <p style="color: var(--text-dim); font-size: 1.15rem; max-width: 800px; margin: 0;">Scroll to initialize sequential data decryption. Utilize the tactical interface to isolate specific research parameters.</p>
             </header>
 
-            <div class="photo-grid" id="gallery-grid">
-                <div class="photo-item" data-caption="My Custom Interface Redesign">
-                    <div class="photo-bg" style="background-image: url('/assets/img/custom-interface.png');"></div>
-                    <div class="photo-overlay"><i data-lucide="maximize-2"></i></div>
-                </div>
+            <div class="filter-controls">
+                <button class="tactical-btn active" data-filter="all">All Sectors</button>
+                <button class="tactical-btn" data-filter="hardware">Hardware Infrastructure</button>
+                <button class="tactical-btn" data-filter="schematics">System Schematics</button>
+                <button class="tactical-btn" data-filter="deployment">Field Deployment</button>
+            </div>
 
-                <div class="photo-item" data-caption="Tactical Military Network: Hardware Routing Node">
+            <div class="photo-grid" id="gallery-grid">
+                
+                <div class="photo-item" data-category="hardware" data-caption="Tactical Military Network: Hardware Routing Node">
                     <div class="photo-bg" style="background-image: url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1000&q=80');"></div>
                     <div class="photo-overlay"><i data-lucide="maximize-2"></i></div>
                 </div>
 
-                <div class="photo-item" data-caption="Quantum Sensor Integration Matrix">
+                <div class="photo-item" data-category="schematics" data-caption="Quantum Sensor Integration Matrix">
                     <div class="photo-bg" style="background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=500&q=80');"></div>
                     <div class="photo-overlay"><i data-lucide="maximize-2"></i></div>
                 </div>
 
-                <div class="photo-item" data-caption="Stochastic Optimization Topology">
+                <div class="photo-item" data-category="schematics" data-caption="Stochastic Optimization Topology">
                     <div class="photo-bg" style="background-image: url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=500&q=80');"></div>
                     <div class="photo-overlay"><i data-lucide="maximize-2"></i></div>
                 </div>
 
-                <div class="photo-item" data-caption="Natural Disaster Early Warning System Deployment">
+                <div class="photo-item" data-category="deployment" data-caption="Natural Disaster Early Warning System Deployment">
                     <div class="photo-bg" style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80');"></div>
                     <div class="photo-overlay"><i data-lucide="maximize-2"></i></div>
                 </div>
 
-                <div class="photo-item" data-caption="Conventional Sensor Array Diagnostics">
+                <div class="photo-item" data-category="hardware" data-caption="Conventional Sensor Array Diagnostics">
                     <div class="photo-bg" style="background-image: url('https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=500&q=80');"></div>
                     <div class="photo-overlay"><i data-lucide="maximize-2"></i></div>
                 </div>
 
-                <div class="photo-item" data-caption="Proactive Defense Server Rack">
+                <div class="photo-item" data-category="hardware" data-caption="Proactive Defense Server Rack">
                     <div class="photo-bg" style="background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=500&q=80');"></div>
                     <div class="photo-overlay"><i data-lucide="maximize-2"></i></div>
                 </div>
 
-                <div class="photo-item" data-caption="Encrypted Communication Relay">
+                <div class="photo-item" data-category="deployment" data-caption="Encrypted Communication Relay">
                     <div class="photo-bg" style="background-image: url('https://images.unsplash.com/photo-1510511459019-5efa3702464d?auto=format&fit=crop&w=1000&q=80');"></div>
                     <div class="photo-overlay"><i data-lucide="maximize-2"></i></div>
                 </div>
 
-                <div class="photo-item" data-caption="Sub-Orbital Telemetry Data">
+                <div class="photo-item" data-category="schematics" data-caption="Sub-Orbital Telemetry Data">
                     <div class="photo-bg" style="background-image: url('https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=500&q=80');"></div>
                     <div class="photo-overlay"><i data-lucide="maximize-2"></i></div>
                 </div>
@@ -91,32 +93,33 @@ permalink: /gallery/
             if (typeof lucide !== 'undefined') { lucide.createIcons(); }
 
             const galleryItems = document.querySelectorAll('.photo-item');
+            const filterBtns = document.querySelectorAll('.tactical-btn');
             const lightbox = document.getElementById('lightbox');
             const lightboxImg = document.getElementById('lightbox-img');
             const lightboxCaption = document.getElementById('lightbox-caption');
             const closeBtn = document.getElementById('lightbox-close');
 
-            // 1. SCROLL OBSERVATION ENGINE (The Glitch Protocol)
-            // Initialize the observer to mathematically detect viewport intersections
+            // 1. CONTINUOUS SCROLL OBSERVATION ENGINE (Bidirectional Glitch)
             const viewportObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    // When the image enters the user's screen
+                    const targetNode = entry.target;
+
                     if (entry.isIntersecting) {
-                        // Apply a tiny random delay so multiple images don't glitch on the exact same millisecond
-                        setTimeout(() => {
-                            entry.target.classList.remove('glitch-standby');
-                            entry.target.classList.add('glitch-trigger');
-                        }, Math.random() * 200);
-                        
-                        // Stop observing once the animation has fired
-                        viewportObserver.unobserve(entry.target);
+                        targetNode.classList.remove('glitch-standby', 'glitch-out');
+                        targetNode.classList.add('glitch-in');
+                        targetNode.dataset.initialized = "true";
+                    } else {
+                        if (targetNode.dataset.initialized === "true") {
+                            targetNode.classList.remove('glitch-in');
+                            targetNode.classList.add('glitch-out');
+                        }
                     }
                 });
             }, { 
-                threshold: 0.15 // Trigger when 15% of the image is visible
+                threshold: 0.1 
             });
 
-            // Target only items starting from index 3 (the 4th item downwards)
+            // Target all items starting from index 3
             galleryItems.forEach((item, index) => {
                 if (index > 2) {
                     item.classList.add('glitch-standby');
@@ -124,7 +127,37 @@ permalink: /gallery/
                 }
             });
 
-            // 2. LIGHTBOX INTERACTION PROTOCOLS
+            // 2. ALGORITHMIC SORTING PROTOCOL
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Update active button state
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    const filterValue = btn.getAttribute('data-filter');
+
+                    galleryItems.forEach(item => {
+                        const itemCategory = item.getAttribute('data-category');
+                        
+                        if (filterValue === 'all' || itemCategory === filterValue) {
+                            item.classList.remove('filtered-out');
+                            
+                            // Reset animation states to force a visual re-trigger when layout recalculates
+                            item.classList.remove('glitch-in', 'glitch-out');
+                            item.classList.add('glitch-standby');
+                            item.dataset.initialized = "false";
+                            
+                            // Re-observe the element
+                            viewportObserver.observe(item);
+                        } else {
+                            item.classList.add('filtered-out');
+                            viewportObserver.unobserve(item);
+                        }
+                    });
+                });
+            });
+
+            // 3. LIGHTBOX INTERACTION PROTOCOLS
             galleryItems.forEach(item => {
                 item.addEventListener('click', () => {
                     const bgElement = item.querySelector('.photo-bg');
