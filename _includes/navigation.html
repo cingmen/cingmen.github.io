@@ -1,12 +1,20 @@
 <nav class="floating-nav">
     <div class="nav-container">
         <a href="/" class="nav-brand">Research Log</a>
-        <div class="nav-links">
-            <a href="/">Home</a>
-            <a href="/about/">Profile</a>
-            <a href="/portfolio/">Portfolio</a>
-            <a href="/blog/">Archive</a>
+        
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/about/">Profile</a>
+                <a href="/portfolio/">Portfolio</a>
+                <a href="/blog/">Archive</a>
+            </div>
+            
+            <button id="theme-toggle" aria-label="Toggle Visual Theme" style="background: transparent; border: 1px solid var(--border); border-radius: 50%; width: 34px; height: 34px; display: flex; justify-content: center; align-items: center; cursor: pointer; color: var(--text-dim); transition: all 0.3s ease;">
+                <i data-lucide="sun" id="theme-icon" style="width: 16px; height: 16px;"></i>
+            </button>
         </div>
+
     </div>
     <div class="progress-container">
         <div class="progress-bar" id="reading-progress"></div>

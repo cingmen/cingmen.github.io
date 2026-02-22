@@ -11,7 +11,36 @@
     --text-dim: #94a3b8;
     --glass: blur(16px);
 }
+/* Light Theme Empirical Override */
+[data-theme="light"] {
+    --bg: #f8fafc;
+    --card-bg: #ffffff;
+    --border: #e2e8f0;
+    --accent: #4f46e5;
+    --text-main: #0f172a;
+    --text-dim: #475569;
+}
 
+/* Adjusting the background gradient for light environments */
+[data-theme="light"] body {
+    background-image: radial-gradient(circle at 50% -20%, #e0e7ff, transparent);
+}
+
+/* Adjusting the navigation capsule for legibility */
+[data-theme="light"] .floating-nav {
+    background: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+}
+
+/* Enforcing strict dark mode on the terminal and code blocks to preserve the security aesthetic */
+[data-theme="light"] .terminal-simulator,
+[data-theme="light"] .terminal-window,
+[data-theme="light"] pre[class*="language-"] {
+    --text-main: #ffffff;
+    --text-dim: #94a3b8;
+    background: #000000 !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
 * {
     box-sizing: border-box;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);

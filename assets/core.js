@@ -34,3 +34,43 @@ window.addEventListener('pageshow', (event) => {
         document.body.classList.remove('navigating-out'); 
     }
 });
+
+/* Visual Theme Toggling Protocol */
+document.addEventListener('DOMContentLoaded', () => {
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    
+    if (!themeToggleBtn || !themeIcon) return;
+
+    // Retrieve previous preference or check system default
+    const currentTheme = localStorage.getItem('theme');
+    const systemPrefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+
+    // Apply the correct theme upon initial load
+    if (currentTheme === 'light' || (!currentTheme && systemPrefersLight)) {
+        document.documentElement.setAttribute('data-theme', 'light');
+        themeIcon.setAttribute('data-lucide', 'moon');
+    }
+
+    // Execute theme swap upon physical interaction
+    themeToggleBtn.addEventListener('click', () => {
+        let targetTheme = 'light';
+        let iconName = 'moon';
+
+        // Evaluate current state and invert
+        if (document.documentElement.getAttribute('data-theme') === 'light') {
+            targetTheme = 'dark';
+            iconName = 'sun';
+        }
+
+        // Apply new parameters
+        document.documentElement.setAttribute('data-theme', targetTheme);
+        localStorage.setItem('theme', targetTheme);
+        
+        // Re-compile the icon visualization
+        themeIcon.setAttribute('data-lucide', iconName);
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    });
+});
