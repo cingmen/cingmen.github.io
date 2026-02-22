@@ -99,27 +99,46 @@ permalink: /gallery/
             const lightboxCaption = document.getElementById('lightbox-caption');
             const closeBtn = document.getElementById('lightbox-close');
 
-            // 1. CONTINUOUS SCROLL OBSERVATION ENGINE (Bidirectional Glitch)
+            // 1. CONTINUOUS SCROLL OBSERVATION ENGINE (Stabilized Bidirectional Glitch)
             const viewportObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     const targetNode = entry.target;
 
+                    // Temporal lock: Prevents the feedback loop during active coordinate transformation
+                    if (targetNode.dataset.animationLocked === "true") return;
+
                     if (entry.isIntersecting) {
-                        targetNode.classList.remove('glitch-standby', 'glitch-out');
-                        targetNode.classList.add('glitch-in');
-                        targetNode.dataset.initialized = "true";
+                        // Node enters the operational viewport
+                        if (!targetNode.classList.contains('glitch-in')) {
+                            targetNode.dataset.animationLocked = "true"; // Engage lock
+                            
+                            targetNode.classList.remove('glitch-standby', 'glitch-out');
+                            targetNode.classList.add('glitch-in');
+                            targetNode.dataset.initialized = "true";
+
+                            // Disengage lock exactly when the 500-millisecond CSS animation concludes
+                            setTimeout(() => { targetNode.dataset.animationLocked = "false"; }, 500);
+                        }
                     } else {
-                        if (targetNode.dataset.initialized === "true") {
+                        // Node exits the operational viewport
+                        if (targetNode.dataset.initialized === "true" && !targetNode.classList.contains('glitch-out')) {
+                            targetNode.dataset.animationLocked = "true"; // Engage lock
+                            
                             targetNode.classList.remove('glitch-in');
                             targetNode.classList.add('glitch-out');
+
+                            // Disengage lock exactly when the 400-millisecond CSS animation concludes
+                            setTimeout(() => { targetNode.dataset.animationLocked = "false"; }, 400);
                         }
                     }
                 });
             }, { 
-                threshold: 0.1 
+                threshold: 0.1,
+                // Establishes a 50-pixel buffer zone to absorb the physical animation movement
+                rootMargin: "0px 0px -50px 0px" 
             });
 
-            // Target all items starting from index 3
+            // Target all items starting from the fourth grid node
             galleryItems.forEach((item, index) => {
                 if (index > 2) {
                     item.classList.add('glitch-standby');
