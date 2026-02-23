@@ -499,131 +499,19 @@ code[class*="language-"], pre[class*="language-"] { font-family: 'JetBrains Mono
    DASHBOARD RECONNAISSANCE FEED STYLES (DYNAMIC STREAM)
    ========================================================================== */
 
-/* Split Layout Constraints */
-.recon-split-layout {
-    display: flex;
-    gap: 2rem;
-    padding: 0 1.5rem 1.5rem 1.5rem;
-    height: 340px;
-    align-items: center;
-}
-
-/* Left: Large Target Window */
-.recon-active-target {
-    flex: 0 0 50%;
-    height: 100%;
-    position: relative;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1px solid rgba(99, 102, 241, 0.3);
-    background: #000;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-}
-
-.recon-main-bg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    transition: filter 0.2s ease, background-image 0.4s ease;
-    filter: grayscale(20%) brightness(0.9);
-}
-
-.recon-caption-layer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 3rem 1.5rem 1.5rem 1.5rem;
-    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
-    display: flex;
-    align-items: flex-end;
-    pointer-events: none;
-}
-
-#recon-main-caption {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.85rem;
-    color: var(--security);
-    text-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    border-left: 2px solid var(--security);
-    padding-left: 10px;
-}
-
-/* Right: Horizontal Data Stream */
-.recon-stream-container {
-    flex: 1;
-    overflow: hidden;
-    position: relative;
-    display: flex;
-    align-items: center;
-    height: 100%;
-    mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
-}
-
-.recon-stream-track {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    width: max-content;
-    animation: data-stream-scroll 35s linear infinite;
-}
-
-.recon-stream-container:hover .recon-stream-track {
-    animation-play-state: paused;
-}
-
-@keyframes data-stream-scroll {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(calc(-50% - 0.75rem)); } 
-}
-
-/* Mathematical File "Folder" Geometry */
-.recon-file-card {
-    flex-shrink: 0; /* IMPERATIVE: Stops flexbox from squishing the images */
-    width: 220px;
-    height: 150px;
-    position: relative;
-    background: rgba(15, 23, 42, 0.8);
-    border: 1px solid rgba(99, 102, 241, 0.4);
-    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    padding: 5px;
-}
-
-.recon-file-card:hover {
-    border-color: var(--security);
-    background: rgba(16, 185, 129, 0.15);
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.6);
-}
-
-.recon-file-card .file-img {
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    filter: grayscale(100%) brightness(0.5);
-    transition: filter 0.3s ease;
-    clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
-}
-
-.recon-file-card:hover .file-img {
-    filter: grayscale(0%) brightness(1.1);
-}
-
-/* Restored Technical Corner Brackets */
-.tech-corner { position: absolute; width: 20px; height: 20px; border-color: rgba(16, 185, 129, 0.5); z-index: 4; }
-.tech-corner.tl { top: 12px; left: 12px; border-top: 2px solid; border-left: 2px solid; }
-.tech-corner.tr { top: 12px; right: 12px; border-top: 2px solid; border-right: 2px solid; }
-.tech-corner.bl { bottom: 12px; left: 12px; border-bottom: 2px solid; border-left: 2px solid; }
-.tech-corner.br { bottom: 12px; right: 12px; border-bottom: 2px solid; border-right: 2px solid; }
+/* Mobile Override for Split Layout (Recon Feed) - DELETE THIS BLOCK */
+    .recon-split-layout {
+        flex-direction: column;
+        height: auto;
+    }
+    .recon-active-target {
+        height: 250px;
+        margin-bottom: 1rem;
+    }
+    .recon-stream-container {
+        width: 100%;
+        height: 160px;
+    }
 
 /* ==========================================================================
    CINEMATIC LIGHTBOX MODAL
