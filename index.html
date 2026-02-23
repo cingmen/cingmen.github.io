@@ -8,7 +8,7 @@ permalink: /
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ site.title | default: "Developer Documentation" }}</title>
+    <title>{{ site.title | default: "System Architecture" }}</title>
     
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,7 +27,7 @@ permalink: /
                 
                 <div style="position: relative; z-index: 2; max-width: 600px;">
                     <h1>System Architecture <br><span style="color: var(--text-dim);">& Analytical Design</span><span class="cursor"></span></h1>
-                    <p>An empirical archive of engineered solutions, security architecture analysis, and interface optimizations.</p>
+                    <p>An empirical archive of engineered solutions, defense architecture analysis, and interface optimizations.</p>
                 </div>
 
                 <div class="hero-cyberdeck">
@@ -80,7 +80,6 @@ permalink: /
                             <rect x="0" y="40" width="90" height="3" fill="var(--text-dim)" class="cyber-line l3"/>
                             <rect x="0" y="60" width="50" height="3" fill="var(--security)" class="cyber-line l4"/>
                             <rect x="0" y="80" width="110" height="3" fill="var(--alert)" class="cyber-line l5"/>
-                            
                             <rect x="0" y="-4" width="6" height="11" fill="var(--security)" filter="url(#neon-glow)" class="cyber-cursor"/>
                         </g>
                     </svg>
@@ -96,7 +95,7 @@ permalink: /
                         <div class="project-img" style="background-image: url('{{ post.image | default: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=500&q=80' }}')"></div>
                         <div class="project-info">
                             <h3>{{ post.title }}</h3>
-                            <p>{{ post.role | default: "Security Architect" }}</p>
+                            <p>{{ post.role | default: "Architecture Analysis" }}</p>
                         </div>
                     </a>
                     {% endfor %}
@@ -114,7 +113,7 @@ permalink: /
                 <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--security); background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.2); display: flex; flex-direction: column; gap: 6px;">
                     <div style="display: flex; justify-content: space-between;"><span>THREAT VECTOR:</span> <span style="color: var(--text-main);">MINIMAL</span></div>
                     <div style="display: flex; justify-content: space-between;"><span>ACTIVE NODES:</span> <span id="telemetry-nodes" style="color: var(--text-main);">142</span></div>
-                    <div style="display: flex; justify-content: space-between;"><span>TRANSMISSION:</span> <span style="color: var(--text-main);"><span id="telemetry-ping">12</span> Ms</span></div>
+                    <div style="display: flex; justify-content: space-between;"><span>TRANSMISSION:</span> <span style="color: var(--text-main);"><span id="telemetry-ping">12</span> ms</span></div>
                 </div>
             </section>
 
@@ -142,6 +141,7 @@ permalink: /
             </section>
 
             <section class="card recon-feed-container" style="grid-column: span 3; margin-top: 1rem; overflow: hidden; position: relative; padding: 0;">
+                
                 <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(0deg, rgba(99, 102, 241, 0.03) 0px, rgba(99, 102, 241, 0.03) 1px, transparent 1px, transparent 4px); pointer-events: none; z-index: 0;"></div>
                 
                 <div class="live-indicator">
@@ -193,11 +193,14 @@ permalink: /
                             </a>
                             <a href="/gallery/" class="recon-file-card">
                                 <div class="file-img" style="background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=400&q=80');"></div>
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
             </section>
 
-        </div>
-        
-        {% include footer.html %}
+        </div> {% include footer.html %}
     </div>
 
     <script>
@@ -206,13 +209,10 @@ permalink: /
             const telemetryPing = document.getElementById('telemetry-ping');
 
             if (telemetryNodes && telemetryPing) {
-                // Continuous mathematical fluctuation for active radar variables
                 setInterval(() => {
-                    // Calculate transmission variance between 9 and 16 milliseconds
                     const currentPing = Math.floor(Math.random() * (16 - 9 + 1)) + 9;
                     telemetryPing.innerText = currentPing;
                     
-                    // Mathematically simulate network node connection and disconnection
                     const structuralShift = Math.random();
                     let activeCount = parseInt(telemetryNodes.innerText);
                     
@@ -226,6 +226,7 @@ permalink: /
             }
         });
     </script>
+
     <script src="/assets/core.js"></script>
 </body>
 </html>
