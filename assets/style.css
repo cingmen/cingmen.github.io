@@ -509,72 +509,65 @@ code[class*="language-"], pre[class*="language-"] { font-family: 'JetBrains Mono
      background: linear-gradient(135deg, rgba(248, 250, 252, 0.9), rgba(224, 231, 255, 0.9)) !important;
 }
 
-/* Enhanced Pulsing Live Text */
+/* Sleek Pill-Shaped Live Indicator */
 .live-indicator {
-    position: absolute;
-    top: 15px;
-    right: 25px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--accent);
+    font-size: 0.75rem;
+    color: var(--alert);
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    padding: 0.35rem 0.8rem;
+    border-radius: 20px;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     letter-spacing: 0.1em;
-    z-index: 5;
+    font-weight: 700;
 }
 
 .live-dot {
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
     background-color: var(--alert);
     border-radius: 50%;
     box-shadow: 0 0 8px var(--alert);
-    animation: terminal-blink 1s infinite alternate;
+    animation: pulse-dot 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-/* Upgraded Tactical Button */
+@keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+}
+
+/* Minimalist Tactical Button */
 .tactical-action-btn {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 0.6rem 1.2rem;
-    background: rgba(16, 185, 129, 0.05);
-    border: 1px solid rgba(16, 185, 129, 0.4);
-    color: var(--security);
+    padding: 0.5rem 1.2rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-main);
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.85rem;
-    font-weight: 700;
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    border-radius: 6px;
+    border-radius: 8px;
     text-decoration: none;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.tactical-action-btn::before {
-    content: '';
-    position: absolute;
-    top: 0; left: -100%; width: 100%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.2), transparent);
-    transition: left 0.5s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .tactical-action-btn:hover {
-    background: rgba(16, 185, 129, 0.15);
+    background: var(--security);
     border-color: var(--security);
-    box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
-    color: #fff;
-}
-
-.tactical-action-btn:hover::before {
-    left: 100%;
+    color: #ffffff !important;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.25);
+    transform: translateY(-2px);
 }
 
 .tactical-action-btn i { width: 16px; height: 16px; transition: transform 0.3s ease; }
-.tactical-action-btn:hover i { transform: translateX(3px); }
+.tactical-action-btn:hover i { transform: translateX(4px); }
 
 
 /* Stabilized Single-Stream Layout Container */
