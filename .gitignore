@@ -1,0 +1,23 @@
+# 1. Local Compilation Engines
+_site/
+.jekyll-cache/
+.jekyll-metadata
+.sass-cache/
+
+# 2. Localized Dependency Libraries
+vendor/
+.bundle/
+
+# 3. Operating System Temporary Data
+.DS_Store
+Thumbs.db
+ehthumbs.db
+$RECYCLE.BIN/
+
+# 4. Third-Party Package Directories
+node_modules/
+package-lock.json
+
+# 5. Local Environment Variables
+.env
+.env.local

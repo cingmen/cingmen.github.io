@@ -674,6 +674,89 @@ code[class*="language-"], pre[class*="language-"] { font-family: 'JetBrains Mono
 [data-theme="light"] #lightbox-img { border-color: var(--border); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); }
 [data-theme="light"] #lightbox-close { color: var(--text-dim); }
 [data-theme="light"] #lightbox-close:hover { color: var(--alert); }
+/* ==========================================================================
+   CYBERDECK TERMINAL PHYSICS (HERO MODULE)
+   ========================================================================== */
+
+/* Absolute positioning protects the dashboard layout from resizing */
+.hero-cyberdeck {
+    position: absolute;
+    right: 2.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    animation: cyberdeck-levitate 6s ease-in-out infinite;
+    z-index: 1;
+}
+
+@keyframes cyberdeck-levitate {
+    0%, 100% { transform: translateY(-50%); }
+    50% { transform: translateY(calc(-50% - 10px)); }
+}
+
+/* LED Blink Subroutines */
+.cyber-led-fast { animation: terminal-blink 0.3s step-end infinite; }
+.cyber-led-slow { animation: terminal-blink 1.2s step-end infinite; }
+
+/* Mathematical CSS Clipping for Recursive Line Rendering */
+.cyber-line {
+    clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+    animation: reveal-cyber-line 7.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.cyber-line.l1 { animation-delay: 0s; }
+.cyber-line.l2 { animation-delay: 1.5s; }
+.cyber-line.l3 { animation-delay: 3.0s; }
+.cyber-line.l4 { animation-delay: 4.5s; }
+.cyber-line.l5 { animation-delay: 6.0s; }
+
+@keyframes reveal-cyber-line {
+    0%, 2% { clip-path: polygon(0 0, 0 0, 0 100%, 0 100%); opacity: 1; }
+    15%, 95% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); opacity: 1; }
+    96%, 100% { opacity: 0; }
+}
+
+/* 5-Stage Coordinate Jumping Protocol */
+.cyber-cursor {
+    animation: cyber-cursor-jump 7.5s infinite, terminal-blink 0.6s step-end infinite;
+}
+
+@keyframes terminal-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+@keyframes cyber-cursor-jump {
+    /* Stage 1: Renders Width 70 */
+    0% { transform: translate(0px, 0px); opacity: 1; }
+    15% { transform: translate(75px, 0px); opacity: 1; }
+    16%, 19% { opacity: 0; } /* Blink during carriage return */
+    
+    /* Stage 2: Drops to y=20, Renders Width 140 */
+    20% { transform: translate(0px, 20px); opacity: 1; }
+    35% { transform: translate(145px, 20px); opacity: 1; }
+    36%, 39% { opacity: 0; }
+    
+    /* Stage 3: Drops to y=40, Renders Width 90 */
+    40% { transform: translate(0px, 40px); opacity: 1; }
+    55% { transform: translate(95px, 40px); opacity: 1; }
+    56%, 59% { opacity: 0; }
+    
+    /* Stage 4: Drops to y=60, Renders Width 50 */
+    60% { transform: translate(0px, 60px); opacity: 1; }
+    75% { transform: translate(55px, 60px); opacity: 1; }
+    76%, 79% { opacity: 0; }
+
+    /* Stage 5: Drops to y=80, Renders Width 110 */
+    80% { transform: translate(0px, 80px); opacity: 1; }
+    95% { transform: translate(115px, 80px); opacity: 1; }
+    
+    /* Matrix Clear Sequence */
+    96%, 100% { opacity: 0; }
+}
+
+/* ==========================================================================
+   MOBILE VIEWPORT RECALIBRATION & TOUCH OPTIMIZATION
+   ========================================================================== */
 
 /* ==========================================================================
    MOBILE VIEWPORT RECALIBRATION & TOUCH OPTIMIZATION
@@ -681,7 +764,7 @@ code[class*="language-"], pre[class*="language-"] { font-family: 'JetBrains Mono
 
 @media (max-width: 850px) {
     .grid { grid-template-columns: 1fr; }
-    .hero, .projects, .recon-widget, .blog-sidebar, .contact, .profile-main, .location-card, .skills-card, .experience-card, .terminal-simulator { grid-column: span 1; }
+    .hero, .projects, .recon-widget, .blog-sidebar, .contact, .profile-main, .location-card, .skills-card, .experience-card, .terminal-simulator, .recon-feed-container { grid-column: span 1; }
     .gallery { grid-template-columns: 1fr; }
     .matrix-grid { grid-template-columns: 1fr; }
     
@@ -690,18 +773,62 @@ code[class*="language-"], pre[class*="language-"] { font-family: 'JetBrains Mono
     .photo-grid.layout-feed { grid-auto-rows: 350px; }
     
     /* Mobile Override for Split Layout (Recon Feed) */
-    .recon-split-layout {
-        flex-direction: column;
-        height: auto;
+    .recon-split-layout { flex-direction: column; height: auto; }
+    .recon-active-target { height: 250px; margin-bottom: 1rem; }
+    .recon-stream-container { width: 100%; height: 160px; }
+
+    /* Mobile Override for Cyberdeck Graphic */
+    .hero { text-align: center; }
+    .hero p { margin: 1.5rem auto 0 auto; }
+    
+    .hero-cyberdeck {
+        position: relative;
+        right: auto;
+        top: auto;
+        transform: none;
+        margin: 2.5rem auto 0 auto;
+        display: flex;
+        justify-content: center;
+        animation: chassis-levitate-mobile 6s ease-in-out infinite;
     }
-    .recon-active-target {
-        height: 250px;
-        margin-bottom: 1rem;
-    }
-    .recon-stream-container {
-        width: 100%;
-        height: 160px;
-    }
+}
+
+@keyframes chassis-levitate-mobile {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@media (max-width: 768px) {
+    .floating-nav { width: 95%; padding: 0.6rem 1rem; }
+    .nav-brand { font-size: 1rem; margin-right: 1rem; white-space: nowrap; }
+    .nav-links { gap: 1.2rem; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; padding-right: 10px; scrollbar-width: none; }
+    .nav-links::-webkit-scrollbar { display: none; }
+    .nav-links a { font-size: 0.85rem; }
+    
+    .article-card { padding: 2.5rem 2rem; }
+    .article-title { font-size: 2.2rem; }
+    .metrics-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+    .compact-interaction { flex-direction: column; gap: 1.5rem; padding: 1.5rem; text-align: center; }
+    .action-group, .utility-btn { width: 100%; }
+    
+    .filter-controls { gap: 0.5rem; justify-content: flex-start; }
+    .tactical-btn { padding: 0.5rem 1rem; font-size: 0.75rem; }
+}
+
+@media (max-width: 600px) {
+    .photo-grid.layout-grid { grid-template-columns: 1fr; }
+    .photo-grid.layout-masonry { column-count: 1; }
+    .photo-grid.layout-feed { grid-auto-rows: 280px; }
+    .view-controls { width: 100%; justify-content: flex-start; margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem; }
+    .photo-grid.layout-feed .photo-caption-overlay { padding: 1.5rem; font-size: 1rem; }
+}
+
+@media (max-width: 480px) {
+    .container { padding: 1.5rem 1rem 3rem 1rem; }
+    .hero h1 { font-size: 2.2rem; }
+    #lightbox-img { max-width: 95%; }
+    #lightbox-caption { font-size: 0.8rem; max-width: 95%; }
+    #lightbox-close { top: 1rem; right: 1rem; background: rgba(0,0,0,0.5); border-radius: 50%; padding: 5px; }
 }
 
 @media (max-width: 768px) {
