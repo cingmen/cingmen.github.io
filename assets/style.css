@@ -499,69 +499,162 @@ code[class*="language-"], pre[class*="language-"] { font-family: 'JetBrains Mono
    DASHBOARD RECONNAISSANCE FEED STYLES (DYNAMIC STREAM)
    ========================================================================== */
 
-/* Mobile Override for Split Layout (Recon Feed) - DELETE THIS BLOCK */
-    .recon-split-layout {
-        flex-direction: column;
-        height: auto;
-    }
-    .recon-active-target {
-        height: 250px;
-        margin-bottom: 1rem;
-    }
-    .recon-stream-container {
-        width: 100%;
-        height: 160px;
-    }
-
-/* ==========================================================================
-   CINEMATIC LIGHTBOX MODAL
-   ========================================================================== */
-
-#lightbox {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-    background: rgba(0, 0, 0, 0.9);
-    backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-    z-index: 9999;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+.recon-feed-container {
+    background: linear-gradient(135deg, rgba(5, 5, 5, 0.8), rgba(15, 23, 42, 0.8)) !important;
+    border: 1px solid var(--accent) !important;
+    box-shadow: inset 0 0 30px rgba(99, 102, 241, 0.1), 0 0 20px rgba(99, 102, 241, 0.05);
 }
 
-.lightbox-hidden { opacity: 0; pointer-events: none; }
-.lightbox-active { opacity: 1; pointer-events: auto; }
-
-#lightbox-img {
-    max-width: 90%; max-height: 80vh;
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
-    transform: scale(0.95); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+[data-theme="light"] .recon-feed-container {
+     background: linear-gradient(135deg, rgba(248, 250, 252, 0.9), rgba(224, 231, 255, 0.9)) !important;
 }
 
-.lightbox-active #lightbox-img { transform: scale(1); }
-
-#lightbox-caption {
-    margin-top: 1.5rem;
-    color: var(--text-main);
+/* Enhanced Pulsing Live Text */
+.live-indicator {
+    position: absolute;
+    top: 15px;
+    right: 25px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.95rem;
+    font-size: 0.7rem;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    letter-spacing: 0.1em;
+    z-index: 5;
+}
+
+.live-dot {
+    width: 6px;
+    height: 6px;
+    background-color: var(--alert);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--alert);
+    animation: terminal-blink 1s infinite alternate;
+}
+
+/* Upgraded Tactical Button */
+.tactical-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.6rem 1.2rem;
+    background: rgba(16, 185, 129, 0.05);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    color: var(--security);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
     letter-spacing: 0.05em;
-    text-align: center;
-    max-width: 80%;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
-#lightbox-close {
-    position: absolute; top: 2rem; right: 2.5rem;
-    background: transparent; border: none; color: rgba(255, 255, 255, 0.6);
-    cursor: pointer; transition: color 0.3s ease, transform 0.3s ease;
+.tactical-action-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.2), transparent);
+    transition: left 0.5s ease;
 }
 
-#lightbox-close:hover { color: var(--alert); transform: rotate(90deg); }
+.tactical-action-btn:hover {
+    background: rgba(16, 185, 129, 0.15);
+    border-color: var(--security);
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+    color: #fff;
+}
 
-/* Daylight Environment Synchronization for Lightbox */
-[data-theme="light"] #lightbox { background: rgba(255, 255, 255, 0.9); }
-[data-theme="light"] #lightbox-img { border-color: var(--border); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); }
-[data-theme="light"] #lightbox-close { color: var(--text-dim); }
-[data-theme="light"] #lightbox-close:hover { color: var(--alert); }
+.tactical-action-btn:hover::before {
+    left: 100%;
+}
+
+.tactical-action-btn i { width: 16px; height: 16px; transition: transform 0.3s ease; }
+.tactical-action-btn:hover i { transform: translateX(3px); }
+
+
+/* Stabilized Single-Stream Layout Container */
+.recon-split-layout {
+    padding: 0 1.5rem 1.5rem 1.5rem;
+    height: 220px; /* Mathematically locked height */
+    width: 100%; /* Prevents horizontal flex collapse */
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+/* Horizontal Data Stream */
+.recon-stream-container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+}
+
+.recon-stream-track {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    width: max-content;
+    animation: data-stream-scroll 30s linear infinite;
+}
+
+.recon-stream-container:hover .recon-stream-track {
+    animation-play-state: paused;
+}
+
+@keyframes data-stream-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-50% - 0.75rem)); } 
+}
+
+/* "Cool Selection" File Card Styles */
+.recon-file-card {
+    display: block; 
+    flex-shrink: 0;
+    width: 240px;
+    height: 150px;
+    position: relative;
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(99, 102, 241, 0.4);
+    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    padding: 5px;
+    z-index: 1; 
+}
+
+/* Aggressive Hover Effect */
+.recon-file-card:hover {
+    border-color: var(--accent);
+    background: rgba(99, 102, 241, 0.15);
+    transform: scale(1.1) translateY(-10px);
+    box-shadow: 0 20px 40px rgba(99, 102, 241, 0.4);
+    z-index: 10; 
+}
+
+.recon-file-card .file-img {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    filter: grayscale(100%) brightness(0.6) sepia(30%) hue-rotate(190deg);
+    transition: filter 0.4s ease;
+    clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
+}
+
+.recon-file-card:hover .file-img {
+    filter: grayscale(0%) brightness(1.2) contrast(1.1);
+}
+
 /* ==========================================================================
    CYBERDECK TERMINAL PHYSICS (HERO MODULE)
    ========================================================================== */
@@ -643,8 +736,54 @@ code[class*="language-"], pre[class*="language-"] { font-family: 'JetBrains Mono
 }
 
 /* ==========================================================================
-   MOBILE VIEWPORT RECALIBRATION & TOUCH OPTIMIZATION
+   CINEMATIC LIGHTBOX MODAL
    ========================================================================== */
+
+#lightbox {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+    z-index: 9999;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lightbox-hidden { opacity: 0; pointer-events: none; }
+.lightbox-active { opacity: 1; pointer-events: auto; }
+
+#lightbox-img {
+    max-width: 90%; max-height: 80vh;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+    transform: scale(0.95); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lightbox-active #lightbox-img { transform: scale(1); }
+
+#lightbox-caption {
+    margin-top: 1.5rem;
+    color: var(--text-main);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+    text-align: center;
+    max-width: 80%;
+}
+
+#lightbox-close {
+    position: absolute; top: 2rem; right: 2.5rem;
+    background: transparent; border: none; color: rgba(255, 255, 255, 0.6);
+    cursor: pointer; transition: color 0.3s ease, transform 0.3s ease;
+}
+
+#lightbox-close:hover { color: var(--alert); transform: rotate(90deg); }
+
+/* Daylight Environment Synchronization for Lightbox */
+[data-theme="light"] #lightbox { background: rgba(255, 255, 255, 0.9); }
+[data-theme="light"] #lightbox-img { border-color: var(--border); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); }
+[data-theme="light"] #lightbox-close { color: var(--text-dim); }
+[data-theme="light"] #lightbox-close:hover { color: var(--alert); }
 
 /* ==========================================================================
    MOBILE VIEWPORT RECALIBRATION & TOUCH OPTIMIZATION
@@ -661,8 +800,7 @@ code[class*="language-"], pre[class*="language-"] { font-family: 'JetBrains Mono
     .photo-grid.layout-feed { grid-auto-rows: 350px; }
     
     /* Mobile Override for Split Layout (Recon Feed) */
-    .recon-split-layout { flex-direction: column; height: auto; }
-    .recon-active-target { height: 250px; margin-bottom: 1rem; }
+    .recon-split-layout { flex-direction: column; height: auto; padding-top: 1.5rem; }
     .recon-stream-container { width: 100%; height: 160px; }
 
     /* Mobile Override for Cyberdeck Graphic */
@@ -714,46 +852,6 @@ code[class*="language-"], pre[class*="language-"] { font-family: 'JetBrains Mono
 @media (max-width: 480px) {
     .container { padding: 1.5rem 1rem 3rem 1rem; }
     .hero h1 { font-size: 2.2rem; }
-    #lightbox-img { max-width: 95%; }
-    #lightbox-caption { font-size: 0.8rem; max-width: 95%; }
-    #lightbox-close { top: 1rem; right: 1rem; background: rgba(0,0,0,0.5); border-radius: 50%; padding: 5px; }
-}
-
-@media (max-width: 768px) {
-    .floating-nav { width: 95%; padding: 0.6rem 1rem; }
-    .nav-brand { font-size: 1rem; margin-right: 1rem; white-space: nowrap; }
-    .nav-links { gap: 1.2rem; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; padding-right: 10px; scrollbar-width: none; }
-    .nav-links::-webkit-scrollbar { display: none; }
-    .nav-links a { font-size: 0.85rem; }
-    
-    .article-card { padding: 2.5rem 2rem; }
-    .article-title { font-size: 2.2rem; }
-    .metrics-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-    .compact-interaction { flex-direction: column; gap: 1.5rem; padding: 1.5rem; text-align: center; }
-    .action-group, .utility-btn { width: 100%; }
-    
-    /* Filter Control Recalibration for Touch Interfaces */
-    .filter-controls { gap: 0.5rem; justify-content: flex-start; }
-    .tactical-btn { padding: 0.5rem 1rem; font-size: 0.75rem; }
-}
-
-@media (max-width: 600px) {
-    /* Force single column for maximum visibility on narrow screens */
-    .photo-grid.layout-grid { grid-template-columns: 1fr; }
-    .photo-grid.layout-masonry { column-count: 1; }
-    .photo-grid.layout-feed { grid-auto-rows: 280px; }
-    
-    /* Interface Stacking and Geometry Isolation */
-    .view-controls { width: 100%; justify-content: flex-start; margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem; }
-    .photo-grid.layout-feed .photo-caption-overlay { padding: 1.5rem; font-size: 1rem; }
-}
-
-@media (max-width: 480px) {
-    /* Extreme Mobile Optimization Constraints */
-    .container { padding: 1.5rem 1rem 3rem 1rem; }
-    .hero h1 { font-size: 2.2rem; }
-    
-    /* Lightbox Modal Recalibration */
     #lightbox-img { max-width: 95%; }
     #lightbox-caption { font-size: 0.8rem; max-width: 95%; }
     #lightbox-close { top: 1rem; right: 1rem; background: rgba(0,0,0,0.5); border-radius: 50%; padding: 5px; }
