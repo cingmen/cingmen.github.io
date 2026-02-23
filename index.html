@@ -82,11 +82,11 @@ permalink: /
                 </div>
             </section>
 
-            <section class="card recon-feed-container" style="grid-column: span 3; margin-top: 1rem; overflow: hidden; position: relative;">
+            <section class="card recon-feed-container" style="grid-column: span 3; margin-top: 1rem; overflow: hidden; position: relative; padding: 0;">
                 <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(0deg, rgba(99, 102, 241, 0.03) 0px, rgba(99, 102, 241, 0.03) 1px, transparent 1px, transparent 4px); pointer-events: none; z-index: 0;"></div>
-                <div style="position: absolute; top: -10px; right: 20px; font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--accent); opacity: 0.5;">FEED://LIVE.INCOMING</div>
+                <div style="position: absolute; top: 10px; right: 20px; font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--accent); opacity: 0.5;">FEED://LIVE.INCOMING</div>
 
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; position: relative; z-index: 2;">
+                <div style="padding: 1.5rem 1.5rem 0 1.5rem; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 2;">
                     <h2 style="margin: 0; font-size: 1.2rem; color: var(--text-main); letter-spacing: 0.05em; display: flex; align-items: center; gap: 10px;">
                         <i data-lucide="crosshair" style="color: var(--alert); width: 20px; height: 20px;"></i>
                         Visual Reconnaissance Feed
@@ -94,24 +94,55 @@ permalink: /
                     <a href="/gallery/" class="utility-btn" style="background: rgba(16, 185, 129, 0.1); border-color: var(--security); color: var(--security);">Acknowledge Data <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i></a>
                 </div>
                 
-                <div class="photo-grid preview-grid" style="position: relative; z-index: 2;">
-                    <a href="/gallery/" class="photo-item preview-main">
-                        <div class="photo-bg" style="background-image: url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1000&q=80');"></div>
-                        <div class="photo-overlay recon-overlay">
-                            <span style="font-family: 'JetBrains Mono'; font-size: 0.8rem; letter-spacing: 0.1em;">TARGET ACQUIRED [MAXIMIZE]</span>
+                <div class="recon-split-layout" style="position: relative; z-index: 2;">
+                    
+                    <div class="recon-active-target">
+                        <a href="/gallery/" class="photo-item" id="recon-main-display" style="height: 100%; width: 100%; border-radius: 12px; border-color: rgba(99, 102, 241, 0.5);">
+                            <div class="photo-bg" id="recon-main-bg" style="background-image: url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1000&q=80'); filter: grayscale(0%) brightness(0.9);"></div>
+                            <div class="photo-overlay recon-overlay" style="opacity: 1; background: transparent; align-items: flex-end; justify-content: flex-start; padding: 1.25rem;">
+                                <span id="recon-main-caption" style="font-family: 'JetBrains Mono'; font-size: 0.8rem; background: rgba(0,0,0,0.8); padding: 6px 10px; border-left: 2px solid var(--alert); color: var(--text-main); letter-spacing: 0.1em; text-transform: uppercase;">TARGET ACQUIRED: HARDWARE NODE</span>
+                            </div>
+                            <div class="tech-corner tl"></div><div class="tech-corner tr"></div><div class="tech-corner bl"></div><div class="tech-corner br"></div>
+                        </a>
+                    </div>
+
+                    <div class="recon-stream-container">
+                        <div class="recon-stream-track" id="recon-track">
+                            
+                            <div class="recon-file-card" data-img="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80" data-caption="QUANTUM SENSOR MATRIX">
+                                <div class="file-img" style="background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=400&q=80');"></div>
+                            </div>
+                            <div class="recon-file-card" data-img="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80" data-caption="STOCHASTIC TOPOLOGY">
+                                <div class="file-img" style="background-image: url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=400&q=80');"></div>
+                            </div>
+                            <div class="recon-file-card" data-img="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80" data-caption="DISASTER WARNING DEPLOYMENT">
+                                <div class="file-img" style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=400&q=80');"></div>
+                            </div>
+                            <div class="recon-file-card" data-img="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=800&q=80" data-caption="CONVENTIONAL ARRAY">
+                                <div class="file-img" style="background-image: url('https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=400&q=80');"></div>
+                            </div>
+                            <div class="recon-file-card" data-img="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80" data-caption="SERVER ARCHITECTURE">
+                                <div class="file-img" style="background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=400&q=80');"></div>
+                            </div>
+
+                            <div class="recon-file-card" data-img="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80" data-caption="QUANTUM SENSOR MATRIX">
+                                <div class="file-img" style="background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=400&q=80');"></div>
+                            </div>
+                            <div class="recon-file-card" data-img="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80" data-caption="STOCHASTIC TOPOLOGY">
+                                <div class="file-img" style="background-image: url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=400&q=80');"></div>
+                            </div>
+                            <div class="recon-file-card" data-img="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80" data-caption="DISASTER WARNING DEPLOYMENT">
+                                <div class="file-img" style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=400&q=80');"></div>
+                            </div>
+                            <div class="recon-file-card" data-img="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=800&q=80" data-caption="CONVENTIONAL ARRAY">
+                                <div class="file-img" style="background-image: url('https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=400&q=80');"></div>
+                            </div>
+                            <div class="recon-file-card" data-img="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80" data-caption="SERVER ARCHITECTURE">
+                                <div class="file-img" style="background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=400&q=80');"></div>
+                            </div>
+
                         </div>
-                        <div class="tech-corner tl"></div><div class="tech-corner tr"></div><div class="tech-corner bl"></div><div class="tech-corner br"></div>
-                    </a>
-                    <a href="/gallery/" class="photo-item">
-                        <div class="photo-bg" style="background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=500&q=80');"></div>
-                        <div class="photo-overlay"><i data-lucide="maximize-2"></i></div>
-                         <div class="tech-corner tl"></div><div class="tech-corner br"></div>
-                    </a>
-                    <a href="/gallery/" class="photo-item">
-                        <div class="photo-bg" style="background-image: url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=500&q=80');"></div>
-                        <div class="photo-overlay"><i data-lucide="maximize-2"></i></div>
-                        <div class="tech-corner tl"></div><div class="tech-corner br"></div>
-                    </a>
+                    </div>
                 </div>
             </section>
 
@@ -146,7 +177,29 @@ permalink: /
             }
         });
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const fileCards = document.querySelectorAll('.recon-file-card');
+            const mainBg = document.getElementById('recon-main-bg');
+            const mainCaption = document.getElementById('recon-main-caption');
 
+            fileCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    // Extract data variables
+                    const targetImg = card.getAttribute('data-img');
+                    const targetCaption = card.getAttribute('data-caption');
+                    
+                    // Flash effect for data transfer
+                    mainBg.style.filter = 'grayscale(100%) brightness(2)';
+                    setTimeout(() => {
+                        mainBg.style.backgroundImage = `url('${targetImg}')`;
+                        mainCaption.innerText = `TARGET ACQUIRED: ${targetCaption}`;
+                        mainBg.style.filter = 'grayscale(0%) brightness(0.9)';
+                    }, 150);
+                });
+            });
+        });
+    </script>
     <script src="/assets/core.js"></script>
 </body>
 </html>
