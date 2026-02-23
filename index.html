@@ -94,16 +94,17 @@ permalink: /
                     <a href="/gallery/" class="utility-btn" style="background: rgba(16, 185, 129, 0.1); border-color: var(--security); color: var(--security);">Acknowledge Data <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i></a>
                 </div>
                 
-                <div class="recon-split-layout" style="position: relative; z-index: 2;">
+                <div class="recon-split-layout">
                     
                     <div class="recon-active-target">
-                        <a href="/gallery/" class="photo-item" id="recon-main-display" style="height: 100%; width: 100%; border-radius: 12px; border-color: rgba(99, 102, 241, 0.5);">
-                            <div class="photo-bg" id="recon-main-bg" style="background-image: url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1000&q=80'); filter: grayscale(0%) brightness(0.9);"></div>
-                            <div class="photo-overlay recon-overlay" style="opacity: 1; background: transparent; align-items: flex-end; justify-content: flex-start; padding: 1.25rem;">
-                                <span id="recon-main-caption" style="font-family: 'JetBrains Mono'; font-size: 0.8rem; background: rgba(0,0,0,0.8); padding: 6px 10px; border-left: 2px solid var(--alert); color: var(--text-main); letter-spacing: 0.1em; text-transform: uppercase;">TARGET ACQUIRED: HARDWARE NODE</span>
-                            </div>
-                            <div class="tech-corner tl"></div><div class="tech-corner tr"></div><div class="tech-corner bl"></div><div class="tech-corner br"></div>
-                        </a>
+                        <div class="recon-main-bg" id="recon-main-bg" style="background-image: url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1000&q=80');"></div>
+                        
+                        <div class="recon-caption-layer">
+                            <span id="recon-main-caption">TARGET ACQUIRED: HARDWARE NODE</span>
+                        </div>
+                        
+                        <div class="tech-corner tl"></div><div class="tech-corner tr"></div>
+                        <div class="tech-corner bl"></div><div class="tech-corner br"></div>
                     </div>
 
                     <div class="recon-stream-container">
@@ -144,6 +145,7 @@ permalink: /
                         </div>
                     </div>
                 </div>
+            </section>
             </section>
 
         </div>
