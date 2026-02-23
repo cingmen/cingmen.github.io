@@ -157,6 +157,7 @@ body {
 .nav-links { display: flex; gap: 1.8rem; }
 .nav-links a { color: var(--text-dim); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: color 0.3s ease, text-shadow 0.3s ease; }
 .nav-links a:hover { color: var(--text-main); text-shadow: 0 0 10px rgba(99, 102, 241, 0.7); }
+.mobile-menu-btn { display: none; background: transparent; border: none; color: var(--text-main); cursor: pointer; padding: 0; }
 
 /* Global Progress Track */
 .progress-container { position: absolute; bottom: 0; left: 0; width: 100%; height: 3px; background: transparent; }
@@ -839,20 +840,50 @@ code[class*="language-"], pre[class*="language-"] { font-family: 'JetBrains Mono
 }
 
 @media (max-width: 768px) {
-    .floating-nav { width: 95%; padding: 0.6rem 1rem; }
-    .nav-brand { font-size: 1rem; margin-right: 1rem; white-space: nowrap; }
-    .nav-links { gap: 1.2rem; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; padding-right: 10px; scrollbar-width: none; }
-    .nav-links::-webkit-scrollbar { display: none; }
-    .nav-links a { font-size: 0.85rem; }
+    /* 1. Dropdown Navigation Recalibration */
+    .floating-nav { width: 95%; padding: 0.8rem 1.5rem; transition: all 0.3s ease; }
+    .floating-nav.expanded-nav { border-radius: 20px; background: rgba(15, 23, 42, 0.95); }
+    [data-theme="light"] .floating-nav.expanded-nav { background: rgba(255, 255, 255, 0.95); }
     
+    .nav-container { flex-wrap: wrap; }
+    .mobile-menu-btn { display: block; } 
+    
+    .nav-links { 
+        display: none; 
+        flex-direction: column; 
+        width: 100%; 
+        margin-top: 1rem; 
+        padding-top: 1rem; 
+        border-top: 1px solid var(--border); 
+        gap: 1.2rem; 
+        text-align: center; 
+        white-space: normal; 
+        overflow-x: visible; 
+    }
+    
+    .nav-links.active-dropdown { 
+        display: flex; 
+        animation: drop-down-fade 0.3s ease forwards; 
+    }
+
+    /* 2. Article & Document Layout Constraints */
     .article-card { padding: 2.5rem 2rem; }
     .article-title { font-size: 2.2rem; }
     .metrics-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+    
+    /* 3. Compact Interaction & Utilities */
     .compact-interaction { flex-direction: column; gap: 1.5rem; padding: 1.5rem; text-align: center; }
     .action-group, .utility-btn { width: 100%; }
     
+    /* 4. Tactical Sorting Filters */
     .filter-controls { gap: 0.5rem; justify-content: flex-start; }
     .tactical-btn { padding: 0.5rem 1rem; font-size: 0.75rem; }
+}
+
+/* Dropdown Animation Physics (Placed safely outside media query for universal browser support) */
+@keyframes drop-down-fade {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 @media (max-width: 600px) {
