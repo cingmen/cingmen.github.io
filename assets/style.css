@@ -789,7 +789,17 @@ code[class*="language-"], pre[class*="language-"] { font-family: 'JetBrains Mono
         flex-direction: column !important; 
         gap: 1.5rem !important; 
     }
-    
+    /* Mobile Override: Profile Header Compression */
+    .visual-header { 
+        height: 140px !important; 
+        border-radius: 20px !important;
+    }
+
+    /* Mobile Override: Terminal Viewport Protection */
+    .terminal-body {
+        height: 200px !important; 
+        padding: 1.5rem !important;
+    }
     /* 2. OVERRIDE ALL INLINE GRID SPANS */
     .hero, .projects, .recon-widget, .blog-sidebar, .contact, .profile-main, .location-card, .skills-card, .experience-card, .terminal-simulator, .recon-feed-container { 
         width: 100% !important; 
