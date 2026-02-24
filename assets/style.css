@@ -901,3 +901,40 @@ code[class*="language-"], pre[class*="language-"] { font-family: 'JetBrains Mono
     #lightbox-caption { font-size: 0.8rem; max-width: 95%; }
     #lightbox-close { top: 1rem; right: 1rem; background: rgba(0,0,0,0.5); border-radius: 50%; padding: 5px; }
 }
+/* ==========================================================================
+   BILINGUAL ROUTING MATRIX
+   ========================================================================== */
+
+/* When the environment is set to English, mathematically hide Indonesian nodes */
+body[data-lang="en"] .lang-id { 
+    display: none !important; 
+}
+
+/* When the environment is set to Indonesian, mathematically hide English nodes */
+body[data-lang="id"] .lang-en { 
+    display: none !important; 
+}
+
+/* Tactical Language Toggle Button Stabilization */
+.lang-toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.lang-toggle-btn:hover {
+    border-color: var(--accent);
+    background: rgba(99, 102, 241, 0.1);
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.2);
+}

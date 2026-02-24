@@ -3,13 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title | default: "Developer Documentation" }}</title>
+    
+    <title>{{ page.title_en }} - Research Archive</title>
+    <meta name="description" content="{{ page.description_en }}">
+    <meta name="author" content="Arif">
     
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="stylesheet" href="/assets/style.css?v={{ site.time | date: '%s' }}">
 </head>
 <body>
 
@@ -18,46 +21,45 @@
     <div class="container">
         <article class="article-card">
             
-            <header class="article-header" style="text-align: center; margin-bottom: 3.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border);">
-                
-                <div style="font-size: 0.75rem; color: var(--accent); font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 1.5rem;">
-                    {{ page.date | date: "%B %d, %Y" }} <span style="margin: 0 10px; color: var(--border);">|</span> 
-                    <i data-lucide="clock" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle; margin-bottom: 2px;"></i> 
-                    {% assign word_count = content | number_of_words %}
-                    {% assign reading_time = word_count | divided_by: 180 %}
-                    {% if reading_time == 0 %}1 MINUTE READ{% else %}{{ reading_time }} MINUTE READ{% endif %}
+            <header class="article-header">
+                <div class="article-metadata">
+                    <span class="article-date">{{ page.date | date: "%B %d, %Y" }}</span>
+                    <span class="tag">{{ page.research_sector }}</span>
                 </div>
                 
-                <h1 style="font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; letter-spacing: -1.5px; margin: 0 0 1.5rem 0; color: var(--text-main); line-height: 1.2;">
-                    {{ page.title }}
-                </h1>
+                <h1 class="article-title lang-en">{{ page.title_en }}</h1>
+                <h1 class="article-title lang-id">{{ page.title_id }}</h1>
                 
-                {% if page.description %}
-                <p style="font-size: 1.15rem; color: var(--text-dim); max-width: 800px; margin: 0 auto; line-height: 1.6;">
-                    {{ page.description }}
-                </p>
-                {% endif %}
-                
+                <p class="article-description lang-en">{{ page.description_en }}</p>
+                <p class="article-description lang-id">{{ page.description_id }}</p>
             </header>
+
+            <div class="metrics-grid">
+                <div class="metric-block">
+                    <span class="metric-title lang-en">Methodology</span>
+                    <span class="metric-title lang-id">Metodologi</span>
+                    <span class="metric-value">{{ page.methodology }}</span>
+                </div>
+                <div class="metric-block">
+                    <span class="metric-title lang-en">Primary Focus</span>
+                    <span class="metric-title lang-id">Fokus Utama</span>
+                    <span class="metric-value">{{ page.primary_focus }}</span>
+                </div>
+                <div class="metric-block">
+                    <span class="metric-title lang-en">Validation Status</span>
+                    <span class="metric-title lang-id">Status Validasi</span>
+                    <span class="metric-highlight">{{ page.validation_status }}</span>
+                </div>
+            </div>
 
             <div class="document-content">
                 {{ content }}
             </div>
             
         </article>
-
-        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 1.5rem; padding: 0 1rem;">
-            <button onclick="window.history.length > 2 ? history.back() : window.location.href = '/';" style="display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--text-dim); border: none; font-family: inherit; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: color 0.3s ease; padding: 0.5rem;" onmouseover="this.style.color='var(--text-main)'" onmouseout="this.style.color='var(--text-dim)'">
-                <i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i> Return to Previous
-            </button>
-            <button onclick="window.scrollTo({ top: 0, behavior: 'smooth' });" style="display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--text-dim); border: none; font-family: inherit; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: color 0.3s ease; padding: 0.5rem;" onmouseover="this.style.color='var(--text-main)'" onmouseout="this.style.color='var(--text-dim)'">
-                Top of Document <i data-lucide="arrow-up" style="width: 16px; height: 16px;"></i>
-            </button>
-        </div>
-        
-        {% include footer.html %}
     </div>
 
+    {% include footer.html %}
     <script>
         window.addEventListener('scroll', () => {
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
@@ -67,6 +69,5 @@
         });
     </script>
     <script src="/assets/core.js"></script>
-    
 </body>
 </html>

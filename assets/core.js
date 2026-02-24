@@ -86,3 +86,40 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const langToggle = document.getElementById('lang-toggle');
+            const langLabel = document.getElementById('lang-label');
+            const body = document.body;
+
+            // 1. Check local storage for existing language preference (Default: English)
+            let currentLang = localStorage.getItem('system_language') || 'en';
+            
+            // 2. Initialize the environment
+            body.setAttribute('data-lang', currentLang);
+            updateButtonLabel(currentLang);
+
+            // 3. Execution Listener
+            if (langToggle) {
+                langToggle.addEventListener('click', () => {
+                    // Switch the boolean state
+                    currentLang = currentLang === 'en' ? 'id' : 'en';
+                    
+                    // Apply to DOM and Storage
+                    body.setAttribute('data-lang', currentLang);
+                    localStorage.setItem('system_language', currentLang);
+                    updateButtonLabel(currentLang);
+                });
+            }
+
+            // 4. Interface Update Subroutine
+            function updateButtonLabel(lang) {
+                if (lang === 'en') {
+                    langLabel.innerText = 'ID'; // Button suggests switching TO Indonesian
+                } else {
+                    langLabel.innerText = 'EN'; // Button suggests switching TO English
+                }
+            }
+        });
+    </script>
