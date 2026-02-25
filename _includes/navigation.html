@@ -1,10 +1,23 @@
 <nav class="floating-nav" id="main-nav">
     <div class="nav-container">
-        <a href="/" class="nav-brand">Research Log</a>
         
-        <button class="mobile-menu-btn" id="mobile-toggle" aria-label="Toggle Navigation">
-            <i data-lucide="menu"></i>
-        </button>
+        <a href="/" class="nav-brand">Research Log</a>
+
+        <div style="display: flex; align-items: center; gap: 15px;">
+            
+            <button id="lang-toggle" aria-label="Toggle Language" style="background: transparent; border: 1px solid var(--border); color: var(--text-main); cursor: pointer; padding: 4px 8px; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; display: flex; align-items: center; gap: 5px; transition: all 0.3s ease;">
+                <i data-lucide="globe" style="width: 14px; height: 14px;"></i>
+                <span id="lang-label">ID</span>
+            </button>
+
+            <button id="theme-toggle" aria-label="Toggle Theme" style="background: transparent; border: none; color: var(--text-main); cursor: pointer; display: flex; align-items: center; padding: 0;">
+                <i data-lucide="moon" id="theme-icon" style="width: 18px; height: 18px; transition: stroke 0.3s ease;"></i>
+            </button>
+
+            <button class="mobile-menu-btn" id="mobile-toggle" aria-label="Toggle Navigation">
+                <i data-lucide="menu"></i>
+            </button>
+        </div>
 
         <div class="nav-links" id="nav-links">
             <a href="/">Home</a>
@@ -14,18 +27,65 @@
             <a href="/blog/">Archive</a>
         </div>
     </div>
-    <div style="display: flex; align-items: center; gap: 10px;">
-            <button id="lang-toggle" class="lang-toggle-btn" aria-label="Toggle Language">
-                <i data-lucide="globe" style="width: 16px; height: 16px;"></i>
-                <span id="lang-label">ID</span>
-            </button>
-            
-            </div>
-    <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
 </nav>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        
+        // --- 1. BILINGUAL EXECUTION ENGINE ---
+        const langToggle = document.getElementById('lang-toggle');
+        const langLabel = document.getElementById('lang-label');
+        const body = document.body;
+
+        // Cek bahasa dari penyimpanan lokal (Default: English)
+        let currentLang = localStorage.getItem('system_language') || 'en';
+        body.setAttribute('data-lang', currentLang);
+        updateLangLabel(currentLang);
+
+        if (langToggle) {
+            langToggle.addEventListener('click', () => {
+                currentLang = currentLang === 'en' ? 'id' : 'en';
+                body.setAttribute('data-lang', currentLang);
+                localStorage.setItem('system_language', currentLang);
+                updateLangLabel(currentLang);
+            });
+        }
+
+        function updateLangLabel(lang) {
+            if (langLabel) {
+                langLabel.innerText = lang === 'en' ? 'ID' : 'EN';
+            }
+        }
+
+
+        // --- 2. DAY/NIGHT THEME ENGINE ---
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const rootElement = document.documentElement;
+
+        // Cek tema dari penyimpanan lokal (Default: Dark)
+        let currentTheme = localStorage.getItem('system_theme') || 'dark';
+        rootElement.setAttribute('data-theme', currentTheme);
+        updateThemeIcon(currentTheme);
+
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                rootElement.setAttribute('data-theme', currentTheme);
+                localStorage.setItem('system_theme', currentTheme);
+                updateThemeIcon(currentTheme);
+            });
+        }
+
+        function updateThemeIcon(theme) {
+            if (themeIcon && window.lucide) {
+                themeIcon.setAttribute('data-lucide', theme === 'light' ? 'sun' : 'moon');
+                window.lucide.createIcons(); // Refresh ikon
+            }
+        }
+
+
+        // --- 3. MOBILE DROPDOWN ENGINE ---
         const mobileToggle = document.getElementById('mobile-toggle');
         const navLinks = document.getElementById('nav-links');
         const mainNav = document.getElementById('main-nav');
@@ -35,6 +95,11 @@
                 navLinks.classList.toggle('active-dropdown');
                 mainNav.classList.toggle('expanded-nav');
             });
+        }
+
+        // Inisialisasi awal ikon Lucide
+        if (window.lucide) {
+            window.lucide.createIcons();
         }
     });
 </script>
