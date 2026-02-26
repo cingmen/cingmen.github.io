@@ -3,22 +3,23 @@ layout: null
 ---
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>{{ site.title }}</title>
-  <link href="{{ site.url }}/feed.xml" rel="self"/>
-  <link href="{{ site.url }}/"/>
+  <title>{{ site.title | xml_escape }}</title>
+  <link href="{{ site.url }}/feed.xml" rel="self" type="application/atom+xml"/>
+  <link href="{{ site.url }}/" rel="alternate" type="text/html"/>
   <updated>{{ site.time | date_to_xmlschema }}</updated>
   <id>{{ site.url }}/</id>
   <author>
-    <name>{{ site.author.name | default: "System Admin" }}</name>
+    <name>{{ site.author.name | default: "System Admin" | xml_escape }}</name>
   </author>
 
   {% for post in site.posts %}
   <entry>
-    <title>{{ post.title_en | default: post.title }}</title>
-    <link href="{{ site.url }}{{ post.url }}"/>
+    <title>{{ post.title_en | default: post.title | xml_escape }}</title>
+    <link href="{{ site.url }}{{ post.url }}" rel="alternate" type="text/html"/>
     <updated>{{ post.date | date_to_xmlschema }}</updated>
     <id>{{ site.url }}{{ post.url }}</id>
-    <content type="html"><![CDATA[{{ post.content | strip_html | truncatewords: 50 }}]]></content>
+    <summary type="html">{{ post.content | strip_html | truncatewords: 50 | xml_escape }}</summary>
+    <content type="html">{{ post.content | strip_html | truncatewords: 50 | xml_escape }}</content>
   </entry>
   {% endfor %}
 </feed>
