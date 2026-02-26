@@ -57,7 +57,15 @@ permalink: /matrix/
     </style>
 </head>
 <body>
-
+    <script>
+        (function() {
+            var savedTheme = localStorage.getItem('system_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            
+            var savedLang = localStorage.getItem('system_language') || 'en';
+            document.body.setAttribute('data-lang', savedLang);
+        })();
+    </script>
     {% include navigation.html %}
 
     <div class="container">
