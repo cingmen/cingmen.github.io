@@ -76,12 +76,15 @@ permalink: /blog/
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const searchInput = document.getElementById('log-search-input');
+            const searchInputEn = document.getElementById('log-search-input-en');
+            const searchInputId = document.getElementById('log-search-input-id');
             const logDirectory = document.getElementById('log-directory');
             const postLinks = document.querySelectorAll('.post-link');
             let noResultsMsg = null;
 
-            if (searchInput) {
+            const attachSearchListener = (searchInput) => {
+                if (!searchInput) return;
+
                 // Enhance visual feedback upon user interaction
                 searchInput.addEventListener('focus', () => {
                     searchInput.style.borderColor = 'var(--accent)';
@@ -115,13 +118,11 @@ permalink: /blog/
                     // Exception handling for zero matching documents
                     if (visibleCount === 0) {
                         if (!noResultsMsg) {
-                            noResultsMsg = document.createElement('p');
-                            noResultsMsg.style.color = 'var(--alert)';
-                            noResultsMsg.style.textAlign = 'center';
-                            noResultsMsg.style.padding = '2rem 0';
-                            noResultsMsg.style.fontFamily = "'JetBrains Mono', monospace";
-                            noResultsMsg.style.fontSize = '0.9rem';
-                            noResultsMsg.innerText = '[-] Exception: Zero logs match the specified parameters.';
+                            noResultsMsg = document.createElement('div');
+                            noResultsMsg.innerHTML = `
+                                <p class="lang-en" style="color: var(--alert); text-align: center; padding: 2rem 0; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;">[-] Exception: Zero logs match the specified parameters.</p>
+                                <p class="lang-id" style="color: var(--alert); text-align: center; padding: 2rem 0; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;">[-] Pengecualian: Tidak ada catatan yang cocok dengan parameter yang ditentukan.</p>
+                            `;
                             logDirectory.appendChild(noResultsMsg);
                         } else {
                             noResultsMsg.style.display = 'block';
@@ -130,7 +131,10 @@ permalink: /blog/
                         noResultsMsg.style.display = 'none';
                     }
                 });
-            }
+            };
+
+            attachSearchListener(searchInputEn);
+            attachSearchListener(searchInputId);
         });
     </script>
 

@@ -33,11 +33,21 @@ permalink: /portfolio/
 
     <div class="container">
         <section class="card" style="margin-bottom: 2rem;">
-            <h1
-                style="font-size: 2.5rem; margin: 0 0 1rem 0; letter-spacing: -1.5px; font-weight: 800; color: var(--text-main);">
-                Applied Implementations</h1>
-            <p style="color: var(--text-dim); font-size: 1.15rem; margin-bottom: 2.5rem; max-width: 800px;">An empirical
-                archive of engineered solutions, security architecture analysis, and interface optimizations.</p>
+            <div class="lang-en">
+                <h1
+                    style="font-size: 2.5rem; margin: 0 0 1rem 0; letter-spacing: -1.5px; font-weight: 800; color: var(--text-main);">
+                    Applied Implementations</h1>
+                <p style="color: var(--text-dim); font-size: 1.15rem; margin-bottom: 2.5rem; max-width: 800px;">An
+                    empirical archive of engineered solutions, security architecture analysis, and interface
+                    optimizations.</p>
+            </div>
+            <div class="lang-id">
+                <h1
+                    style="font-size: 2.5rem; margin: 0 0 1rem 0; letter-spacing: -1.5px; font-weight: 800; color: var(--text-main);">
+                    Implementasi Terapan</h1>
+                <p style="color: var(--text-dim); font-size: 1.15rem; margin-bottom: 2.5rem; max-width: 800px;">Arsip
+                    empiris dari solusi rekayasa, analisis arsitektur keamanan, dan optimasi antarmuka.</p>
+            </div>
 
             <div class="gallery">
                 {% assign case_studies = site.posts | where: "layout", "case-study" %}
