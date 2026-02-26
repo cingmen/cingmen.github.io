@@ -5,21 +5,25 @@ permalink: /about/
 ---
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta http-equiv="Cache-Control" content="public, max-age=31536000, immutable">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ page.title }} - {{ site.title | default: "Developer Documentation" }}</title>
-    
-    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script defer src="https://unpkg.com/lucide@0.412.0"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
     <script>
         var savedTheme = localStorage.getItem('system_theme') || 'dark';
         document.documentElement.setAttribute('data-theme', savedTheme);
     </script>
     <link rel="stylesheet" href="/assets/style.css?v={{ site.time | date: '%s' }}">
 </head>
+
 <body>
     <script>
         var savedLang = localStorage.getItem('system_language') || 'en';
@@ -39,26 +43,31 @@ permalink: /about/
                     <div class="terminal-dot" style="background: #ef4444;"></div>
                     <div class="terminal-dot" style="background: #eab308;"></div>
                     <div class="terminal-dot" style="background: #10b981;"></div>
-                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-dim); margin-left: 10px;">guest@secure-server:~</span>
+                    <span
+                        style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-dim); margin-left: 10px;">guest@secure-server:~</span>
                 </div>
                 <div class="terminal-body" id="interactive-terminal">
-                    <div style="margin-bottom: 15px; color: var(--text-dim);">Interactive verification protocol initialized. Type 'help'.</div>
+                    <div style="margin-bottom: 15px; color: var(--text-dim);">Interactive verification protocol
+                        initialized. Type 'help'.</div>
                     <div id="terminal-history"></div>
                     <div class="terminal-input-line">
                         <span class="terminal-prompt">guest@server:~$</span>
-                        <input type="text" id="terminal-input" autocomplete="off" spellcheck="false" class="terminal-input-field" autofocus>
+                        <input type="text" id="terminal-input" autocomplete="off" spellcheck="false"
+                            class="terminal-input-field" autofocus>
                     </div>
                 </div>
             </section>
-            
+
             <section class="card profile-main">
                 <h2>The Engineer</h2>
                 <h1>Systematic Construction and Empirical Design.</h1>
-                <p>My objective is to engineer software that processes data efficiently and presents information clearly.</p>
+                <p>My objective is to engineer software that processes data efficiently and presents information
+                    clearly.</p>
             </section>
 
             <section class="card location-card">
-                <i data-lucide="map-pin" style="width: 48px; height: 48px; color: var(--accent); margin-bottom: 1rem;"></i>
+                <i data-lucide="map-pin"
+                    style="width: 48px; height: 48px; color: var(--accent); margin-bottom: 1rem;"></i>
                 <h3 style="margin: 0; font-size: 1.5rem;">Bandung</h3>
                 <p style="margin: 5px 0 0 0; font-size: 1rem;">West Java, Indonesia</p>
                 <p style="font-size: 0.8rem; margin-top: 15px; color: var(--accent);">Operational Base</p>
@@ -73,7 +82,7 @@ permalink: /about/
                 </div>
             </section>
         </div>
-        
+
         {% include footer.html %}
     </div>
 
@@ -89,7 +98,7 @@ permalink: /about/
             'clear': 'CLEAR_SIGNAL'
         };
 
-        terminalInput.addEventListener('keydown', function(event) {
+        terminalInput.addEventListener('keydown', function (event) {
             if (event.key === 'Enter') {
                 const command = this.value.trim().toLowerCase();
                 this.value = '';
@@ -100,7 +109,7 @@ permalink: /about/
                 echoLine.innerHTML = `<span style="color: var(--accent); margin-right: 10px;">guest@server:~$</span><span style="color: var(--text-main);">${command}</span>`;
                 terminalHistory.appendChild(echoLine);
 
-                if (command === 'clear') { terminalHistory.innerHTML = ''; } 
+                if (command === 'clear') { terminalHistory.innerHTML = ''; }
                 else {
                     const responseLine = document.createElement('div');
                     responseLine.style.marginBottom = '15px';
@@ -116,4 +125,5 @@ permalink: /about/
 
     <script src="/assets/core.js"></script>
 </body>
+
 </html>

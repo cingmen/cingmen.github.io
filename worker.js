@@ -8,10 +8,25 @@ self.addEventListener('install', (event) => {
     self.skipWaiting();
 });
 
+// Cache Cleanup Protocol
+self.addEventListener('activate', (event) => {
+    event.waitUntil(
+        caches.keys().then((cacheNames) => {
+            return Promise.all(
+                cacheNames.map((cacheName) => {
+                    if (cacheName !== memoryStorageName) {
+                        return caches.delete(cacheName);
+                    }
+                })
+            );
+        })
+    );
+});
+
 // Intercept outgoing network requests
 self.addEventListener('fetch', (event) => {
     const requestAddress = event.request.url;
-    
+
     // Mathematically verify if the target file is a visual asset
     const isVisualAsset = visualExtensions.some(extension => requestAddress.toLowerCase().endsWith(extension));
 
@@ -20,9 +35,9 @@ self.addEventListener('fetch', (event) => {
             caches.match(event.request).then((cachedResponse) => {
                 // Return the asset instantaneously from local memory if it exists
                 if (cachedResponse) {
-                    return cachedResponse; 
+                    return cachedResponse;
                 }
-                
+
                 // If it does not exist, retrieve it from the network and securely store a duplicate
                 return fetch(event.request).then((networkResponse) => {
                     return caches.open(memoryStorageName).then((storage) => {
