@@ -11,18 +11,16 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    
+    <script>
+        var savedTheme = localStorage.getItem('system_theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
     <link rel="stylesheet" href="/assets/style.css?v={{ site.time | date: '%s' }}">
 </head>
 <body>
     <script>
-        (function() {
-            var savedTheme = localStorage.getItem('system_theme') || 'dark';
-            document.documentElement.setAttribute('data-theme', savedTheme);
-            
-            var savedLang = localStorage.getItem('system_language') || 'en';
-            document.body.setAttribute('data-lang', savedLang);
-        })();
+        var savedLang = localStorage.getItem('system_language') || 'en';
+        document.body.setAttribute('data-lang', savedLang);
     </script>
     {% include navigation.html %}
 
