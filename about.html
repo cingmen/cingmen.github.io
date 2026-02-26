@@ -109,7 +109,7 @@ permalink: /about/
         const terminalHistory = document.getElementById('terminal-history');
         const terminalContainer = document.getElementById('interactive-terminal');
         const commandDatabase = {
-            'help': 'Available execution commands:<br>- <b>whoami</b>: Extract professional summary<br>- <b>skills</b>: Enumerate technical competencies<br>- <b>experience</b>: Output operational timeline<br>- <b>cd portfolio</b>: Routing redirect<br>- <b>cd blog</b>: Routing redirect<br>- <b>clear</b>: Purge terminal display',
+            'help': 'Available execution commands:<br>- <b>whoami</b>: Extract professional summary<br>- <b>skills</b>: Enumerate technical competencies<br>- <b>experience</b>: Output operational timeline<br>- <b>cd portfolio</b>: Routing redirect<br>- <b>cd gallery</b>: Routing redirect<br>- <b>cd blog</b>: Routing redirect<br>- <b>clear</b>: Purge terminal display',
             'whoami': 'Identity Verified: Security Architect and Interface Designer.',
             'skills': 'Validating primary competencies:<br>- Hypertext Markup Language<br>- Cascading Style Sheets<br>- JavaScript Programming',
             'experience': 'Retrieving operational timeline:<br>[2023 - Present] Independent Software Developer',
@@ -142,6 +142,10 @@ permalink: /about/
                     responseLine.innerText = "[+] Securing connection. Routing to Systematic Logs...";
                     setTimeout(() => { document.body.classList.add('navigating-out'); }, 100);
                     setTimeout(() => { window.location.href = '/blog/'; }, 400);
+                } else if (command === 'cd gallery' || command === 'cd /gallery') {
+                    responseLine.innerText = "[+] Securing connection. Routing to Image Assets...";
+                    setTimeout(() => { document.body.classList.add('navigating-out'); }, 100);
+                    setTimeout(() => { window.location.href = '/gallery/'; }, 400);
                 } else if (command === 'cd about' || command === 'cd profile' || command === 'cd /about') {
                     responseLine.innerText = "[!] Already at Operative Profile node.";
                 } else if (command === 'sudo hack' || command === 'sudo rm -rf /') {

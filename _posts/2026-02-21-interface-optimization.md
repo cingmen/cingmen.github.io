@@ -6,7 +6,7 @@ description: "A systematic redesign of the primary user dashboard to reduce cogn
 role: "Interface Designer"
 timeline: "Three Weeks"
 impact: "42% Reduction in Error Rates"
-image: "https://images.unsplash.com/photo-1551288049-bbbda5366391?auto=format&fit=crop&w=800&q=80"
+image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80"
 ---
 
 ## The Structural Design Flaw

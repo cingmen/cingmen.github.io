@@ -1,23 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <title>{{ page.title_en }} - Research Archive</title>
     <meta name="description" content="{{ page.description_en }}">
     <meta name="author" content="Arif">
-    
+
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
     <script>
         var savedTheme = localStorage.getItem('system_theme') || 'dark';
         document.documentElement.setAttribute('data-theme', savedTheme);
     </script>
     <link rel="stylesheet" href="/assets/style.css?v={{ site.time | date: '%s' }}">
 </head>
+
 <body>
+    <div id="reading-progress"
+        style="position: fixed; top: 75px; left: 0; height: 3px; background: var(--security); width: 0%; z-index: 1000; transition: width 0.1s; box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);">
+    </div>
     <script>
         var savedLang = localStorage.getItem('system_language') || 'en';
         document.body.setAttribute('data-lang', savedLang);
@@ -26,16 +33,27 @@
 
     <div class="container">
         <article class="article-card">
-            
+
             <header class="article-header">
                 <div class="article-metadata">
                     <span class="article-date">{{ page.date | date: "%B %d, %Y" }}</span>
                     <span class="tag">{{ page.research_sector }}</span>
+                    <span style="color: var(--border);">|</span>
+                    <span class="article-date">
+                        <i data-lucide="clock" style="width: 14px; height: 14px;"></i>
+                        {% assign word_count = content | number_of_words %}
+                        {% assign reading_time = word_count | divided_by: 180 %}
+                        <span class="lang-en">{% if reading_time == 0 %}1 minute read{% else %}{{ reading_time }} minute
+                            read{% endif %}</span>
+                        <span class="lang-id">{% if reading_time == 0 %}Bacaan 1 menit{% else %}Bacaan {{ reading_time
+                            }}
+                            menit{% endif %}</span>
+                    </span>
                 </div>
-                
+
                 <h1 class="article-title lang-en">{{ page.title_en }}</h1>
                 <h1 class="article-title lang-id">{{ page.title_id }}</h1>
-                
+
                 <p class="article-description lang-en">{{ page.description_en }}</p>
                 <p class="article-description lang-id">{{ page.description_id }}</p>
             </header>
@@ -61,7 +79,7 @@
             <div class="document-content">
                 {{ content }}
             </div>
-            
+
         </article>
     </div>
 
@@ -76,4 +94,5 @@
     </script>
     <script src="/assets/core.js"></script>
 </body>
+
 </html>

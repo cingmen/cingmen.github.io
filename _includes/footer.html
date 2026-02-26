@@ -1,9 +1,20 @@
 <footer style="text-align: center; margin-top: 4rem; margin-bottom: 2rem; color: var(--text-dim); font-size: 0.8rem;">
-    <div style="margin-bottom: 1rem;">
+    <div style="margin-bottom: 1.5rem; display: flex; flex-direction: column; align-items: center; gap: 10px;">
+        <form action="https://formspree.io/f/your_form_id_here" method="POST" style="display: flex; gap: 8px;">
+            <input type="email" name="email" placeholder="Enter email for updates" required
+                style="background: rgba(0,0,0,0.5); border: 1px solid var(--border); color: var(--text-main); font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; padding: 6px 12px; border-radius: 6px; outline: none; transition: border-color 0.3s ease;">
+            <button type="submit"
+                style="background: transparent; border: 1px solid var(--security); color: var(--security); cursor: pointer; padding: 6px 12px; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; font-weight: bold; transition: all 0.3s ease;"
+                onmouseover="this.style.background='rgba(16, 185, 129, 0.1)'; this.style.color='#ffffff'"
+                onmouseout="this.style.background='transparent'; this.style.color='var(--security)'">
+                Subscribe
+            </button>
+        </form>
+
         <a href="/feed.xml" target="_blank"
-            style="color: var(--text-dim); text-decoration: none; display: inline-flex; align-items: center; gap: 5px; transition: color 0.3s ease;"
+            style="color: var(--text-dim); text-decoration: none; display: inline-flex; align-items: center; gap: 5px; transition: color 0.3s ease; margin-top: 0.5rem;"
             onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-dim)'">
-            <i data-lucide="rss" style="width: 14px; height: 14px;"></i> RSS Feed
+            <i data-lucide="rss" style="width: 14px; height: 14px;"></i> Base RSS Endpoint
         </a>
     </div>
     &copy; 2026 — Engineered in Bandung

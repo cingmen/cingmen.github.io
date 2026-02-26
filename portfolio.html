@@ -55,7 +55,7 @@ permalink: /portfolio/
                 {% assign case_studies = site.posts | where: "layout", "case-study" %}
                 {% for post in case_studies %}
                 <a href="{{ post.url }}" class="project-item">
-                    <img src="{{ post.image | default: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=500&q=80' }}"
+                    <img src="{{ post.image | default: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=500&q=80' }}"
                         alt="{{ post.title }}" class="project-img" loading="lazy"
                         style="width: 100%; object-fit: cover;">
                     <div class="project-info">

@@ -6,7 +6,7 @@ description: "A comprehensive restructuring of server-side validation rules and 
 role: "Security Architect"
 timeline: "Six Weeks"
 impact: "Zero-Knowledge Architecture Achieved"
-image: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=800&q=80"
+image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80"
 ---
 
 ## The Structural Vulnerability

@@ -1797,6 +1797,25 @@ pre[class*="language-"] {
     }
 }
 
+/* Mobile SVG Resizing Logic */
+@media (max-width: 900px) {
+    .hero {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .hero-cyberdeck {
+        position: relative;
+        right: auto;
+        top: auto;
+        transform: none !important;
+        margin-top: 2rem;
+        animation: none;
+    }
+}
+
 /* LED Blink Subroutines */
 .cyber-led-fast {
     animation: terminal-blink 0.3s step-end infinite;
