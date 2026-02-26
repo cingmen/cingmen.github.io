@@ -1,8 +1,10 @@
 ---
 layout: post
 title: "Establishing an Empirical Baseline for Static Web Publishing"
+title_id: "Menetapkan Dasar Empiris untuk Penerbitan Web Statis"
 date: 2026-02-21 13:00:00 +0700
 description: "An analysis of performance enhancements achieved by removing dynamic database queries from the documentation delivery process."
+description_id: "Analisis peningkatan performa yang dicapai dengan menghapus kueri basis data dinamis dari proses pengiriman dokumentasi."
 categories: documentation
 ---
 

@@ -1,8 +1,10 @@
 ---
 layout: case-study
 title: "Encrypted Data Protocol: Architecture Analysis"
+title_id: "Protokol Data Terenkripsi: Analisis Arsitektur"
 date: 2026-02-21 12:00:00 +0700
 description: "A comprehensive restructuring of server-side validation rules and cryptographic storage to secure unauthorized access vectors."
+description_id: "Restrukturisasi komprehensif aturan validasi sisi server dan penyimpanan kriptografi untuk mengamankan vektor akses yang tidak sah."
 role: "Security Architect"
 timeline: "Six Weeks"
 impact: "Zero-Knowledge Architecture Achieved"

@@ -1,8 +1,10 @@
 ---
 layout: case-study
 title: "Interface Optimization: Visual Hierarchy Framework"
+title_id: "Optimalisasi Antarmuka: Kerangka Kerja Hierarki Visual"
 date: 2026-02-21 14:00:00 +0700
 description: "A systematic redesign of the primary user dashboard to reduce cognitive load and accelerate the processing of critical infrastructure alerts."
+description_id: "Pendesainan ulang sistematis dari dasbor pengguna utama untuk mengurangi beban kognitif dan mempercepat pemrosesan peringatan infrastruktur penting."
 role: "Interface Designer"
 timeline: "Three Weeks"
 impact: "42% Reduction in Error Rates"

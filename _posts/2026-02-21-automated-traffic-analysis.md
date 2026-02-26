@@ -1,8 +1,10 @@
 ---
 layout: post
 title: "Automated Packet Sniffing and Traffic Analysis Protocol"
+title_id: "Protokol Pemindaian Paket dan Analisis Lalu Lintas Otomatis"
 date: 2026-02-21 20:30:00 +0700
 description: "An empirical demonstration of programmatic syntax highlighting utilizing a custom Python script for passive network reconnaissance."
+description_id: "Demonstrasi empiris penyorotan sintaksis programatik menggunakan skrip Python khusus untuk pengintaian jaringan pasif."
 ---
 
 ## Executive Summary

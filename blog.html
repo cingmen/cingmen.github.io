@@ -35,18 +35,34 @@ permalink: /blog/
 
     <div class="container">
         <section class="card" style="margin-bottom: 2rem;">
-            <h1
-                style="font-size: 2.5rem; margin: 0 0 1rem 0; letter-spacing: -1.5px; font-weight: 800; color: var(--text-main);">
-                Systematic Logs</h1>
-            <p style="color: var(--text-dim); font-size: 1.15rem; margin-bottom: 2.5rem; max-width: 800px;">Continuous
-                observation of network protocols, emerging design topologies, and academic research methodologies.</p>
+            <div class="lang-en">
+                <h1
+                    style="font-size: 2.5rem; margin: 0 0 1rem 0; letter-spacing: -1.5px; font-weight: 800; color: var(--text-main);">
+                    Systematic Logs</h1>
+                <p style="color: var(--text-dim); font-size: 1.15rem; margin-bottom: 2.5rem; max-width: 800px;">
+                    Continuous
+                    observation of network protocols, emerging design topologies, and academic research methodologies.
+                </p>
+            </div>
+            <div class="lang-id">
+                <h1
+                    style="font-size: 2.5rem; margin: 0 0 1rem 0; letter-spacing: -1.5px; font-weight: 800; color: var(--text-main);">
+                    Catatan Sistematis</h1>
+                <p style="color: var(--text-dim); font-size: 1.15rem; margin-bottom: 2.5rem; max-width: 800px;">
+                    Observasi berkelanjutan terhadap protokol jaringan, topologi desain baru, dan metodologi penelitian
+                    akademik.</p>
+            </div>
 
             <div style="margin-bottom: 2.5rem; position: relative;">
                 <i data-lucide="search"
                     style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--text-dim); width: 20px; height: 20px;"></i>
-                <input type="text" id="log-search-input"
+                <input type="text" id="log-search-input-en" class="lang-en"
                     placeholder="Query systematic logs by keyword (e.g., tactical, quantum, stochastic)..."
                     autocomplete="off" spellcheck="false"
+                    style="width: 100%; padding: 16px 20px 16px 50px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 14px; color: var(--text-main); font-family: inherit; font-size: 1.05rem; outline: none; transition: border-color 0.3s ease, box-shadow 0.3s ease;">
+                <input type="text" id="log-search-input-id" class="lang-id"
+                    placeholder="Cari catatan sistematis berdasarkan kata kunci..." autocomplete="off"
+                    spellcheck="false"
                     style="width: 100%; padding: 16px 20px 16px 50px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 14px; color: var(--text-main); font-family: inherit; font-size: 1.05rem; outline: none; transition: border-color 0.3s ease, box-shadow 0.3s ease;">
             </div>
 
@@ -54,12 +70,21 @@ permalink: /blog/
                 {% assign standard_posts = site.posts | where_exp: "item", "item.layout != 'case-study'" %}
                 {% for post in standard_posts %}
                 <a href="{{ post.url }}" class="post-link" style="padding: 1.5rem 0;">
-                    <div>
+                    <div class="lang-en">
                         <span style="font-weight: 700; font-size: 1.2rem; display: block; margin-bottom: 5px;">{{
                             post.title }}</span>
-                        {% if post.description %}<span
-                            style="color: var(--text-dim); font-size: 0.95rem; display: block;">{{ post.description
-                            }}</span>{% endif %}
+                        {% if post.description %}
+                        <span style="color: var(--text-dim); font-size: 0.95rem; display: block;">{{ post.description
+                            }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="lang-id">
+                        <span style="font-weight: 700; font-size: 1.2rem; display: block; margin-bottom: 5px;">{{
+                            post.title_id | default: post.title }}</span>
+                        {% if post.description_id or post.description %}
+                        <span style="color: var(--text-dim); font-size: 0.95rem; display: block;">{{ post.description_id
+                            | default: post.description }}</span>
+                        {% endif %}
                     </div>
                     <span class="post-date" style="white-space: nowrap; margin-left: 1rem;">{{ post.date | date: "%B %d,
                         %Y" }}</span>

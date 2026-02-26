@@ -367,13 +367,14 @@ body {
 /* Dashboard and Landing Interface */
 .hero {
     grid-column: span 3;
-    padding: 2rem 2rem;
+    padding: 1.5rem 2rem;
     border-bottom: 1px solid var(--border);
-    display: flex;
+    display: flex !important;
+    flex-direction: row !important;
     justify-content: space-between;
     align-items: center;
     gap: 1.5rem;
-    min-height: 320px;
+    min-height: auto;
 }
 
 .hero h1 {
