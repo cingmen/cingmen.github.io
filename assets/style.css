@@ -369,6 +369,10 @@ body {
     grid-column: span 3;
     padding: 3rem 2.5rem;
     border-bottom: 2px solid var(--accent);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
 }
 
 .hero h1 {
@@ -1774,26 +1778,24 @@ pre[class*="language-"] {
    CYBERDECK TERMINAL PHYSICS (HERO MODULE)
    ========================================================================== */
 
-/* Absolute positioning protects the dashboard layout from resizing */
+/* Flex positioning protects the dashboard layout from resizing */
 .hero-cyberdeck {
-    position: absolute;
-    right: 2.5rem;
-    top: 50%;
-    transform: translateY(-50%);
+    position: relative;
     animation: cyberdeck-levitate 6s ease-in-out infinite;
     z-index: 1;
     will-change: transform;
+    flex-shrink: 0;
 }
 
 @keyframes cyberdeck-levitate {
 
     0%,
     100% {
-        transform: translateY(-50%);
+        transform: translateY(0);
     }
 
     50% {
-        transform: translateY(calc(-50% - 10px));
+        transform: translateY(-10px);
     }
 }
 
@@ -1808,8 +1810,6 @@ pre[class*="language-"] {
 
     .hero-cyberdeck {
         position: relative;
-        right: auto;
-        top: auto;
         transform: none !important;
         margin-top: 2rem;
         animation: none;
@@ -2139,6 +2139,7 @@ pre[class*="language-"] {
     .hero {
         text-align: center;
         padding: 2rem 1.5rem !important;
+        flex-direction: column;
     }
 
     .hero p {
@@ -2147,9 +2148,6 @@ pre[class*="language-"] {
 
     .hero-cyberdeck {
         position: relative;
-        right: auto;
-        top: auto;
-        transform: none;
         margin: 2rem auto 0 auto;
         display: flex;
         justify-content: center;
@@ -2165,7 +2163,7 @@ pre[class*="language-"] {
     }
 
     50% {
-        transform: translateY(-10px);
+        transform: translateY(-5px);
     }
 }
 
