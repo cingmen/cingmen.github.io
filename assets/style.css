@@ -148,6 +148,13 @@
     box-sizing: border-box;
 }
 
+/* Tactical Selection Highlighting */
+::selection {
+    background: var(--security);
+    color: var(--bg);
+    text-shadow: none;
+}
+
 /* Empirical Theme Transition Protocol */
 body,
 .card,
@@ -214,9 +221,44 @@ body {
 }
 
 .container.navigating-out {
-    opacity: 0 !important;
-    transform: translateY(-15px) !important;
-    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    animation: chromatic-glitch-out 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important;
+}
+
+@keyframes chromatic-glitch-out {
+    0% {
+        transform: translate(0) scale(1);
+        opacity: 1;
+        filter: drop-shadow(0 0 0 rgba(255, 0, 0, 0)) drop-shadow(0 0 0 rgba(0, 255, 255, 0));
+    }
+
+    20% {
+        transform: translate(-3px, 2px) scale(0.99);
+        opacity: 0.9;
+        filter: drop-shadow(4px 0 0 rgba(255, 0, 0, 0.7)) drop-shadow(-4px 0 0 rgba(0, 255, 255, 0.7));
+    }
+
+    40% {
+        transform: translate(3px, -2px) scale(0.98);
+        opacity: 0.8;
+        filter: drop-shadow(-6px 0 0 rgba(255, 0, 0, 0.8)) drop-shadow(6px 0 0 rgba(0, 255, 255, 0.8));
+    }
+
+    60% {
+        transform: translate(-1px, 1px) scale(0.97);
+        opacity: 0.5;
+        filter: drop-shadow(2px 0 0 rgba(255, 0, 0, 0.5)) drop-shadow(-2px 0 0 rgba(0, 255, 255, 0.5));
+    }
+
+    80% {
+        transform: translate(1px, -1px) scale(0.96);
+        opacity: 0.2;
+        filter: drop-shadow(0 0 0 rgba(255, 0, 0, 0)) drop-shadow(0 0 0 rgba(0, 255, 255, 0));
+    }
+
+    100% {
+        transform: translate(0) scale(0.95) translateY(-15px);
+        opacity: 0;
+    }
 }
 
 .grid {
@@ -2294,4 +2336,67 @@ body[data-lang="id"] .lang-en {
     border-color: var(--accent);
     background: rgba(99, 102, 241, 0.1);
     box-shadow: 0 0 10px rgba(99, 102, 241, 0.2);
+}
+
+/* ==========================================================================
+   EASTER EGG PROTOCOLS
+   ========================================================================== */
+body.easter-egg-glitch {
+    animation: criticalAlert 0.3s infinite;
+    overflow: hidden;
+}
+
+body.easter-egg-glitch::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(239, 68, 68, 0.15);
+    z-index: 9999;
+    pointer-events: none;
+    mix-blend-mode: color-burn;
+}
+
+body.easter-egg-glitch .terminal-simulator {
+    border-color: var(--alert);
+    box-shadow: 0 0 30px rgba(239, 68, 68, 0.4);
+    animation: terminalShake 0.1s infinite;
+}
+
+@keyframes criticalAlert {
+    0% {
+        filter: hue-rotate(0deg) contrast(100%);
+    }
+
+    50% {
+        filter: hue-rotate(90deg) contrast(150%) saturate(200%);
+    }
+
+    100% {
+        filter: hue-rotate(0deg) contrast(100%);
+    }
+}
+
+@keyframes terminalShake {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    25% {
+        transform: translate(2px, -2px);
+    }
+
+    50% {
+        transform: translate(-2px, 0);
+    }
+
+    75% {
+        transform: translate(2px, 2px);
+    }
+
+    100% {
+        transform: translate(0, 0);
+    }
 }

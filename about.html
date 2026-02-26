@@ -109,7 +109,7 @@ permalink: /about/
         const terminalHistory = document.getElementById('terminal-history');
         const terminalContainer = document.getElementById('interactive-terminal');
         const commandDatabase = {
-            'help': 'Available execution commands:<br>- <b>whoami</b>: Extract professional summary<br>- <b>skills</b>: Enumerate technical competencies<br>- <b>experience</b>: Output operational timeline<br>- <b>clear</b>: Purge terminal display',
+            'help': 'Available execution commands:<br>- <b>whoami</b>: Extract professional summary<br>- <b>skills</b>: Enumerate technical competencies<br>- <b>experience</b>: Output operational timeline<br>- <b>cd portfolio</b>: Routing redirect<br>- <b>cd blog</b>: Routing redirect<br>- <b>clear</b>: Purge terminal display',
             'whoami': 'Identity Verified: Security Architect and Interface Designer.',
             'skills': 'Validating primary competencies:<br>- Hypertext Markup Language<br>- Cascading Style Sheets<br>- JavaScript Programming',
             'experience': 'Retrieving operational timeline:<br>[2023 - Present] Independent Software Developer',
@@ -127,14 +127,32 @@ permalink: /about/
                 echoLine.innerHTML = `<span style="color: var(--accent); margin-right: 10px;">guest@server:~$</span><span style="color: var(--text-main);">${command}</span>`;
                 terminalHistory.appendChild(echoLine);
 
-                if (command === 'clear') { terminalHistory.innerHTML = ''; }
-                else {
-                    const responseLine = document.createElement('div');
-                    responseLine.style.marginBottom = '15px';
-                    responseLine.style.color = 'var(--text-dim)';
+                const responseLine = document.createElement('div');
+                responseLine.style.marginBottom = '15px';
+                responseLine.style.color = 'var(--text-dim)';
+
+                if (command === 'clear') {
+                    terminalHistory.innerHTML = '';
+                    return;
+                } else if (command === 'cd portfolio' || command === 'cd /portfolio') {
+                    responseLine.innerText = "[+] Securing connection. Routing to Portfolio...";
+                    setTimeout(() => { document.body.classList.add('navigating-out'); }, 100);
+                    setTimeout(() => { window.location.href = '/portfolio/'; }, 400);
+                } else if (command === 'cd blog' || command === 'cd /blog') {
+                    responseLine.innerText = "[+] Securing connection. Routing to Systematic Logs...";
+                    setTimeout(() => { document.body.classList.add('navigating-out'); }, 100);
+                    setTimeout(() => { window.location.href = '/blog/'; }, 400);
+                } else if (command === 'cd about' || command === 'cd profile' || command === 'cd /about') {
+                    responseLine.innerText = "[!] Already at Operative Profile node.";
+                } else if (command === 'sudo hack' || command === 'sudo rm -rf /') {
+                    responseLine.innerHTML = "<span style='color: var(--alert); font-weight: 700;'>[CRITICAL WARNING] UNAUTHORIZED ACCESS DETECTED. INITIATING DEFENSE PROTOCOL...</span>";
+                    document.body.classList.add('easter-egg-glitch');
+                    setTimeout(() => { document.body.classList.remove('easter-egg-glitch'); }, 2500);
+                } else {
                     responseLine.innerHTML = commandDatabase[command] ? commandDatabase[command] : `Directive not recognized: ${command}.`;
-                    terminalHistory.appendChild(responseLine);
                 }
+
+                terminalHistory.appendChild(responseLine);
                 terminalContainer.scrollTop = terminalContainer.scrollHeight;
             }
         });

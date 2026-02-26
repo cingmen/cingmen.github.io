@@ -1,17 +1,24 @@
+<!-- Matrix Canvas Background -->
+<canvas id="matrix-canvas"
+    style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; opacity: 0.05;"></canvas>
+
 <nav class="floating-nav" id="main-nav">
     <div class="nav-container">
-        
+
         <a href="/" class="nav-brand">Research Log</a>
 
         <div style="display: flex; align-items: center; gap: 15px;">
-            
-            <button id="lang-toggle" aria-label="Toggle Language" style="background: transparent; border: 1px solid var(--border); color: var(--text-main); cursor: pointer; padding: 4px 8px; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; display: flex; align-items: center; gap: 5px; transition: all 0.3s ease;">
+
+            <button id="lang-toggle" aria-label="Toggle Language"
+                style="background: transparent; border: 1px solid var(--border); color: var(--text-main); cursor: pointer; padding: 4px 8px; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; display: flex; align-items: center; gap: 5px; transition: all 0.3s ease;">
                 <i data-lucide="globe" style="width: 14px; height: 14px;"></i>
                 <span id="lang-label">ID</span>
             </button>
 
-            <button id="theme-toggle" aria-label="Toggle Theme" style="background: transparent; border: none; color: var(--text-main); cursor: pointer; display: flex; align-items: center; padding: 0;">
-                <i data-lucide="moon" id="theme-icon" style="width: 18px; height: 18px; transition: stroke 0.3s ease;"></i>
+            <button id="theme-toggle" aria-label="Toggle Theme"
+                style="background: transparent; border: none; color: var(--text-main); cursor: pointer; display: flex; align-items: center; padding: 0;">
+                <i data-lucide="moon" id="theme-icon"
+                    style="width: 18px; height: 18px; transition: stroke 0.3s ease;"></i>
             </button>
 
             <button class="mobile-menu-btn" id="mobile-toggle" aria-label="Toggle Navigation">
@@ -31,13 +38,12 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        
+
         // --- 1. BILINGUAL EXECUTION ENGINE ---
         const langToggle = document.getElementById('lang-toggle');
         const langLabel = document.getElementById('lang-label');
         const body = document.body;
 
-        // Cek bahasa dari penyimpanan lokal (Default: English)
         let currentLang = localStorage.getItem('system_language') || 'en';
         body.setAttribute('data-lang', currentLang);
         updateLangLabel(currentLang);
@@ -63,7 +69,6 @@
         const themeIcon = document.getElementById('theme-icon');
         const rootElement = document.documentElement;
 
-        // Cek tema dari penyimpanan lokal (Default: Dark)
         let currentTheme = localStorage.getItem('system_theme') || 'dark';
         rootElement.setAttribute('data-theme', currentTheme);
         updateThemeIcon(currentTheme);
@@ -80,10 +85,9 @@
         function updateThemeIcon(theme) {
             if (themeIcon && window.lucide) {
                 themeIcon.setAttribute('data-lucide', theme === 'light' ? 'sun' : 'moon');
-                window.lucide.createIcons(); // Refresh ikon
+                window.lucide.createIcons();
             }
         }
-
 
         // --- 3. MOBILE DROPDOWN ENGINE ---
         const mobileToggle = document.getElementById('mobile-toggle');
@@ -97,9 +101,65 @@
             });
         }
 
-        // Inisialisasi awal ikon Lucide
         if (window.lucide) {
             window.lucide.createIcons();
+        }
+
+        // --- 4. 3D MATRIX CANVAS ENGINE ---
+        const canvas = document.getElementById('matrix-canvas');
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+
+            // Set canvas size to full viewport
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            // Character set (Cybernetic Hex / Katakana)
+            const chars = '0123456789ABCDEF¦|_~+-\\#*アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+            const fontSize = 14;
+            const columns = canvas.width / fontSize;
+            const drops = [];
+
+            // Initialize drops position (starting above screen)
+            for (let x = 0; x < columns; x++) { drops[x] = 1; }
+
+            function drawMatrix() {
+                // Translucent black background creates the fading trail effect
+                ctx.fillStyle = 'rgba(2, 6, 23, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.fillStyle = '#10b981'; // var(--security) Hex color
+                ctx.font = `${fontSize}px 'JetBrains Mono', monospace`;
+
+                for (let i = 0; i < drops.length; i++) {
+                    const text = chars.charAt(Math.floor(Math.random() * chars.length));
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                    // Randomly reset drop to top if it fell past screen height
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+
+            // Throttle rendering for performance (approx 30fps)
+            let lastTime = 0;
+            function renderLoop(time) {
+                if (time - lastTime > 33) {
+                    drawMatrix();
+                    lastTime = time;
+                }
+                requestAnimationFrame(renderLoop);
+            }
+
+            // Only run if the document holds focus (saves battery/CPU)
+            requestAnimationFrame(renderLoop);
+
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
         }
     });
 </script>

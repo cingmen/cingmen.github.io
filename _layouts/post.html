@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title | default: "Developer Documentation" }}</title>
-    
+    <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title | default: "Developer Documentation" }}
+    </title>
+
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
@@ -17,7 +21,11 @@
     </script>
     <link rel="stylesheet" href="/assets/style.css?v={{ site.time | date: '%s' }}">
 </head>
+
 <body>
+    <div id="reading-progress"
+        style="position: fixed; top: 0; left: 0; height: 3px; background: var(--security); width: 0%; z-index: 1000; transition: width 0.1s; box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);">
+    </div>
     <script>
         var savedLang = localStorage.getItem('system_language') || 'en';
         document.body.setAttribute('data-lang', savedLang);
@@ -34,7 +42,10 @@
                         <i data-lucide="clock" style="width: 14px; height: 14px;"></i>
                         {% assign word_count = content | number_of_words %}
                         {% assign reading_time = word_count | divided_by: 180 %}
-                        {% if reading_time == 0 %}1 minute read{% else %}{{ reading_time }} minute read{% endif %}
+                        <span class="lang-en">{% if reading_time == 0 %}1 minute read{% else %}{{ reading_time }} minute
+                            read{% endif %}</span>
+                        <span class="lang-id">{% if reading_time == 0 %}Bacaan 1 menit{% else %}Bacaan {{ reading_time
+                            }} menit{% endif %}</span>
                     </span>
                 </div>
                 <h1 class="article-title">{{ page.title }}</h1>
@@ -49,21 +60,28 @@
                 <span class="metric-label">Acknowledge</span>
             </div>
             <div class="action-group">
-                <button onclick="navigator.clipboard.writeText(window.location.href); alert('Web address secured to clipboard.');" class="utility-btn">
+                <button
+                    onclick="navigator.clipboard.writeText(window.location.href); alert('Web address secured to clipboard.');"
+                    class="utility-btn">
                     <i data-lucide="link" style="width: 16px; height: 16px;"></i> Secure Link
                 </button>
             </div>
         </div>
 
-        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 1.5rem; padding: 0 1rem;">
-            <button onclick="window.history.length > 2 ? history.back() : window.location.href = '/blog/';" style="display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--text-dim); border: none; font-family: inherit; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: color 0.3s ease; padding: 0.5rem;" onmouseover="this.style.color='var(--text-main)'" onmouseout="this.style.color='var(--text-dim)'">
+        <div
+            style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 1.5rem; padding: 0 1rem;">
+            <button onclick="window.history.length > 2 ? history.back() : window.location.href = '/blog/';"
+                style="display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--text-dim); border: none; font-family: inherit; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: color 0.3s ease; padding: 0.5rem;"
+                onmouseover="this.style.color='var(--text-main)'" onmouseout="this.style.color='var(--text-dim)'">
                 <i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i> Return to Previous
             </button>
-            <button onclick="window.scrollTo({ top: 0, behavior: 'smooth' });" style="display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--text-dim); border: none; font-family: inherit; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: color 0.3s ease; padding: 0.5rem;" onmouseover="this.style.color='var(--text-main)'" onmouseout="this.style.color='var(--text-dim)'">
+            <button onclick="window.scrollTo({ top: 0, behavior: 'smooth' });"
+                style="display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--text-dim); border: none; font-family: inherit; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: color 0.3s ease; padding: 0.5rem;"
+                onmouseover="this.style.color='var(--text-main)'" onmouseout="this.style.color='var(--text-dim)'">
                 Top of Document <i data-lucide="arrow-up" style="width: 16px; height: 16px;"></i>
             </button>
         </div>
-        
+
         {% include footer.html %}
     </div>
 
@@ -75,10 +93,12 @@
             document.getElementById("reading-progress").style.width = scrolled + "%";
         });
     </script>
-    
+
     <script src="/assets/core.js"></script>
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </body>
+
 </html>
