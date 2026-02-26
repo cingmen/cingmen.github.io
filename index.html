@@ -20,7 +20,9 @@ permalink: /
         var savedTheme = localStorage.getItem('system_theme') || 'dark';
         document.documentElement.setAttribute('data-theme', savedTheme);
     </script>
+    <link rel="preload" href="/assets/style.css?v={{ site.time | date: '%s' }}" as="style">
     <link rel="stylesheet" href="/assets/style.css?v={{ site.time | date: '%s' }}">
+    <script defer src="/assets/core.js"></script>
 </head>
 
 <body>
@@ -337,7 +339,6 @@ permalink: /
         });
     </script>
 
-    <script src="/assets/core.js"></script>
 </body>
 
 </html>

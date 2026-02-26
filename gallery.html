@@ -20,7 +20,9 @@ permalink: /gallery/
         var savedTheme = localStorage.getItem('system_theme') || 'dark';
         document.documentElement.setAttribute('data-theme', savedTheme);
     </script>
+    <link rel="preload" href="/assets/style.css?v={{ site.time | date: '%s' }}" as="style">
     <link rel="stylesheet" href="/assets/style.css?v={{ site.time | date: '%s' }}">
+    <script defer src="/assets/core.js"></script>
 </head>
 
 <body>
@@ -89,59 +91,51 @@ permalink: /gallery/
 
                 <div class="photo-item" data-category="hardware"
                     data-caption="Tactical Military Network: Hardware Routing Node">
-                    <div class="photo-bg"
-                        style="background-image: url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1000&q=80');">
-                    </div>
+                    <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1000&q=80"
+                        alt="Tactical Military Network: Hardware Routing Node" class="photo-bg" loading="lazy">
                     <div class="photo-overlay"><i data-lucide="maximize-2"></i></div>
                 </div>
 
                 <div class="photo-item" data-category="schematics" data-caption="Quantum Sensor Integration Matrix">
-                    <div class="photo-bg"
-                        style="background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=500&q=80');">
-                    </div>
+                    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=500&q=80"
+                        alt="Quantum Sensor Integration Matrix" class="photo-bg" loading="lazy">
                     <div class="photo-overlay"><i data-lucide="maximize-2"></i></div>
                 </div>
 
                 <div class="photo-item" data-category="schematics" data-caption="Stochastic Optimization Topology">
-                    <div class="photo-bg"
-                        style="background-image: url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=500&q=80');">
-                    </div>
+                    <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=500&q=80"
+                        alt="Stochastic Optimization Topology" class="photo-bg" loading="lazy">
                     <div class="photo-overlay"><i data-lucide="maximize-2"></i></div>
                 </div>
 
                 <div class="photo-item" data-category="deployment"
                     data-caption="Natural Disaster Early Warning System Deployment">
-                    <div class="photo-bg"
-                        style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80');">
-                    </div>
+                    <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80"
+                        alt="Natural Disaster Early Warning System Deployment" class="photo-bg" loading="lazy">
                     <div class="photo-overlay"><i data-lucide="maximize-2"></i></div>
                 </div>
 
                 <div class="photo-item" data-category="hardware" data-caption="Conventional Sensor Array Diagnostics">
-                    <div class="photo-bg"
-                        style="background-image: url('https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=500&q=80');">
-                    </div>
+                    <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=500&q=80"
+                        alt="Conventional Sensor Array Diagnostics" class="photo-bg" loading="lazy">
                     <div class="photo-overlay"><i data-lucide="maximize-2"></i></div>
                 </div>
 
                 <div class="photo-item" data-category="hardware" data-caption="Proactive Defense Server Rack">
-                    <div class="photo-bg"
-                        style="background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=500&q=80');">
-                    </div>
+                    <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=500&q=80"
+                        alt="Proactive Defense Server Rack" class="photo-bg" loading="lazy">
                     <div class="photo-overlay"><i data-lucide="maximize-2"></i></div>
                 </div>
 
                 <div class="photo-item" data-category="deployment" data-caption="Encrypted Communication Relay">
-                    <div class="photo-bg"
-                        style="background-image: url('https://images.unsplash.com/photo-1510511459019-5efa3702464d?auto=format&fit=crop&w=1000&q=80');">
-                    </div>
+                    <img src="https://images.unsplash.com/photo-1510511459019-5efa3702464d?auto=format&fit=crop&w=1000&q=80"
+                        alt="Encrypted Communication Relay" class="photo-bg" loading="lazy">
                     <div class="photo-overlay"><i data-lucide="maximize-2"></i></div>
                 </div>
 
                 <div class="photo-item" data-category="schematics" data-caption="Sub-Orbital Telemetry Data">
-                    <div class="photo-bg"
-                        style="background-image: url('https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=500&q=80');">
-                    </div>
+                    <img src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=500&q=80"
+                        alt="Sub-Orbital Telemetry Data" class="photo-bg" loading="lazy">
                     <div class="photo-overlay"><i data-lucide="maximize-2"></i></div>
                 </div>
 
@@ -263,8 +257,8 @@ permalink: /gallery/
             galleryItems.forEach(item => {
                 item.addEventListener('click', () => {
                     const bgElement = item.querySelector('.photo-bg');
-                    // Ensure robust extraction by stripping anomalous quotation marks
-                    const rawUrl = bgElement.style.backgroundImage.slice(5, -2).replace(/['"]/g, '');
+                    // Extract the source URL directly from the new semantic <img> tag
+                    const rawUrl = bgElement.src;
                     const captionText = item.getAttribute('data-caption');
 
                     lightboxImg.src = rawUrl;
@@ -297,7 +291,6 @@ permalink: /gallery/
         });
     </script>
 
-    <script src="/assets/core.js"></script>
 </body>
 
 </html>

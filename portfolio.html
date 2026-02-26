@@ -21,7 +21,9 @@ permalink: /portfolio/
         var savedTheme = localStorage.getItem('system_theme') || 'dark';
         document.documentElement.setAttribute('data-theme', savedTheme);
     </script>
+    <link rel="preload" href="/assets/style.css?v={{ site.time | date: '%s' }}" as="style">
     <link rel="stylesheet" href="/assets/style.css?v={{ site.time | date: '%s' }}">
+    <script defer src="/assets/core.js"></script>
 </head>
 
 <body>
@@ -53,9 +55,9 @@ permalink: /portfolio/
                 {% assign case_studies = site.posts | where: "layout", "case-study" %}
                 {% for post in case_studies %}
                 <a href="{{ post.url }}" class="project-item">
-                    <div class="project-img"
-                        style="background-image: url('{{ post.image | default: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=500&q=80' }}')">
-                    </div>
+                    <img src="{{ post.image | default: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=500&q=80' }}"
+                        alt="{{ post.title }}" class="project-img" loading="lazy"
+                        style="width: 100%; object-fit: cover;">
                     <div class="project-info">
                         <h3 style="margin: 0; font-size: 1.1rem; color: var(--text-main);">{{ post.title }}</h3>
                         <p style="margin: 5px 0 0; font-size: 0.85rem; color: var(--text-dim);">{{ post.role | default:
@@ -69,7 +71,6 @@ permalink: /portfolio/
         {% include footer.html %}
     </div>
 
-    <script src="/assets/core.js"></script>
 </body>
 
 </html>

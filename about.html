@@ -21,7 +21,9 @@ permalink: /about/
         var savedTheme = localStorage.getItem('system_theme') || 'dark';
         document.documentElement.setAttribute('data-theme', savedTheme);
     </script>
+    <link rel="preload" href="/assets/style.css?v={{ site.time | date: '%s' }}" as="style">
     <link rel="stylesheet" href="/assets/style.css?v={{ site.time | date: '%s' }}">
+    <script defer src="/assets/core.js"></script>
 </head>
 
 <body>
@@ -43,12 +45,16 @@ permalink: /about/
                     <div class="terminal-dot" style="background: #ef4444;"></div>
                     <div class="terminal-dot" style="background: #eab308;"></div>
                     <div class="terminal-dot" style="background: #10b981;"></div>
-                    <span class="lang-en" style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-dim); margin-left: 10px;">guest@secure-server:~</span>
-                    <span class="lang-id" style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-dim); margin-left: 10px;">tamu@server-aman:~</span>
+                    <span class="lang-en"
+                        style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-dim); margin-left: 10px;">guest@secure-server:~</span>
+                    <span class="lang-id"
+                        style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-dim); margin-left: 10px;">tamu@server-aman:~</span>
                 </div>
                 <div class="terminal-body" id="interactive-terminal">
-                    <div class="lang-en" style="margin-bottom: 15px; color: var(--text-dim);">Interactive verification protocol initialized. Type 'help'.</div>
-                    <div class="lang-id" style="margin-bottom: 15px; color: var(--text-dim);">Protokol verifikasi interaktif diinisialisasi. Ketik 'help'.</div>
+                    <div class="lang-en" style="margin-bottom: 15px; color: var(--text-dim);">Interactive verification
+                        protocol initialized. Type 'help'.</div>
+                    <div class="lang-id" style="margin-bottom: 15px; color: var(--text-dim);">Protokol verifikasi
+                        interaktif diinisialisasi. Ketik 'help'.</div>
                     <div id="terminal-history"></div>
                     <div class="terminal-input-line">
                         <span class="terminal-prompt">guest@server:~$</span>
@@ -62,12 +68,14 @@ permalink: /about/
                 <div class="lang-en">
                     <h2>The Engineer</h2>
                     <h1>Systematic Construction and Empirical Design.</h1>
-                    <p>My objective is to engineer software that processes data efficiently and presents information clearly.</p>
+                    <p>My objective is to engineer software that processes data efficiently and presents information
+                        clearly.</p>
                 </div>
                 <div class="lang-id">
                     <h2>Sang Insinyur</h2>
                     <h1>Konstruksi Sistematis dan Desain Empiris.</h1>
-                    <p>Tujuan saya adalah merekayasa perangkat lunak yang memproses data secara efisien dan menyajikan informasi dengan jelas.</p>
+                    <p>Tujuan saya adalah merekayasa perangkat lunak yang memproses data secara efisien dan menyajikan
+                        informasi dengan jelas.</p>
                 </div>
             </section>
 
@@ -76,8 +84,10 @@ permalink: /about/
                     style="width: 48px; height: 48px; color: var(--accent); margin-bottom: 1rem;"></i>
                 <h3 style="margin: 0; font-size: 1.5rem;">Bandung</h3>
                 <p style="margin: 5px 0 0 0; font-size: 1rem;">West Java, Indonesia</p>
-                <p class="lang-en" style="font-size: 0.8rem; margin-top: 15px; color: var(--accent);">Operational Base</p>
-                <p class="lang-id" style="font-size: 0.8rem; margin-top: 15px; color: var(--accent);">Basis Operasional</p>
+                <p class="lang-en" style="font-size: 0.8rem; margin-top: 15px; color: var(--accent);">Operational Base
+                </p>
+                <p class="lang-id" style="font-size: 0.8rem; margin-top: 15px; color: var(--accent);">Basis Operasional
+                </p>
             </section>
 
             <section class="card skills-card">
@@ -131,7 +141,6 @@ permalink: /about/
         terminalContainer.addEventListener('click', () => { terminalInput.focus(); });
     </script>
 
-    <script src="/assets/core.js"></script>
 </body>
 
 </html>

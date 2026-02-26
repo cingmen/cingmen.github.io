@@ -622,6 +622,7 @@ input[type="text"].terminal-input-field,
     flex-grow: 1 !important;
     caret-color: var(--text-main) !important;
     -webkit-appearance: none !important;
+    appearance: none !important;
 }
 
 /* ==========================================================================
@@ -1042,6 +1043,7 @@ pre[class*="language-"] {
 
 .threat-slider {
     -webkit-appearance: none;
+    appearance: none;
     width: 100%;
     height: 6px;
     background: rgba(255, 255, 255, 0.1);
