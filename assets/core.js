@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!themeToggleBtn || !themeIcon) return;
 
     // Retrieve previous preference or check system default
-    const currentTheme = localStorage.getItem('theme');
+    const currentTheme = localStorage.getItem('system_theme');
     const systemPrefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
 
     // Apply the correct theme upon initial load
@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Apply new parameters
         document.documentElement.setAttribute('data-theme', targetTheme);
-        localStorage.setItem('theme', targetTheme);
+        localStorage.setItem('system_theme', targetTheme);
 
         // Re-compile the icon visualization
         themeIcon.setAttribute('data-lucide', iconName);
