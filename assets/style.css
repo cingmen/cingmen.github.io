@@ -369,8 +369,8 @@ body {
     grid-column: span 3;
     padding: 1.5rem 2rem;
     border-bottom: 1px solid var(--border);
-    display: flex !important;
-    flex-direction: row !important;
+    display: flex;
+    flex-direction: row;
     justify-content: space-between;
     align-items: center;
     gap: 1.5rem;
@@ -512,7 +512,7 @@ h2 {
 /* Profile Elements */
 .visual-header {
     grid-column: span 3;
-    height: 200px;
+    height: 120px;
     background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
     display: flex;
     justify-content: center;
@@ -653,7 +653,7 @@ h2 {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.9rem;
     color: var(--security);
-    height: 300px;
+    height: 450px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -2269,15 +2269,15 @@ pre[class*="language-"] {
 
 @media (max-width: 600px) {
     .hero {
-        flex-direction: column;
+        flex-direction: column !important;
         text-align: center;
         padding: 2rem 1.5rem;
     }
 
     .hero-cyberdeck {
-        transform: scale(0.9) !important;
+        transform: scale(0.9);
         transform-origin: center center;
-        margin-top: 2rem;
+        margin-top: 1.5rem;
     }
 
     .photo-grid.layout-grid {
