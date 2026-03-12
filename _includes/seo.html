@@ -1,0 +1,99 @@
+<!-- SEO & Open Graph Meta Tags -->
+<meta name="description" content="{{ page.description | default: page.description_en | default: site.description }}">
+<meta name="author" content="Joesavat Donovan">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="{{ page.og_type | default: 'website' }}">
+<meta property="og:url" content="{{ site.url }}{{ page.url | default: '/' }}">
+<meta property="og:title" content="{{ page.title | default: page.title_en | default: site.title }}">
+<meta property="og:description" content="{{ page.description | default: page.description_en | default: site.description }}">
+{% if page.image %}
+<meta property="og:image" content="{{ page.image }}">
+{% elsif site.social_image %}
+<meta property="og:image" content="{{ site.url }}{{ site.social_image }}">
+{% else %}
+<meta property="og:image" content="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80">
+{% endif %}
+<meta property="og:site_name" content="{{ site.title }}">
+<meta property="og:locale" content="{{ page.locale | default: 'en_US' }}">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="{{ site.url }}{{ page.url | default: '/' }}">
+<meta name="twitter:title" content="{{ page.title | default: page.title_en | default: site.title }}">
+<meta name="twitter:description" content="{{ page.description | default: page.description_en | default: site.description }}">
+{% if page.image %}
+<meta name="twitter:image" content="{{ page.image }}">
+{% elsif site.social_image %}
+<meta name="twitter:image" content="{{ site.url }}{{ site.social_image }}">
+{% else %}
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80">
+{% endif %}
+<meta name="twitter:creator" content="@cingmen">
+
+<!-- Canonical URL -->
+<link rel="canonical" href="{{ site.url }}{{ page.url | default: '/' }}">
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "{{ page.schema_type | default: 'PersonalPortfolio' }}",
+  "name": "{{ site.title }}",
+  "url": "{{ site.url }}{{ page.url | default: '/' }}",
+  "description": "{{ page.description | default: page.description_en | default: site.description | escape }}",
+  "author": {
+    "@type": "Person",
+    "name": "Joesavat Donovan",
+    "jobTitle": "Cybersecurity & IT Professional",
+    "url": "{{ site.url }}",
+    "sameAs": [
+      "https://github.com/cingmen",
+      "https://linkedin.com/in/joesavatdonovan"
+    ]
+  },
+  {% if page.date %}
+  "datePublished": "{{ page.date | date_to_xmlschema }}",
+  {% endif %}
+  {% if page.image %}
+  "image": "{{ page.image }}",
+  {% elsif site.social_image %}
+  "image": "{{ site.url }}{{ site.social_image }}",
+  {% else %}
+  "image": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80",
+  {% endif %}
+  "publisher": {
+    "@type": "Person",
+    "name": "Joesavat Donovan"
+  }
+}
+</script>
+
+{% if page.layout == "post" or page.layout == "case-study" %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "{{ page.title | default: page.title_en | escape }}",
+  "description": "{{ page.description | default: page.description_en | escape }}",
+  "url": "{{ site.url }}{{ page.url }}",
+  "datePublished": "{{ page.date | date_to_xmlschema }}",
+  "dateModified": "{{ page.last_modified_at | default: page.date | date_to_xmlschema }}",
+  "author": {
+    "@type": "Person",
+    "name": "Joesavat Donovan",
+    "url": "{{ site.url }}"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Joesavat Donovan"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ site.url }}{{ page.url }}"
+  },
+  "articleSection": "{{ page.categories | default: 'Technology' }}",
+  "keywords": "{{ page.tags | join: ', ' | default: 'cybersecurity, portfolio, technology' }}"
+}
+</script>
+{% endif %}

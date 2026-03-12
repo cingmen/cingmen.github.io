@@ -1,6 +1,9 @@
 title: "Joesavat Donovan - Cybersecurity & IT Professional"
 description: "Engineering secure Information Technology infrastructure, constructing minimalist digital interfaces, and exploring new technological paradigms."
 url: "https://cingmen.github.io"
+author:
+  name: "Joesavat Donovan"
+  email: "joesavat@gmail.com"
 markdown: kramdown
 permalink: /:year/:month/:day/:title/
 plugins:
