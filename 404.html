@@ -1,79 +1,401 @@
----
-permalink: /404.html
-layout: null
----
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta http-equiv="Cache-Control" content="public, max-age=31536000, immutable">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - Unauthorized Access - {{ site.title | default: "Developer Documentation" }}</title>
-    
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <title>404 — Signal Lost | SECURE_ID://ROOT</title>
+    <meta name="robots" content="noindex">
+    <link rel="icon"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%230a0a0a'/%3E%3Ccircle cx='8' cy='8' r='4' fill='%23ccff00'/%3E%3C/svg%3E">
+    <script>
+        document.documentElement.classList.add('js');
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <script>
-        var savedTheme = localStorage.getItem('system_theme') || 'dark';
-        document.documentElement.setAttribute('data-theme', savedTheme);
-    </script>
-    <link rel="stylesheet" href="/assets/style.css?v={{ site.time | date: '%s' }}">
-    
-    {% include seo.html %}
-</head>
-<body>
-    <script>
-        var savedLang = localStorage.getItem('system_language') || 'en';
-        document.body.setAttribute('data-lang', savedLang);
-    </script>
-    {% include navigation.html %}
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Space+Grotesk:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ============ design tokens ============ */
+        :root {
+            --bg: #0a0a0a;
+            --fg: #f0f0f0;
+            --dim: #8f8f8f;
+            --accent: #ccff00;
+            --line: rgba(240, 240, 240, .14);
+            --head: 'Syne', sans-serif;
+            --body: 'Space Grotesk', sans-serif;
+            --mono: 'Space Mono', monospace;
+            --pad: clamp(20px, 4vw, 56px);
+        }
 
-    <div class="container">
-        <div class="terminal-window">
-            <div class="terminal-header">
-                <div class="terminal-dot close"></div>
-                <div class="terminal-dot"></div>
-                <div class="terminal-dot"></div>
-                <div class="terminal-title">Exception Protocol: 404</div>
-            </div>
-            <div class="terminal-body" id="terminal-screen"></div>
-        </div>
-        
-        {% include footer.html %}
-    </div>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    <script>
-        const terminalScreen = document.getElementById('terminal-screen');
-        const sequence = ["[!] CONNECTION TERMINATED", "[-] ERROR 404: RESOURCE NOT FOUND", "[-] TARGET DIRECTORY DOES NOT EXIST AT THIS ADDRESS", "[!] UNAUTHORIZED ACCESS ATTEMPT LOGGED", "[*] INITIATING SAFE ROUTING PROTOCOLS..."];
-        let lineIndex = 0;
+        html {
+            -webkit-text-size-adjust: 100%;
+        }
 
-        function renderLine() {
-            if (lineIndex < sequence.length) {
-                const line = document.createElement('div');
-                line.className = 'sys-output';
-                line.innerHTML = `<span class="sys-prompt">root@system:~#</span><span> ${sequence[lineIndex]}</span>`;
-                line.style.opacity = 1;
-                terminalScreen.appendChild(line);
-                lineIndex++;
-                setTimeout(renderLine, Math.random() * 400 + 300);
-            } else {
-                const finalLine = document.createElement('div');
-                finalLine.innerHTML = '<span class="sys-prompt">root@system:~#</span> <span class="terminal-cursor"></span>';
-                finalLine.style.marginTop = '10px';
-                terminalScreen.appendChild(finalLine);
+        body {
+            background: var(--bg);
+            color: var(--fg);
+            font-family: var(--body);
+            font-size: 16px;
+            line-height: 1.65;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
 
-                const actionDiv = document.createElement('div');
-                actionDiv.className = 'terminal-action';
-                actionDiv.innerHTML = `<a href="/" class="safe-route-btn"><i data-lucide="shield-alert" style="width: 18px; height: 18px;"></i> Execute Safe Return</a>`;
-                terminalScreen.appendChild(actionDiv);
-                
-                // Secondary icon compilation required here for dynamically injected elements
-                lucide.createIcons();
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            font: inherit;
+            color: inherit;
+            background: none;
+            border: 0;
+        }
+
+        ::selection {
+            background: var(--accent);
+            color: #0a0a0a;
+        }
+
+        /* ============ overlays ============ */
+        .progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: 9997;
+            pointer-events: none;
+            opacity: .05;
+            background-size: 300px 300px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+
+        /* ============ custom cursor ============ */
+        .cursor-dot,
+        .cursor-ring {
+            position: fixed;
+            top: 0;
+            left: 0;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 10000;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-dot {
+            width: 6px;
+            height: 6px;
+            background: #fff;
+            transform: translate(-50%, -50%);
+            transition: opacity .3s;
+        }
+
+        .cursor-ring {
+            width: 36px;
+            height: 36px;
+            border: 1px solid rgba(255, 255, 255, .65);
+            transform: translate(-50%, -50%);
+            transition: opacity .3s, width .3s, height .3s, border-color .3s, background .3s;
+        }
+
+        html.cursor-on .cursor-dot,
+        html.cursor-on .cursor-ring {
+            opacity: 1;
+        }
+
+        html.cursor-on,
+        html.cursor-on * {
+            cursor: none !important;
+        }
+
+        .cursor-ring.is-hover {
+            width: 64px;
+            height: 64px;
+            border-color: var(--accent);
+            background: rgba(204, 255, 0, .12);
+        }
+
+        /* ============ nav ============ */
+        .nav {
+            width: 100%;
+            padding: 22px var(--pad);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav__logo {
+            font-family: var(--mono);
+            font-size: .85rem;
+            font-weight: 700;
+            letter-spacing: .12em;
+        }
+
+        .nav__logo .acc {
+            color: var(--accent);
+        }
+
+        .nav__home {
+            font-family: var(--mono);
+            font-size: .8rem;
+            letter-spacing: .18em;
+            transition: color .3s;
+        }
+
+        .nav__home:hover,
+        .nav__home:focus-visible {
+            color: var(--accent);
+        }
+
+        /* ============ stage ============ */
+        .stage {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            gap: clamp(20px, 4vh, 40px);
+            padding: clamp(40px, 8vh, 90px) var(--pad);
+        }
+
+        .stage__code {
+            font-family: var(--head);
+            font-weight: 800;
+            font-size: clamp(5rem, 24vw, 18rem);
+            line-height: .9;
+            letter-spacing: -.04em;
+            color: transparent;
+            -webkit-text-stroke: 2px var(--accent);
+            animation: flicker 4.5s infinite;
+        }
+
+        @keyframes flicker {
+
+            0%,
+            92%,
+            100% {
+                opacity: 1;
+            }
+
+            94% {
+                opacity: .35;
+            }
+
+            96% {
+                opacity: .9;
+            }
+
+            97% {
+                opacity: .5;
             }
         }
-        document.addEventListener("DOMContentLoaded", () => { setTimeout(renderLine, 500); });
-    </script>
 
-    <script src="/assets/core.js"></script>
+        .stage__status {
+            font-family: var(--mono);
+            font-size: .8rem;
+            letter-spacing: .28em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        .stage__msg {
+            max-width: 52ch;
+            color: var(--dim);
+        }
+
+        .stage__log {
+            font-family: var(--mono);
+            font-size: .76rem;
+            line-height: 1.9;
+            color: var(--dim);
+            text-align: left;
+            border: 1px solid var(--line);
+            padding: 18px 22px;
+            min-width: min(440px, 100%);
+        }
+
+        .stage__log .g {
+            color: var(--accent);
+        }
+
+        .stage__log .d {
+            color: #5f5f5f;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            font-family: var(--mono);
+            font-size: .85rem;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            background: var(--accent);
+            color: #0a0a0a;
+            padding: 20px 36px;
+            transition: box-shadow .3s, transform .3s ease-out;
+        }
+
+        .btn:hover {
+            box-shadow: 0 0 44px rgba(204, 255, 0, .4);
+            transform: translateY(-3px);
+        }
+
+        /* ============ footer ============ */
+        .footer {
+            border-top: 1px solid var(--line);
+            padding: 26px var(--pad);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px 24px;
+            font-family: var(--mono);
+            font-size: .72rem;
+            letter-spacing: .1em;
+            color: var(--dim);
+        }
+
+        .footer a:hover {
+            color: var(--accent);
+        }
+
+        /* ============ reduced motion ============ */
+        @media (prefers-reduced-motion: reduce) {
+            .stage__code {
+                animation: none;
+            }
+
+            .btn:hover {
+                transform: none;
+            }
+
+            .cursor-dot,
+            .cursor-ring {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="progress" id="progress"></div>
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <header class="nav">
+        <a class="nav__logo" href="index.html">SECURE_ID<span class="acc">://</span>ROOT</a>
+        <a class="nav__home" href="index.html">[ HOME ]</a>
+    </header>
+
+    <main class="stage">
+        <p class="stage__status">// ERROR 0x1F — SIGNAL LOST</p>
+        <h1 class="stage__code">404</h1>
+        <p class="stage__msg">The resource you requested does not exist, was moved, or is not cleared for access.
+            Check the path — or head back to the root shell.</p>
+        <div class="stage__log" aria-hidden="true">
+            <div><span class="d">$</span> curl -s https://cingmen.github.io/<span id="path">this/path</span></div>
+            <div class="g">HTTP/1.1 404 Not Found</div>
+            <div><span class="d">$</span> whoami &amp;&amp; pwd</div>
+            <div class="g">guest@secure_id · /unknown/route</div>
+        </div>
+        <a class="btn" href="index.html">[ Return to Home ] <span aria-hidden="true">→</span></a>
+    </main>
+
+    <footer class="footer">
+        <span>© <span id="year">2026</span> JOESAVAT DONOVAN</span>
+        <span><a href="mailto:joesavat@gmail.com">joesavat@gmail.com</a></span>
+        <span>PAGE NOT FOUND — 404</span>
+    </footer>
+
+    <script>
+        (function () {
+            'use strict';
+
+            /* ---------- scroll progress (short page — still functional) ---------- */
+            var bar = document.getElementById('progress');
+
+            function updateProgress() {
+                var max = document.documentElement.scrollHeight - window.innerHeight;
+                bar.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + '%';
+            }
+            window.addEventListener('scroll', updateProgress, { passive: true });
+            window.addEventListener('resize', updateProgress);
+            updateProgress();
+
+            /* ---------- custom cursor ---------- */
+            var finePointer = window.matchMedia('(pointer: fine)').matches;
+            var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            if (finePointer && !reduceMotion) {
+                var dot = document.getElementById('cursorDot');
+                var ring = document.getElementById('cursorRing');
+
+                var mx = window.innerWidth / 2, my = window.innerHeight / 2;
+                var rx = mx, ry = my;
+                var moved = false;
+
+                document.addEventListener('mousemove', function (e) {
+                    mx = e.clientX;
+                    my = e.clientY;
+                    if (!moved) {
+                        moved = true;
+                        rx = mx;
+                        ry = my;
+                        document.documentElement.classList.add('cursor-on');
+                    }
+                    dot.style.transform = 'translate(' + mx + 'px,' + my + 'px) translate(-50%,-50%)';
+                });
+
+                (function follow() {
+                    rx += (mx - rx) * 0.16;
+                    ry += (my - ry) * 0.16;
+                    ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px) translate(-50%,-50%)';
+                    requestAnimationFrame(follow);
+                })();
+
+                document.addEventListener('mouseover', function (e) {
+                    if (e.target.closest('a, button')) ring.classList.add('is-hover');
+                });
+                document.addEventListener('mouseout', function (e) {
+                    if (e.target.closest('a, button')) ring.classList.remove('is-hover');
+                });
+            }
+
+            /* ---------- show requested path ---------- */
+            var path = document.getElementById('path');
+            if (path) path.textContent = (location.pathname || '/').replace(/^\/+/, '') || '/';
+
+            var year = document.getElementById('year');
+            if (year) year.textContent = String(new Date().getFullYear());
+        })();
+    </script>
 </body>
+
 </html>

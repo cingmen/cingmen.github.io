@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlackGate Perimeter Breach — Case Study | Joesavat Donovan</title>
+    <meta name="description"
+        content="Technical case study: external perimeter breach of a segmented enterprise network — methodology, exploitation and remediation.">
+    <link rel="icon"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%230a0a0a'/%3E%3Ccircle cx='8' cy='8' r='4' fill='%23ccff00'/%3E%3C/svg%3E">
+    <script>
+        document.documentElement.classList.add('js');
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Space+Grotesk:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ============ design tokens ============ */
+        :root {
+            --bg: #0a0a0a;
+            --fg: #f0f0f0;
+            --dim: #8f8f8f;
+            --accent: #ccff00;
+            --line: rgba(240, 240, 240, .14);
+            --head: 'Syne', sans-serif;
+            --body: 'Space Grotesk', sans-serif;
+            --mono: 'Space Mono', monospace;
+            --pad: clamp(20px, 4vw, 56px);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            -webkit-text-size-adjust: 100%;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--fg);
+            font-family: var(--body);
+            font-size: 16px;
+            line-height: 1.65;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            font: inherit;
+            color: inherit;
+            background: none;
+            border: 0;
+        }
+
+        ::selection {
+            background: var(--accent);
+            color: #0a0a0a;
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #1f1f1f;
+            border: 2px solid var(--bg);
+        }
+
+        /* ============ overlays ============ */
+        .progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: 9997;
+            pointer-events: none;
+            opacity: .05;
+            background-size: 300px 300px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+
+        /* ============ custom cursor ============ */
+        .cursor-dot,
+        .cursor-ring {
+            position: fixed;
+            top: 0;
+            left: 0;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 10000;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-dot {
+            width: 6px;
+            height: 6px;
+            background: #fff;
+            transform: translate(-50%, -50%);
+            transition: opacity .3s;
+        }
+
+        .cursor-ring {
+            width: 36px;
+            height: 36px;
+            border: 1px solid rgba(255, 255, 255, .65);
+            transform: translate(-50%, -50%);
+            transition: opacity .3s, width .3s, height .3s, border-color .3s, background .3s;
+        }
+
+        html.cursor-on .cursor-dot,
+        html.cursor-on .cursor-ring {
+            opacity: 1;
+        }
+
+        html.cursor-on,
+        html.cursor-on * {
+            cursor: none !important;
+        }
+
+        .cursor-ring.is-hover {
+            width: 64px;
+            height: 64px;
+            border-color: var(--accent);
+            background: rgba(204, 255, 0, .12);
+        }
+
+        /* ============ reveal ============ */
+        .js .reveal {
+            opacity: 0;
+            transform: translateY(36px);
+            transition: opacity .9s cubic-bezier(.16, 1, .3, 1), transform .9s cubic-bezier(.16, 1, .3, 1);
+        }
+
+        .js .reveal.is-in {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* ============ nav ============ */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 22px var(--pad);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 950;
+        }
+
+        .nav__logo {
+            font-family: var(--mono);
+            font-size: .85rem;
+            font-weight: 700;
+            letter-spacing: .12em;
+        }
+
+        .nav__logo .acc {
+            color: var(--accent);
+        }
+
+        .nav__home {
+            font-family: var(--mono);
+            font-size: .8rem;
+            letter-spacing: .18em;
+            transition: color .3s;
+        }
+
+        .nav__home:hover,
+        .nav__home:focus-visible {
+            color: var(--accent);
+        }
+
+        /* ============ hero ============ */
+        .phero {
+            padding: clamp(130px, 18vh, 190px) var(--pad) clamp(50px, 7vw, 90px);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .phero__tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: clamp(24px, 4vw, 40px);
+        }
+
+        .phero__tags span {
+            font-family: var(--mono);
+            font-size: .7rem;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            border: 1px solid var(--line);
+            padding: 7px 14px;
+            color: var(--dim);
+        }
+
+        .phero__tags .hot {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .phero__title {
+            font-family: var(--head);
+            font-weight: 800;
+            font-size: clamp(1.5rem, 8vw, 6.5rem);
+            line-height: .97;
+            text-transform: uppercase;
+            letter-spacing: -.03em;
+            max-width: 16ch;
+            margin-bottom: clamp(36px, 6vw, 64px);
+        }
+
+        .phero__meta {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--line);
+            border: 1px solid var(--line);
+        }
+
+        .meta {
+            background: var(--bg);
+            padding: 20px 22px;
+        }
+
+        .meta__k {
+            font-family: var(--mono);
+            font-size: .66rem;
+            letter-spacing: .22em;
+            text-transform: uppercase;
+            color: var(--dim);
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .meta__v {
+            font-family: var(--head);
+            font-weight: 700;
+            font-size: clamp(.95rem, 1.6vw, 1.25rem);
+            text-transform: uppercase;
+            letter-spacing: .02em;
+        }
+
+        .meta__v.crit {
+            color: var(--accent);
+        }
+
+        /* ============ content blocks ============ */
+        .block {
+            padding: clamp(56px, 8vw, 110px) var(--pad);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .block__inner {
+            max-width: 880px;
+        }
+
+        .block__head {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: clamp(14px, 3vw, 30px);
+            margin-bottom: clamp(24px, 4vw, 40px);
+        }
+
+        .block__num {
+            font-family: var(--mono);
+            font-size: clamp(1rem, 2vw, 1.4rem);
+            color: var(--accent);
+            letter-spacing: .1em;
+            flex-shrink: 0;
+        }
+
+        .block__title {
+            font-family: var(--head);
+            font-weight: 800;
+            font-size: clamp(1.4rem, 4.5vw, 3.2rem);
+            text-transform: uppercase;
+            letter-spacing: -.02em;
+            line-height: 1.05;
+        }
+
+        .block p {
+            color: var(--dim);
+            margin-bottom: 1.25em;
+        }
+
+        .block p strong {
+            color: var(--fg);
+            font-weight: 500;
+        }
+
+        .block h3 {
+            font-family: var(--head);
+            font-weight: 700;
+            font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+            text-transform: uppercase;
+            letter-spacing: .01em;
+            margin: 2em 0 .8em;
+        }
+
+        .block ul,
+        .block ol {
+            color: var(--dim);
+            margin: 0 0 1.4em 1.2em;
+        }
+
+        .block li {
+            margin-bottom: .5em;
+        }
+
+        .block li::marker {
+            color: var(--accent);
+        }
+
+        .tool-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 1.4em 0 2em;
+        }
+
+        .tool-row span {
+            font-family: var(--mono);
+            font-size: .76rem;
+            letter-spacing: .06em;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            padding: 8px 16px;
+            transition: border-color .3s, color .3s, box-shadow .3s;
+        }
+
+        .tool-row span:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            box-shadow: 0 0 18px rgba(204, 255, 0, .22);
+        }
+
+        /* ============ terminal / code ============ */
+        .term {
+            background: #0f0f0f;
+            border: 1px solid var(--line);
+            margin: 1.8em 0;
+            overflow: hidden;
+        }
+
+        .term__bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--line);
+            font-family: var(--mono);
+            font-size: .68rem;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--dim);
+        }
+
+        .term__dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: #2a2a2a;
+        }
+
+        .term__dot:first-child {
+            background: var(--accent);
+        }
+
+        .term__name {
+            margin-left: 8px;
+        }
+
+        .term pre {
+            font-family: var(--mono);
+            font-size: .8rem;
+            line-height: 1.75;
+            padding: 20px;
+            overflow-x: auto;
+            color: var(--fg);
+            white-space: pre;
+        }
+
+        .term .c {
+            color: #5f5f5f;
+        }
+
+        .term .g {
+            color: var(--accent);
+        }
+
+        .term .d {
+            color: var(--dim);
+        }
+
+        code.inline {
+            font-family: var(--mono);
+            font-size: .85em;
+            color: var(--accent);
+            background: rgba(204, 255, 0, .07);
+            border: 1px solid rgba(204, 255, 0, .2);
+            padding: 1px 7px;
+        }
+
+        /* ============ screenshot placeholder ============ */
+        .shot {
+            margin: 1.8em 0;
+        }
+
+        .shot__box {
+            aspect-ratio: 16 / 9;
+            border: 1px dashed var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 24px;
+            font-family: var(--mono);
+            font-size: .76rem;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--dim);
+            background:
+                repeating-linear-gradient(0deg, rgba(240, 240, 240, .03) 0 1px, transparent 1px 44px),
+                repeating-linear-gradient(90deg, rgba(240, 240, 240, .03) 0 1px, transparent 1px 44px);
+        }
+
+        .shot figcaption {
+            font-family: var(--mono);
+            font-size: .7rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--dim);
+            margin-top: 10px;
+        }
+
+        /* ============ findings table ============ */
+        .findings {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.6em 0 2em;
+            font-size: .9rem;
+        }
+
+        .findings th,
+        .findings td {
+            text-align: left;
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .findings th {
+            font-family: var(--mono);
+            font-size: .68rem;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--dim);
+        }
+
+        .findings td:first-child {
+            font-family: var(--mono);
+            font-size: .8rem;
+        }
+
+        .sev {
+            font-family: var(--mono);
+            font-size: .7rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            border: 1px solid var(--line);
+            padding: 4px 10px;
+            white-space: nowrap;
+        }
+
+        .sev.critical {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .sev.high {
+            border-color: rgba(240, 240, 240, .5);
+            color: var(--fg);
+        }
+
+        /* ============ next project ============ */
+        .next {
+            display: block;
+            padding: clamp(60px, 10vw, 130px) var(--pad);
+            text-align: center;
+        }
+
+        .next__label {
+            font-family: var(--mono);
+            font-size: .72rem;
+            letter-spacing: .3em;
+            text-transform: uppercase;
+            color: var(--dim);
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        .next__title {
+            font-family: var(--head);
+            font-weight: 800;
+            font-size: clamp(1.5rem, 7.6vw, 7rem);
+            line-height: .95;
+            text-transform: uppercase;
+            letter-spacing: -.03em;
+            color: transparent;
+            -webkit-text-stroke: 1.5px var(--fg);
+            transition: color .4s, -webkit-text-stroke-color .4s, transform .5s cubic-bezier(.16, 1, .3, 1);
+        }
+
+        .next:hover .next__title {
+            color: var(--accent);
+            -webkit-text-stroke-color: var(--accent);
+            transform: translateY(-6px);
+        }
+
+        /* ============ footer ============ */
+        .footer {
+            border-top: 1px solid var(--line);
+            padding: 34px var(--pad);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px 28px;
+            font-family: var(--mono);
+            font-size: .74rem;
+            letter-spacing: .1em;
+            color: var(--dim);
+        }
+
+        .footer a {
+            transition: color .3s;
+        }
+
+        .footer a:hover {
+            color: var(--accent);
+        }
+
+        .footer__links {
+            display: flex;
+            gap: 22px;
+        }
+
+        /* ============ responsive ============ */
+        @media (max-width: 860px) {
+            .phero__meta {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .findings th:nth-child(3),
+            .findings td:nth-child(3) {
+                display: none;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .phero__meta {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ============ reduced motion ============ */
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            .js .reveal {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+
+            .cursor-dot,
+            .cursor-ring {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="progress" id="progress"></div>
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <header class="nav">
+        <a class="nav__logo" href="index.html">SECURE_ID<span class="acc">://</span>ROOT</a>
+        <a class="nav__home" href="index.html">[ HOME ]</a>
+    </header>
+
+    <main>
+        <!-- HERO -->
+        <section class="phero">
+            <div class="phero__tags reveal">
+                <span class="hot">Case Study</span>
+                <span>Web &amp; Network</span>
+                <span>Red Team</span>
+                <span>OWASP</span>
+            </div>
+            <h1 class="phero__title reveal">BlackGate Perimeter Breach</h1>
+            <div class="phero__meta reveal">
+                <div class="meta">
+                    <span class="meta__k">Client</span>
+                    <span class="meta__v">Redacted Corp</span>
+                </div>
+                <div class="meta">
+                    <span class="meta__k">Year</span>
+                    <span class="meta__v">2025</span>
+                </div>
+                <div class="meta">
+                    <span class="meta__k">Role</span>
+                    <span class="meta__v">Lead Pentester</span>
+                </div>
+                <div class="meta">
+                    <span class="meta__k">Severity</span>
+                    <span class="meta__v crit">Critical — 9.1</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 01 OVERVIEW -->
+        <section class="block">
+            <div class="block__inner">
+                <div class="block__head reveal">
+                    <span class="block__num">01.</span>
+                    <h2 class="block__title">Overview</h2>
+                </div>
+                <div class="reveal">
+                    <p><strong>Background.</strong> A mid-size fintech provider engaged me to assess the external
+                        perimeter of a customer-facing platform handling payment workflows. The estate consisted of a
+                        public web application, three staging servers, and a corporate VPN endpoint feeding into a
+                        segmented internal network.</p>
+                    <p><strong>Target.</strong> Prove whether an unauthenticated attacker on the internet could move
+                        from initial access to sensitive customer data within a four-week window, without disrupting
+                        production services — and hand the engineering team fixes that actually ship.</p>
+                    <p>The engagement was scoped under OWASP Testing Guide v4.2 and PTES, with rules of engagement
+                        covering active exploitation, denial-of-service-free fuzzing, and out-of-hours testing for
+                        high-risk payloads.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 02 THE CHALLENGE -->
+        <section class="block">
+            <div class="block__inner">
+                <div class="block__head reveal">
+                    <span class="block__num">02.</span>
+                    <h2 class="block__title">The Challenge</h2>
+                </div>
+                <div class="reveal">
+                    <p>The application sat behind a managed WAF with a tuned rule set, and all obvious injection
+                        points returned clean blocks. Two constraints made the engagement genuinely difficult:</p>
+                    <ul>
+                        <li><strong>Blind surface.</strong> The vulnerable endpoint returned identical responses
+                            regardless of payload — no error-based or boolean-based signals, forcing a
+                            time-based approach over a high-latency connection.</li>
+                        <li><strong>Constrained egress.</strong> The web server could only reach a single internal
+                            jump host on port 8443, so classic reverse shells from the application tier were dead on
+                            arrival.</li>
+                        <li><strong>Noisy telemetry.</strong> The client's SOC was watching the engagement in real
+                            time, so every technique had to be paced to distinguish detection gaps from expected
+                            alerts.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 03 THE EXECUTION -->
+        <section class="block">
+            <div class="block__inner">
+                <div class="block__head reveal">
+                    <span class="block__num">03.</span>
+                    <h2 class="block__title">The Execution</h2>
+                </div>
+                <div class="reveal">
+                    <h3>Methodology</h3>
+                    <p>Testing followed the OWASP WSTG flow: reconnaissance → mapping → vulnerability analysis →
+                        exploitation → post-exploitation → reporting. Each finding was re-tested from a clean session
+                        to guarantee reproducibility.</p>
+
+                    <div class="tool-row">
+                        <span>Nmap</span>
+                        <span>Burp Suite Pro</span>
+                        <span>sqlmap</span>
+                        <span>ffuf</span>
+                        <span>Metasploit</span>
+                        <span>Python 3</span>
+                        <span>custom PoC scripts</span>
+                    </div>
+
+                    <h3>Step 1 — Reconnaissance</h3>
+                    <p>Full TCP sweep plus version detection surfaced an overlooked staging host exposing an admin
+                        panel and an SMB service inherited from a base VM image.</p>
+                </div>
+                <div class="term reveal">
+                    <div class="term__bar">
+                        <span class="term__dot"></span><span class="term__dot"></span><span class="term__dot"></span>
+                        <span class="term__name">terminal — recon</span>
+                    </div>
+                    <pre><span class="d">$ nmap -sC -sV -p- -T4 203.0.113.40</span>
+<span class="c"># Starting Nmap 7.94 ( https://nmap.org )</span>
+PORT     STATE SERVICE     VERSION
+<span class="g">80/tcp   open  http        nginx 1.24.0</span>
+443/tcp  open  ssl/http    nginx 1.24.0
+<span class="g">8443/tcp open  http        Node.js/Express (self-signed)</span>
+<span class="g">445/tcp  open  netbios-ssn Samba smbd 4.17.12</span>
+
+<span class="c"># staging host discovered outside declared scope map</span></pre>
+                </div>
+                <div class="reveal">
+                    <h3>Step 2 — Injection under the WAF</h3>
+                    <p>The WAF blocked string matching on keywords, but it did not normalize <code
+                            class="inline">JSON unicode escapes</code> before the backend parsed them. Encoding
+                        the payload body allowed time-based blind SQLi against the <code class="inline">/api/invoices</code>
+                        endpoint:</p>
+                </div>
+                <div class="term reveal">
+                    <div class="term__bar">
+                        <span class="term__dot"></span><span class="term__dot"></span><span class="term__dot"></span>
+                        <span class="term__name">terminal — sqlmap</span>
+                    </div>
+                    <pre><span class="d">$ sqlmap -u "https://target/api/invoices?id=1" \
+        --data='{"id":"1"}' --headers="Content-Type: application/json" \
+        --techn=T --dbms=postgresql --level=3 --risk=2 --batch</span>
+<span class="c"># WAF detected: generic (delay-based filtering)</span>
+<span class="c"># custom tamper: unicode-escape applied</span>
+<span class="g">[+] parameter 'id' is vulnerable (time-based blind)</span>
+<span class="g">[+] database management system: PostgreSQL 15.3</span>
+<span class="g">[+] retrieved 4 tables: users, cards, sessions, audit_log</span></pre>
+                </div>
+                <div class="reveal">
+                    <h3>Step 3 — Exploitation (PoC)</h3>
+                    <p>Dumping the sessions table yielded a valid admin JWT. Replay against the Node admin panel
+                        escalated privileges without touching the WAF rules:</p>
+                </div>
+                <div class="term reveal">
+                    <div class="term__bar">
+                        <span class="term__dot"></span><span class="term__dot"></span><span class="term__dot"></span>
+                        <span class="term__name">poc.py — privilege escalation</span>
+                    </div>
+                    <pre><span class="c">#!/usr/bin/env python3</span>
+<span class="d">"""Replay stolen admin session - PoC for client review only."""</span>
+<span class="g">import</span> requests
+
+STOLEN_JWT = <span class="g">"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."</span>
+r = requests.get(
+    <span class="g">"https://target:8443/admin/export"</span>,
+    headers={<span class="g">"Authorization"</span>: <span class="g">f"Bearer {STOLEN_JWT}"</span>},
+    verify=<span class="g">False</span>,
+)
+<span class="d">print(r.status_code, len(r.content))</span>
+<span class="g"># 200 OK - full customer export downloaded (redacted in report)</span></pre>
+                </div>
+                <figure class="shot reveal">
+                    <div class="shot__box">[ Screenshot placeholder — burp-intruder-results.png ]</div>
+                    <figcaption>Fig. 01 — Time-based payload confirmation inside Burp Repeater</figcaption>
+                </figure>
+                <div class="reveal">
+                    <h3>Step 4 — Internal pivot</h3>
+                    <p>From the admin export service, SSRF in the invoice-render endpoint reached the internal jump
+                        host on <code class="inline">8443</code>, chaining external injection into lateral movement
+                        against the declared crown-jewel segment.</p>
+                </div>
+                <figure class="shot reveal">
+                    <div class="shot__box">[ Screenshot placeholder — attack-chain-diagram.png ]</div>
+                    <figcaption>Fig. 02 — Full kill chain: WAF bypass → SQLi → JWT replay → SSRF pivot</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <!-- 04 IMPACT & MITIGATION -->
+        <section class="block">
+            <div class="block__inner">
+                <div class="block__head reveal">
+                    <span class="block__num">04.</span>
+                    <h2 class="block__title">The Impact &amp; Mitigation</h2>
+                </div>
+                <div class="reveal">
+                    <p><strong>Results.</strong> In fourteen testing days the engagement produced
+                        <strong>12 findings</strong> — two critical, three high, five medium and two low — including
+                        a full chain from unauthenticated internet access to customer-data export.</p>
+                    <table class="findings">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Finding</th>
+                                <th>Vector</th>
+                                <th>Severity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>F-01</td>
+                                <td>Time-based blind SQLi behind WAF</td>
+                                <td>API / JSON unicode</td>
+                                <td><span class="sev critical">Critical</span></td>
+                            </tr>
+                            <tr>
+                                <td>F-02</td>
+                                <td>Stolen admin JWT replay (no rotation)</td>
+                                <td>Session mgmt</td>
+                                <td><span class="sev critical">Critical</span></td>
+                            </tr>
+                            <tr>
+                                <td>F-03</td>
+                                <td>SSRF to internal jump host</td>
+                                <td>Invoice renderer</td>
+                                <td><span class="sev high">High</span></td>
+                            </tr>
+                            <tr>
+                                <td>F-04</td>
+                                <td>Out-of-scope staging host with Samba</td>
+                                <td>Asset drift</td>
+                                <td><span class="sev high">High</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h3>Recommendations</h3>
+                    <ol>
+                        <li><strong>Parameterized queries everywhere</strong> — replace string-built SQL in the
+                            invoice module and add integration tests that fail on concatenation patterns.</li>
+                        <li><strong>Normalize before inspect</strong> — decode JSON unicode and enforce a strict WAF
+                            policy so encoded payloads are matched pre-parse.</li>
+                        <li><strong>Short-lived sessions</strong> — 15-minute JWT TTL with refresh rotation and
+                            server-side revocation on privilege change.</li>
+                        <li><strong>Least-privilege egress</strong> — block app-tier access to internal segments
+                            except an explicit allow-list; disable SSRF-prone URL fetching.</li>
+                        <li><strong>Asset inventory</strong> — continuous discovery so staging machines cannot drift
+                            outside the scanned perimeter.</li>
+                    </ol>
+                    <p>Re-testing after remediation closed both critical findings, and the detection rules written
+                        during the engagement now run in production as part of the SOC's baseline.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- NEXT PROJECT -->
+        <a class="next" href="project-1.html">
+            <span class="next__label">Next Project →</span>
+            <span class="next__title">Operation Nightshade</span>
+        </a>
+    </main>
+
+    <footer class="footer">
+        <span>© <span id="year">2026</span> JOESAVAT DONOVAN — CASE STUDY 01/03</span>
+        <div class="footer__links">
+            <a href="index.html">HOME</a>
+            <a href="mailto:joesavat@gmail.com">EMAIL</a>
+            <a href="https://github.com/cingmen" target="_blank" rel="noopener noreferrer">GITHUB</a>
+        </div>
+        <span>HTML / CSS / VANILLA JS</span>
+    </footer>
+
+    <script>
+        (function () {
+            'use strict';
+
+            /* ---------- scroll progress ---------- */
+            var bar = document.getElementById('progress');
+
+            function updateProgress() {
+                var max = document.documentElement.scrollHeight - window.innerHeight;
+                bar.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + '%';
+            }
+            window.addEventListener('scroll', updateProgress, { passive: true });
+            window.addEventListener('resize', updateProgress);
+            updateProgress();
+
+            /* ---------- custom cursor ---------- */
+            var finePointer = window.matchMedia('(pointer: fine)').matches;
+            var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            if (finePointer && !reduceMotion) {
+                var dot = document.getElementById('cursorDot');
+                var ring = document.getElementById('cursorRing');
+
+                var mx = window.innerWidth / 2, my = window.innerHeight / 2;
+                var rx = mx, ry = my;
+                var moved = false;
+
+                document.addEventListener('mousemove', function (e) {
+                    mx = e.clientX;
+                    my = e.clientY;
+                    if (!moved) {
+                        moved = true;
+                        rx = mx;
+                        ry = my;
+                        document.documentElement.classList.add('cursor-on');
+                    }
+                    dot.style.transform = 'translate(' + mx + 'px,' + my + 'px) translate(-50%,-50%)';
+                });
+
+                (function follow() {
+                    rx += (mx - rx) * 0.16;
+                    ry += (my - ry) * 0.16;
+                    ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px) translate(-50%,-50%)';
+                    requestAnimationFrame(follow);
+                })();
+
+                document.addEventListener('mouseover', function (e) {
+                    if (e.target.closest('a, button')) ring.classList.add('is-hover');
+                });
+                document.addEventListener('mouseout', function (e) {
+                    if (e.target.closest('a, button')) ring.classList.remove('is-hover');
+                });
+            }
+
+            /* ---------- reveal on scroll ---------- */
+            var revealEls = document.querySelectorAll('.reveal');
+            if ('IntersectionObserver' in window) {
+                var io = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-in');
+                            io.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+                revealEls.forEach(function (el) { io.observe(el); });
+            } else {
+                revealEls.forEach(function (el) { el.classList.add('is-in'); });
+            }
+
+            /* ---------- footer year ---------- */
+            var year = document.getElementById('year');
+            if (year) year.textContent = String(new Date().getFullYear());
+        })();
+    </script>
+</body>
+
+</html>

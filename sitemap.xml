@@ -1,54 +1,27 @@
----
-layout: null
----
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
-        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
-  <!-- Homepage -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>{{ site.url }}/</loc>
+    <loc>https://cingmen.github.io/</loc>
+    <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <lastmod>{{ site.time | date: '%Y-%m-%d' }}</lastmod>
   </url>
-  
-  <!-- Static Pages -->
   <url>
-    <loc>{{ site.url }}/about/</loc>
+    <loc>https://cingmen.github.io/project-1.html</loc>
+    <lastmod>2026-10-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>{{ site.url }}/portfolio/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>{{ site.url }}/gallery/</loc>
-    <changefreq>weekly</changefreq>
+    <loc>https://cingmen.github.io/writeup-1.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>{{ site.url }}/blog/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://cingmen.github.io/404.html</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.0</priority>
   </url>
-  <url>
-    <loc>{{ site.url }}/matrix/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <!-- Blog Posts & Case Studies -->
-  {% for post in site.posts %}
-  {% if post.layout != 'null' %}
-  <url>
-    <loc>{{ site.url }}{{ post.url }}</loc>
-    <lastmod>{{ post.date | date_to_xmlschema }}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  {% endif %}
-  {% endfor %}
 </urlset>
