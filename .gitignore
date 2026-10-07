@@ -20,5 +20,7 @@ package-lock.json
 
 # 5. Local Environment Variables
 .env
-.env.local# Freebuff internal project metadata (do not commit)
+.env.local
+
+# 6. Freebuff internal project metadata (do not commit)
 .freebuff/
