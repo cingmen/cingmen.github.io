@@ -11,6 +11,12 @@
         href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%230a0a0a'/%3E%3Ccircle cx='8' cy='8' r='4' fill='%23ccff00'/%3E%3C/svg%3E">
     <script>
         document.documentElement.classList.add('js');
+        (function () {
+            var probe = document.createElement('script');
+            if ('noModule' in probe && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.documentElement.classList.add('motion-pending');
+            }
+        })();
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -94,11 +100,14 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 0;
+            width: 100%;
             height: 2px;
             background: var(--accent);
             z-index: 9999;
             pointer-events: none;
+            transform-origin: 0 50%;
+            transform: scaleX(0);
+            will-change: transform;
         }
 
         body::after {
@@ -108,6 +117,7 @@
             z-index: 9997;
             pointer-events: none;
             opacity: .05;
+            transform: translateZ(0);
             background-size: 300px 300px;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
         }
@@ -123,6 +133,7 @@
             opacity: 0;
             z-index: 10000;
             mix-blend-mode: difference;
+            will-change: transform;
         }
 
         .cursor-dot {
@@ -156,6 +167,20 @@
             height: 64px;
             border-color: var(--accent);
             background: rgba(204, 255, 0, .12);
+        }
+
+        /* ============ first-load entrance (Motion) ============ */
+        .hl,
+        .kw {
+            display: inline-block;
+        }
+
+        html.motion-pending .nav,
+        html.motion-pending .hero__kicker,
+        html.motion-pending .hero__title,
+        html.motion-pending .hero__status,
+        html.motion-pending .hero__lead {
+            opacity: 0;
         }
 
         /* ============ reveal ============ */
@@ -216,8 +241,9 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            gap: 6vh;
-            padding: 100px var(--pad) 40px;
+            gap: 4vh;
+            padding: 96px var(--pad) 40px;
+            overflow-y: auto;
             clip-path: circle(0% at calc(100% - 48px) 38px);
             visibility: hidden;
             transition: clip-path .85s cubic-bezier(.76, 0, .24, 1), visibility 0s linear .85s;
@@ -232,14 +258,14 @@
         .menu__nav {
             display: flex;
             flex-direction: column;
-            gap: .4em;
+            gap: .35em;
         }
 
         .menu__link {
             font-family: var(--head);
             font-weight: 800;
-            font-size: clamp(1.6rem, 7.8vw, 6.5rem);
-            line-height: 1;
+            font-size: clamp(1.4rem, 5.2vw, 4.2rem);
+            line-height: 1.05;
             text-transform: uppercase;
             letter-spacing: -.02em;
             width: fit-content;
@@ -653,15 +679,15 @@
             background-position: center;
             border: 1px solid rgba(204, 255, 0, .45);
             opacity: 0;
-            transform: translate(-50%, -50%) scale(.85);
-            transition: opacity .35s, transform .35s;
+            transform: translate3d(-500px, -500px, 0) translate(-50%, -50%) scale(.85);
+            transition: opacity .35s;
             pointer-events: none;
             z-index: 800;
+            will-change: transform;
         }
 
         .preview.is-on {
             opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
         }
 
         /* ============ write-ups ============ */
@@ -915,11 +941,12 @@
     <main>
         <!-- 01 HERO -->
         <section class="hero">
-            <p class="hero__kicker reveal">// Offensive Security — Threat Intelligence — Research</p>
-            <h1 class="hero__title reveal">Cyber Security<br><span class="outline">&amp; Researcher</span></h1>
+            <p class="hero__kicker">// Offensive Security — Threat Intelligence — Research</p>
+            <h1 class="hero__title"><span class="hl">Cyber Security</span><br><span class="hl outline">&amp;
+                Researcher</span></h1>
             <div class="hero__foot">
-                <p class="hero__status reveal">[ STATUS: OPERATIONAL ]&nbsp;&nbsp;V.2026.10</p>
-                <p class="hero__lead reveal"><strong>Joesavat Donovan</strong> — cybersecurity practitioner who
+                <p class="hero__status">[ STATUS: OPERATIONAL ]&nbsp;&nbsp;V.2026.10</p>
+                <p class="hero__lead"><strong>Joesavat Donovan</strong> — cybersecurity practitioner who
                     breaks systems to understand them, then engineers the defenses that make them hold.</p>
             </div>
         </section>
@@ -1151,15 +1178,29 @@ rB9cD3eF6gH0jK2lM5nQ8rS1tU4vW7xY0zA3bC6dE9fG2hI5jK8lM1nP4qR7sT0u
         (function () {
             'use strict';
 
-            /* ---------- scroll progress ---------- */
+            /* ---------- failsafe: if the Motion entrance never runs, show hero ---------- */
+            setTimeout(function () {
+                document.documentElement.classList.remove('motion-pending');
+            }, 4000);
+
+            /* ---------- scroll progress (rAF-throttled, transform-only) ---------- */
             var bar = document.getElementById('progress');
+            var progressTick = false;
 
             function updateProgress() {
+                progressTick = false;
                 var max = document.documentElement.scrollHeight - window.innerHeight;
-                bar.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + '%';
+                var p = max > 0 ? window.scrollY / max : 0;
+                bar.style.transform = 'scaleX(' + Math.min(Math.max(p, 0), 1) + ')';
             }
-            window.addEventListener('scroll', updateProgress, { passive: true });
-            window.addEventListener('resize', updateProgress);
+            function queueProgress() {
+                if (!progressTick) {
+                    progressTick = true;
+                    requestAnimationFrame(updateProgress);
+                }
+            }
+            window.addEventListener('scroll', queueProgress, { passive: true });
+            window.addEventListener('resize', queueProgress);
             updateProgress();
 
             /* ---------- custom cursor (fine pointers only) ---------- */
@@ -1183,13 +1224,13 @@ rB9cD3eF6gH0jK2lM5nQ8rS1tU4vW7xY0zA3bC6dE9fG2hI5jK8lM1nP4qR7sT0u
                         ry = my;
                         document.documentElement.classList.add('cursor-on');
                     }
-                    dot.style.transform = 'translate(' + mx + 'px,' + my + 'px) translate(-50%,-50%)';
                 });
 
                 (function follow() {
                     rx += (mx - rx) * 0.16;
                     ry += (my - ry) * 0.16;
                     ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px) translate(-50%,-50%)';
+                    dot.style.transform = 'translate(' + mx + 'px,' + my + 'px) translate(-50%,-50%)';
                     requestAnimationFrame(follow);
                 })();
 
@@ -1243,14 +1284,17 @@ rB9cD3eF6gH0jK2lM5nQ8rS1tU4vW7xY0zA3bC6dE9fG2hI5jK8lM1nP4qR7sT0u
             var preview = document.getElementById('preview');
             if (preview && finePointer) {
                 var px = 0, py = 0, tx = 0, ty = 0;
+                var ps = 0.85, ts = 0.85;
 
                 document.querySelectorAll('.work__item').forEach(function (item) {
                     item.addEventListener('mouseenter', function () {
                         var img = item.getAttribute('data-img');
                         if (img) preview.style.backgroundImage = 'url("' + img + '")';
+                        ts = 1;
                         preview.classList.add('is-on');
                     });
                     item.addEventListener('mouseleave', function () {
+                        ts = 0.85;
                         preview.classList.remove('is-on');
                     });
                 });
@@ -1263,8 +1307,8 @@ rB9cD3eF6gH0jK2lM5nQ8rS1tU4vW7xY0zA3bC6dE9fG2hI5jK8lM1nP4qR7sT0u
                 (function movePreview() {
                     px += (tx - px) * 0.12;
                     py += (ty - py) * 0.12;
-                    preview.style.left = px + 'px';
-                    preview.style.top = py + 'px';
+                    ps += (ts - ps) * 0.12;
+                    preview.style.transform = 'translate3d(' + px + 'px,' + py + 'px,0) translate(-50%,-50%) scale(' + ps + ')';
                     requestAnimationFrame(movePreview);
                 })();
             }
@@ -1289,6 +1333,54 @@ rB9cD3eF6gH0jK2lM5nQ8rS1tU4vW7xY0zA3bC6dE9fG2hI5jK8lM1nP4qR7sT0u
             var year = document.getElementById('year');
             if (year) year.textContent = String(new Date().getFullYear());
         })();
+    </script>
+
+    <script type="module">
+        /* ---------- first-load hero entrance (Motion, transform/opacity only) ---------- */
+        const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduce) {
+            document.documentElement.classList.remove('motion-pending');
+        } else {
+            try {
+                const { animate } = await import('https://cdn.jsdelivr.net/npm/motion@11/+esm');
+
+                const kicker = document.querySelector('.hero__kicker');
+                const titleLines = document.querySelectorAll('.hero__title .hl');
+                const status = document.querySelector('.hero__status');
+                const lead = document.querySelector('.hero__lead');
+                const nav = document.querySelector('.nav');
+
+                // wrap kicker words for stagger
+                const words = kicker.textContent.trim().split(/\s+/);
+                kicker.innerHTML = words.map(w => `<span class="kw">${w}</span>`).join(' ');
+                const kwEls = kicker.querySelectorAll('.kw');
+
+                const springOut = { type: 'spring', stiffness: 210, damping: 24, mass: 0.9 };
+                const yIn = (y, o = {}) => ({ y: [y, 0], opacity: [0, 1], ...o });
+
+                await Promise.all([
+                    // nav: gentle fade-down
+                    animate(nav, { y: [-16, 0], opacity: [0, 1] }, { duration: 0.7, ease: [0.16, 1, 0.3, 1] }),
+                    // kicker: per-word stagger
+                    animate(kwEls, yIn(14, { delay: 0.12, ...springOut }), { delay: 0.15, delayStagger: 0.055 }),
+                    // headline: per-line clip-style spring reveal
+                    animate(titleLines[0], yIn(64, { ...springOut, delay: 0.35 })),
+                    animate(titleLines[1], yIn(64, { ...springOut, delay: 0.47 })),
+                    // status badge: soft fade-up
+                    animate(status, yIn(18, { duration: 0.6, delay: 0.85, ease: [0.16, 1, 0.3, 1] })),
+                    // lead paragraph: last, smooth
+                    animate(lead, yIn(24, { duration: 0.75, delay: 0.95, ease: [0.16, 1, 0.3, 1] }))
+                ]);
+
+                document.documentElement.classList.remove('motion-pending');
+                [nav, kicker, status, lead].forEach(el => el.style.willChange = 'auto');
+                titleLines.forEach(el => el.style.willChange = 'auto');
+                kwEls.forEach(el => el.style.willChange = 'auto');
+            } catch (err) {
+                // CDN failed — fail visible
+                document.documentElement.classList.remove('motion-pending');
+            }
+        }
     </script>
 </body>
 

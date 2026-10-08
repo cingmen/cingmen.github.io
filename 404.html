@@ -76,11 +76,14 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 0;
+            width: 100%;
             height: 2px;
             background: var(--accent);
             z-index: 9999;
             pointer-events: none;
+            transform-origin: 0 50%;
+            transform: scaleX(0);
+            will-change: transform;
         }
 
         body::after {
@@ -90,6 +93,7 @@
             z-index: 9997;
             pointer-events: none;
             opacity: .05;
+            transform: translateZ(0);
             background-size: 300px 300px;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
         }
@@ -105,6 +109,7 @@
             opacity: 0;
             z-index: 10000;
             mix-blend-mode: difference;
+            will-change: transform;
         }
 
         .cursor-dot {
@@ -338,15 +343,24 @@
         (function () {
             'use strict';
 
-            /* ---------- scroll progress (short page — still functional) ---------- */
+            /* ---------- scroll progress (rAF-throttled, transform-only) ---------- */
             var bar = document.getElementById('progress');
+            var progressTick = false;
 
             function updateProgress() {
+                progressTick = false;
                 var max = document.documentElement.scrollHeight - window.innerHeight;
-                bar.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + '%';
+                var p = max > 0 ? window.scrollY / max : 0;
+                bar.style.transform = 'scaleX(' + Math.min(Math.max(p, 0), 1) + ')';
             }
-            window.addEventListener('scroll', updateProgress, { passive: true });
-            window.addEventListener('resize', updateProgress);
+            function queueProgress() {
+                if (!progressTick) {
+                    progressTick = true;
+                    requestAnimationFrame(updateProgress);
+                }
+            }
+            window.addEventListener('scroll', queueProgress, { passive: true });
+            window.addEventListener('resize', queueProgress);
             updateProgress();
 
             /* ---------- custom cursor ---------- */
@@ -370,13 +384,13 @@
                         ry = my;
                         document.documentElement.classList.add('cursor-on');
                     }
-                    dot.style.transform = 'translate(' + mx + 'px,' + my + 'px) translate(-50%,-50%)';
                 });
 
                 (function follow() {
                     rx += (mx - rx) * 0.16;
                     ry += (my - ry) * 0.16;
                     ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px) translate(-50%,-50%)';
+                    dot.style.transform = 'translate(' + mx + 'px,' + my + 'px) translate(-50%,-50%)';
                     requestAnimationFrame(follow);
                 })();
 
