@@ -651,12 +651,30 @@
         }
 
         .work__item {
+            position: relative;
             display: flex;
             justify-content: space-between;
             align-items: baseline;
             gap: 24px;
-            padding: clamp(24px, 4vw, 40px) 0;
+            padding: 22px 0;
             border-bottom: 1px solid var(--line);
+        }
+
+        .work__cta {
+            font-family: var(--mono);
+            font-size: .72rem;
+            letter-spacing: .14em;
+            color: var(--dim);
+            flex-shrink: 0;
+            border: 1px solid var(--line);
+            padding: 7px 14px;
+            transition: color .3s, border-color .3s;
+        }
+
+        .work__item:hover .work__cta,
+        .work__item:focus-visible .work__cta {
+            color: var(--accent);
+            border-color: var(--accent);
         }
 
         .work__left {
@@ -676,10 +694,10 @@
         .work__title {
             font-family: var(--head);
             font-weight: 800;
-            font-size: clamp(1.4rem, 4vw, 3rem);
-            line-height: 1.05;
+            font-size: clamp(1.05rem, 2vw, 1.6rem);
+            line-height: 1.1;
             text-transform: uppercase;
-            letter-spacing: -.02em;
+            letter-spacing: -.01em;
             transition: transform .5s cubic-bezier(.16, 1, .3, 1), color .4s;
         }
 
@@ -924,17 +942,24 @@
             }
 
             .work__item {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
+                flex-wrap: wrap;
+                align-items: baseline;
+                row-gap: 8px;
+                padding: 16px 0;
             }
 
             .work__meta {
+                order: 2;
                 text-align: left;
             }
 
+            .work__cta {
+                margin-left: auto;
+                order: 3;
+            }
+
             .work__item:hover .work__title {
-                transform: translateX(12px);
+                transform: translateX(10px);
             }
 
             .preview {
@@ -1151,6 +1176,7 @@
                         <span class="work__title">BlackGate Perimeter Breach</span>
                     </span>
                     <span class="work__meta">Web &amp; Network — 2025</span>
+                    <span class="work__cta" aria-hidden="true">READ →</span>
                 </a>
                 <a class="work__item" href="project-1.html"
                     data-img="https://images.unsplash.com/photo-1510511459019-5dda7724fd87?auto=format&amp;fit=crop&amp;w=640&amp;q=80">
@@ -1159,6 +1185,7 @@
                         <span class="work__title">Operation Nightshade</span>
                     </span>
                     <span class="work__meta">Internal Red Team — 2025</span>
+                    <span class="work__cta" aria-hidden="true">READ →</span>
                 </a>
                 <a class="work__item" href="project-1.html"
                     data-img="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&amp;fit=crop&amp;w=640&amp;q=80">
@@ -1167,6 +1194,7 @@
                         <span class="work__title">IoT Botnet Telemetry Study</span>
                     </span>
                     <span class="work__meta">Malware Research — 2024</span>
+                    <span class="work__cta" aria-hidden="true">READ →</span>
                 </a>
             </div>
         </section>
