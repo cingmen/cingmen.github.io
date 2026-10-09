@@ -13,13 +13,13 @@
     <meta property="og:title" content="HTB — Lame Write-up">
     <meta property="og:description" content="HackTheBox Lame — Samba 3.0.20 usermap_script RCE to root on Linux.">
     <meta property="og:url" content="https://cingmen.github.io/writeup-1.html">
-    <meta property="og:image" content="https://cingmen.github.io/og-image.png">
+    <meta property="og:image" content="https://cingmen.github.io/og-image-v2.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="HTB — Lame Write-up">
     <meta name="twitter:description" content="HackTheBox Lame — Samba usermap_script RCE to root.">
-    <meta name="twitter:image" content="https://cingmen.github.io/og-image.png">
+    <meta name="twitter:image" content="https://cingmen.github.io/og-image-v2.png">
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -27,7 +27,7 @@
       "headline": "HTB — Lame Write-up",
       "author": { "@type": "Person", "name": "Joesavat Donovan", "url": "https://cingmen.github.io/" },
       "url": "https://cingmen.github.io/writeup-1.html",
-      "image": "https://cingmen.github.io/og-image.png",
+      "image": "https://cingmen.github.io/og-image-v2.png",
       "articleSection": "Write-up",
       "about": ["CTF", "HackTheBox", "Samba", "Linux Exploitation"]
     }
@@ -37,12 +37,42 @@
     <script>
         document.documentElement.classList.add('js');
     </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Space+Grotesk:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap"
-        rel="stylesheet">
+    <link rel="preload" href="assets/fonts/syne-800.woff2" as="font" type="font/woff2" crossorigin>
+    <meta name="theme-color" content="#0a0a0a">
     <style>
+        /* ============ self-hosted fonts (latin subset) ============ */
+        @font-face {
+            font-family: 'Syne';
+            font-style: normal;
+            font-weight: 700 800;
+            font-display: swap;
+            src: url('assets/fonts/syne-800.woff2') format('woff2');
+        }
+
+        @font-face {
+            font-family: 'Space Grotesk';
+            font-style: normal;
+            font-weight: 300 500;
+            font-display: swap;
+            src: url('assets/fonts/space-grotesk-500.woff2') format('woff2');
+        }
+
+        @font-face {
+            font-family: 'Space Mono';
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+            src: url('assets/fonts/space-mono-400.woff2') format('woff2');
+        }
+
+        @font-face {
+            font-family: 'Space Mono';
+            font-style: normal;
+            font-weight: 700;
+            font-display: swap;
+            src: url('assets/fonts/space-mono-700.woff2') format('woff2');
+        }
+
         /* ============ design tokens ============ */
         :root {
             --bg: #0a0a0a;
@@ -352,7 +382,7 @@
             padding: 6px 0 6px 22px;
             margin: 1.8em 0;
             font-family: var(--head);
-            font-weight: 600;
+            font-weight: 800;
             font-size: 1.1rem;
             color: var(--fg);
         }
