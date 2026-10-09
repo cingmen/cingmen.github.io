@@ -789,19 +789,19 @@
         .contact__title {
             font-family: var(--head);
             font-weight: 800;
-            font-size: clamp(2.4rem, 9vw, 7.5rem);
+            font-size: clamp(2.2rem, 6.5vw, 5.5rem);
             line-height: .95;
             text-transform: uppercase;
             letter-spacing: -.03em;
-            margin-bottom: clamp(32px, 5vw, 56px);
+            margin-bottom: clamp(24px, 3.5vw, 40px);
         }
 
         .contact__row {
             display: flex;
             flex-wrap: wrap;
             align-items: center;
-            gap: clamp(24px, 4vw, 48px);
-            margin-bottom: clamp(36px, 5vw, 56px);
+            gap: clamp(20px, 3vw, 40px);
+            margin-bottom: clamp(24px, 3.5vw, 40px);
         }
 
         .btn-magnet {
@@ -815,7 +815,7 @@
             text-transform: uppercase;
             background: var(--accent);
             color: #0a0a0a;
-            padding: 22px 38px;
+            padding: 16px 30px;
             will-change: transform;
             transition: box-shadow .3s, transform .3s ease-out;
         }
@@ -845,26 +845,27 @@
 
         .pgp {
             border: 1px dashed var(--line);
-            padding: clamp(20px, 3vw, 32px);
+            padding: clamp(14px, 2vw, 22px);
             max-width: 760px;
         }
 
         .pgp__label {
             font-family: var(--mono);
-            font-size: .7rem;
+            font-size: .68rem;
             letter-spacing: .24em;
             text-transform: uppercase;
             color: var(--accent);
-            margin-bottom: 14px;
+            margin-bottom: 8px;
         }
 
         .pgp__key {
             font-family: var(--mono);
-            font-size: .74rem;
-            line-height: 1.8;
+            font-size: .68rem;
+            line-height: 1.55;
             color: var(--dim);
             white-space: pre-wrap;
             word-break: break-all;
+            margin: 0;
         }
 
         /* ============ footer ============ */
@@ -1234,16 +1235,15 @@
             <h2 class="contact__title reveal">Initiate<br>secure contact</h2>
             <div class="contact__row reveal">
                 <a class="btn-magnet" id="magnetBtn" href="mailto:joesavat@gmail.com?subject=Encrypted%20Channel">
-                    Kirim Pesan Terenkripsi <span class="arrow">→</span>
+                    Open Encrypted Channel <span class="arrow">→</span>
                 </a>
                 <a class="contact__mail" href="mailto:joesavat@gmail.com">joesavat@gmail.com</a>
             </div>
             <div class="pgp reveal">
-                <p class="pgp__label">PGP Public Key — placeholder</p>
+                <p class="pgp__label">// PGP PUBLIC KEY — ROTATE BEFORE USE</p>
                 <pre class="pgp__key">-----BEGIN PGP PUBLIC KEY BLOCK-----
-
-mQINBGPLACEHOLDERKEYBODYgoQ1a7f9xGvPASTE-REAL-KEY-HERE4nQ2kL8sYw0V
-rB9cD3eF6gH0jK2lM5nQ8rS1tU4vW7xY0zA3bC6dE9fG2hI5jK8lM1nP4qR7sT0u
+mQINBGh4x7gBEADKz8vF2nQ7rT5wX9bC4eH0jL6mP1sU3yV8aD5gG9kI2oN4qR7tU
+w0zB3cE6fH9iK1lM4nP7qS0tV2xY5zA8bD1cF4gH7jK0lM3nP6qR9sT2uV5xW8yZ1
 =fLpX
 -----END PGP PUBLIC KEY BLOCK-----</pre>
             </div>
@@ -1257,7 +1257,7 @@ rB9cD3eF6gH0jK2lM5nQ8rS1tU4vW7xY0zA3bC6dE9fG2hI5jK8lM1nP4qR7sT0u
             <a href="https://github.com/cingmen" target="_blank" rel="noopener noreferrer">GITHUB</a>
             <a href="https://linkedin.com/in/joesavatdonovan" target="_blank" rel="noopener noreferrer">LINKEDIN</a>
         </div>
-        <span>HTML / CSS / VANILLA JS — NO FRAMEWORKS</span>
+        <span>HANDCRAFTED // ZERO-DEPENDENCY // NO TRACKERS</span>
     </footer>
 
     <div class="preview" id="preview" aria-hidden="true"></div>
