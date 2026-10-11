@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <link rel="alternate" type="application/rss+xml" title="Security Write-ups RSS" href="https://cingmen.github.io/feed.xml">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Joesavat Donovan — Cyber Security &amp; Researcher</title>
@@ -1201,7 +1202,7 @@
             </div>
             <div class="work reveal" id="workList">
                 <a class="work__item" href="project-1.html"
-                    data-img="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&amp;fit=crop&amp;w=640&amp;q=80">
+                    data-img="assets/thumbs/work-1.png">
                     <span class="work__left">
                         <span class="work__num">01</span>
                         <span class="work__title">BlackGate Perimeter Breach</span>
@@ -1209,8 +1210,8 @@
                     <span class="work__meta">Web &amp; Network — 2025</span>
                     <span class="work__cta" aria-hidden="true">READ →</span>
                 </a>
-                <a class="work__item" href="project-1.html"
-                    data-img="https://images.unsplash.com/photo-1510511459019-5dda7724fd87?auto=format&amp;fit=crop&amp;w=640&amp;q=80">
+                <a class="work__item" href="project-2.html"
+                    data-img="assets/thumbs/work-2.png">
                     <span class="work__left">
                         <span class="work__num">02</span>
                         <span class="work__title">Operation Nightshade</span>
@@ -1218,8 +1219,8 @@
                     <span class="work__meta">Internal Red Team — 2025</span>
                     <span class="work__cta" aria-hidden="true">READ →</span>
                 </a>
-                <a class="work__item" href="project-1.html"
-                    data-img="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&amp;fit=crop&amp;w=640&amp;q=80">
+                <a class="work__item" href="project-3.html"
+                    data-img="assets/thumbs/work-3.png">
                     <span class="work__left">
                         <span class="work__num">03</span>
                         <span class="work__title">IoT Botnet Telemetry Study</span>
@@ -1286,6 +1287,7 @@ w0zB3cE6fH9iK1lM4nP7qS0tV2xY5zA8bD1cF4gH7jK0lM3nP6qR9sT2uV5xW8yZ1
             <a href="mailto:joesavat@gmail.com">EMAIL</a>
             <a href="https://github.com/cingmen" target="_blank" rel="noopener noreferrer">GITHUB</a>
             <a href="https://linkedin.com/in/joesavatdonovan" target="_blank" rel="noopener noreferrer">LINKEDIN</a>
+            <a href="/feed.xml" title="RSS Feed">RSS</a>
         </div>
         <span>HANDCRAFTED // ZERO-DEPENDENCY // NO TRACKERS</span>
     </footer>
@@ -1478,7 +1480,7 @@ w0zB3cE6fH9iK1lM4nP7qS0tV2xY5zA8bD1cF4gH7jK0lM3nP6qR9sT2uV5xW8yZ1
             document.documentElement.classList.remove('motion-pending');
         } else {
             try {
-                const { animate } = await import('https://cdn.jsdelivr.net/npm/motion@11/+esm');
+                const { animate } = await import('assets/js/motion.esm.js');
 
                 const kicker = document.querySelector('.hero__kicker');
                 const titleLines = document.querySelectorAll('.hero__title .hl');

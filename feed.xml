@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Joesavat Donovan — Security Write-ups</title>
+    <link>https://cingmen.github.io/</link>
+    <description>Field notes, CTF walkthroughs and security research from Joesavat Donovan.</description>
+    <language>en</language>
+    <atom:link href="https://cingmen.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HTB — Lame: Samba usermap_script to root</title>
+      <link>https://cingmen.github.io/writeup-1.html</link>
+      <guid isPermaLink="true">https://cingmen.github.io/writeup-1.html</guid>
+      <pubDate>Sun, 01 Mar 2026 00:00:00 GMT</pubDate>
+      <description>Walkthrough of HackTheBox Lame: recon with nmap, exploiting CVE-2007-2447 (Samba username map script) for immediate root, and why legacy Samba instances remain pervasive.</description>
+      <category>CTF</category>
+    </item>
+    <item>
+      <title>Hunting living-off-the-land binaries in PowerShell telemetry</title>
+      <link>https://cingmen.github.io/writeup-1.html</link>
+      <guid isPermaLink="true">https://cingmen.github.io/writeup-1.html#lolbin</guid>
+      <pubDate>Tue, 27 Jan 2026 00:00:00 GMT</pubDate>
+      <description>Building detection rules for LOLBins on Windows endpoints using real adversary TTPs observed during red team engagements, with Sigma rules ready to drop into any SIEM.</description>
+      <category>Detection</category>
+    </item>
+  </channel>
+</rss>

