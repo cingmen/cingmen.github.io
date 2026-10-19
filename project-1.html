@@ -8,6 +8,8 @@
     <meta name="description"
         content="Technical case study: external perimeter breach of a segmented enterprise network — methodology, exploitation and remediation.">
     <link rel="canonical" href="https://cingmen.github.io/project-1.html">
+    <link rel="prev" href="https://cingmen.github.io/project-3.html">
+    <link rel="next" href="https://cingmen.github.io/project-2.html">
     <meta property="og:type" content="article">
     <meta property="og:site_name" content="Joesavat Donovan — SECURE_ID://ROOT">
     <meta property="og:title" content="BlackGate Perimeter Breach — Case Study">
@@ -498,27 +500,17 @@
             padding: 1px 7px;
         }
 
-        /* ============ screenshot placeholder ============ */
+        /* ============ figure image ============ */
         .shot {
             margin: 1.8em 0;
         }
 
-        .shot__box {
-            aspect-ratio: 16 / 9;
-            border: 1px dashed var(--line);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 24px;
-            font-family: var(--mono);
-            font-size: .76rem;
-            letter-spacing: .14em;
-            text-transform: uppercase;
-            color: var(--dim);
-            background:
-                repeating-linear-gradient(0deg, rgba(240, 240, 240, .03) 0 1px, transparent 1px 44px),
-                repeating-linear-gradient(90deg, rgba(240, 240, 240, .03) 0 1px, transparent 1px 44px);
+        .shot__img {
+            display: block;
+            width: 100%;
+            height: auto;
+            border: 1px solid var(--line);
+            background: #0f0f0f;
         }
 
         .shot figcaption {
@@ -853,7 +845,7 @@ r = requests.get(
 <span class="g"># 200 OK - full customer export downloaded (redacted in report)</span></pre>
                 </div>
                 <figure class="shot reveal">
-                    <div class="shot__box">[ Screenshot placeholder — burp-intruder-results.png ]</div>
+                    <img class="shot__img" src="assets/diagrams/blackgate-1.svg" alt="Diagram confirmation time-based injection: response baseline 0.10s vs injected 4.09s" loading="lazy">
                     <figcaption>Fig. 01 — Time-based payload confirmation inside Burp Repeater</figcaption>
                 </figure>
                 <div class="reveal">
@@ -863,7 +855,7 @@ r = requests.get(
                         against the declared crown-jewel segment.</p>
                 </div>
                 <figure class="shot reveal">
-                    <div class="shot__box">[ Screenshot placeholder — attack-chain-diagram.png ]</div>
+                    <img class="shot__img" src="assets/diagrams/blackgate-2.svg" alt="Diagram kill-chain lengkap: External Access → WAF Bypass → Blind SQLi → JWT Replay → SSRF Pivot → Crown-Jewel Segment" loading="lazy">
                     <figcaption>Fig. 02 — Full kill chain: WAF bypass → SQLi → JWT replay → SSRF pivot</figcaption>
                 </figure>
             </div>
@@ -936,7 +928,7 @@ r = requests.get(
         </section>
 
         <!-- NEXT PROJECT -->
-        <a class="next" href="project-1.html">
+        <a class="next" href="project-2.html">
             <span class="next__label">Next Project →</span>
             <span class="next__title">Operation Nightshade</span>
         </a>

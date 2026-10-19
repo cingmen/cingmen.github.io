@@ -802,6 +802,16 @@
             transform: translateX(12px);
         }
 
+        .post--soon {
+            opacity: .45;
+            cursor: default;
+        }
+
+        .post--soon:hover .post__title {
+            color: var(--fg);
+            transform: none;
+        }
+
         .post__tag {
             margin-left: auto;
             font-family: var(--mono);
@@ -1156,8 +1166,8 @@
                     <p class="section__label reveal">03 / Tech Arsenal &amp; Certs</p>
                     <h2 class="section__title reveal">Tools of the trade</h2>
                 </div>
-                <p class="section__aside reveal">Certification slots below are placeholders — logos drop in without
-                    touching the layout.</p>
+                <p class="section__aside reveal">Certifications listed as tracked milestones — logos switch in as
+                    they land.</p>
             </div>
             <div class="pills reveal">
                 <span class="pill">Burp Suite</span>
@@ -1177,7 +1187,7 @@
                 <span class="pill">Python</span>
                 <span class="pill">Go</span>
             </div>
-            <p class="certs__label reveal">// Certifications — placeholder slots</p>
+            <p class="certs__label reveal">// Certifications — tracked milestones</p>
             <div class="cert-grid reveal">
                 <div class="cert"><span class="cert__abbr">OSCP</span><span class="cert__name">Offensive Security
                         Certified Professional</span></div>
@@ -1186,7 +1196,7 @@
                 <div class="cert"><span class="cert__abbr">BTL1</span><span class="cert__name">Blue Team Level 1
                         Analyst</span></div>
                 <div class="cert"><span class="cert__abbr">CEH</span><span class="cert__name">Certified Ethical Hacker
-                        — placeholder</span></div>
+                        — in progress</span></div>
             </div>
         </section>
 
@@ -1247,12 +1257,12 @@
                     <span class="post__title">HTB — Lame: Samba usermap_script to root</span>
                     <span class="post__tag">Linux / PrivEsc</span>
                 </a>
-                <a class="post" href="writeup-1.html">
+                <a class="post post--soon" aria-disabled="true">
                     <span class="post__date">2026.02.18</span>
                     <span class="post__title">Blind SQLi to RCE: a chained web exploitation log</span>
                     <span class="post__tag">Web</span>
                 </a>
-                <a class="post" href="writeup-1.html">
+                <a class="post post--soon" aria-disabled="true">
                     <span class="post__date">2026.01.27</span>
                     <span class="post__title">Hunting living-off-the-land binaries in PowerShell telemetry</span>
                     <span class="post__tag">Threat Hunt</span>
@@ -1271,12 +1281,9 @@
                 <a class="contact__mail" href="mailto:joesavat@gmail.com">joesavat@gmail.com</a>
             </div>
             <div class="pgp reveal">
-                <p class="pgp__label">// PGP PUBLIC KEY — ROTATE BEFORE USE</p>
-                <pre class="pgp__key">-----BEGIN PGP PUBLIC KEY BLOCK-----
-mQINBGh4x7gBEADKz8vF2nQ7rT5wX9bC4eH0jL6mP1sU3yV8aD5gG9kI2oN4qR7tU
-w0zB3cE6fH9iK1lM4nP7qS0tV2xY5zA8bD1cF4gH7jK0lM3nP6qR9sT2uV5xW8yZ1
-=fLpX
------END PGP PUBLIC KEY BLOCK-----</pre>
+                <p class="pgp__label">// SECURE COMMUNICATION — PGP ON REQUEST</p>
+                <p class="pgp__key">Public key available before any engagement — email me and I'll send the key
+                    fingerprint, then verify via a second channel before you encrypt anything sensitive.</p>
             </div>
         </section>
     </main>

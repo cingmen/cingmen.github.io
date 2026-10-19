@@ -8,6 +8,8 @@
     <meta name="description"
         content="Technical case study: botnet telemetry research — sample triage, C2 protocol reverse engineering and IOC production.">
     <link rel="canonical" href="https://cingmen.github.io/project-3.html">
+    <link rel="prev" href="https://cingmen.github.io/project-2.html">
+    <link rel="next" href="https://cingmen.github.io/project-1.html">
     <meta property="og:type" content="article">
     <meta property="og:site_name" content="Joesavat Donovan — SECURE_ID://ROOT">
     <meta property="og:title" content="IoT Botnet Telemetry Study — Case Study">
@@ -498,27 +500,17 @@
             padding: 1px 7px;
         }
 
-        /* ============ screenshot placeholder ============ */
+        /* ============ figure image ============ */
         .shot {
             margin: 1.8em 0;
         }
 
-        .shot__box {
-            aspect-ratio: 16 / 9;
-            border: 1px dashed var(--line);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 24px;
-            font-family: var(--mono);
-            font-size: .76rem;
-            letter-spacing: .14em;
-            text-transform: uppercase;
-            color: var(--dim);
-            background:
-                repeating-linear-gradient(0deg, rgba(240, 240, 240, .03) 0 1px, transparent 1px 44px),
-                repeating-linear-gradient(90deg, rgba(240, 240, 240, .03) 0 1px, transparent 1px 44px);
+        .shot__img {
+            display: block;
+            width: 100%;
+            height: auto;
+            border: 1px solid var(--line);
+            background: #0f0f0f;
         }
 
         .shot figcaption {
@@ -842,7 +834,7 @@ def parse(buf):
 <span class="g"># (0x02, b'188.34.0.0/16 22 60')  -&gt; scan netmask, port, duration</span></pre>
                 </div>
                 <figure class="shot reveal">
-                    <div class="shot__box">[ Screenshot placeholder — qemu-detonation-trace.png ]</div>
+                    <img class="shot__img" src="assets/diagrams/botnet-1.svg" alt="Diagram sequence handshake C2: beacon TLV keep-alive 0x01, directive !SCAN 0x02, flood order 0x03" loading="lazy">
                     <figcaption>Fig. 01 — Detonation trace: keep-alive handshake and scan directive over TCP</figcaption>
                 </figure>
                 <div class="reveal">
@@ -852,7 +844,7 @@ def parse(buf):
                         directive fingerprint on the wire.</p>
                 </div>
                 <figure class="shot reveal">
-                    <div class="shot__box">[ Screenshot placeholder — yara-validation-matrix.png ]</div>
+                    <img class="shot__img" src="assets/diagrams/botnet-2.svg" alt="Diagram bar-chart validasi YARA: hit-rate 6 cluster sampel FAM-A sampai FAM-F" loading="lazy">
                     <figcaption>Fig. 02 — YARA validation matrix: cluster hit-rate vs public false-positive run</figcaption>
                 </figure>
             </div>

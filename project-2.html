@@ -8,6 +8,8 @@
     <meta name="description"
         content="Technical case study: internal Active Directory red-team engagement — Kerberoasting, lateral movement and tiered-model remediation.">
     <link rel="canonical" href="https://cingmen.github.io/project-2.html">
+    <link rel="prev" href="https://cingmen.github.io/project-1.html">
+    <link rel="next" href="https://cingmen.github.io/project-3.html">
     <meta property="og:type" content="article">
     <meta property="og:site_name" content="Joesavat Donovan — SECURE_ID://ROOT">
     <meta property="og:title" content="Operation Nightshade — Case Study">
@@ -498,27 +500,17 @@
             padding: 1px 7px;
         }
 
-        /* ============ screenshot placeholder ============ */
+        /* ============ figure image ============ */
         .shot {
             margin: 1.8em 0;
         }
 
-        .shot__box {
-            aspect-ratio: 16 / 9;
-            border: 1px dashed var(--line);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 24px;
-            font-family: var(--mono);
-            font-size: .76rem;
-            letter-spacing: .14em;
-            text-transform: uppercase;
-            color: var(--dim);
-            background:
-                repeating-linear-gradient(0deg, rgba(240, 240, 240, .03) 0 1px, transparent 1px 44px),
-                repeating-linear-gradient(90deg, rgba(240, 240, 240, .03) 0 1px, transparent 1px 44px);
+        .shot__img {
+            display: block;
+            width: 100%;
+            height: auto;
+            border: 1px solid var(--line);
+            background: #0f0f0f;
         }
 
         .shot figcaption {
@@ -841,7 +833,7 @@
 <span class="d"># STOP: objective demonstrated - no KRBTGT dump, no persistence</span></pre>
                 </div>
                 <figure class="shot reveal">
-                    <div class="shot__box">[ Screenshot placeholder — bloodhound-attack-path.png ]</div>
+                    <img class="shot__img" src="assets/diagrams/nightshade-1.svg" alt="Diagram BloodHound shortest path 3 hop: jdoe workstation → HELPDESK_GRP → svc_backup kerberoastable → Domain Admin" loading="lazy">
                     <figcaption>Fig. 01 — BloodHound shortest path: workstation user → svc_backup → DA</figcaption>
                 </figure>
                 <div class="reveal">
@@ -851,7 +843,7 @@
                         events silently dropped — hiding both the recon and the BloodHound collection phases.</p>
                 </div>
                 <figure class="shot reveal">
-                    <div class="shot__box">[ Screenshot placeholder — dcsync-detection-timeline.png ]</div>
+                    <img class="shot__img" src="assets/diagrams/nightshade-2.svg" alt="Diagram purple-team debunk: 4 teknik AD vs status deteksi SOC, DCSYNC terdeteksi 4 menit" loading="lazy">
                     <figcaption>Fig. 02 — Purple-team timeline: technique attempted vs SOC alert raised</figcaption>
                 </figure>
             </div>

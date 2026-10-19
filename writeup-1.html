@@ -470,27 +470,17 @@
             font-weight: 700;
         }
 
-        /* ============ image placeholder ============ */
+        /* ============ figure image ============ */
         .shot {
             margin: 1.8em 0;
         }
 
-        .shot__box {
-            aspect-ratio: 16 / 9;
-            border: 1px dashed var(--line);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 24px;
-            font-family: var(--mono);
-            font-size: .76rem;
-            letter-spacing: .14em;
-            text-transform: uppercase;
-            color: var(--dim);
-            background:
-                repeating-linear-gradient(0deg, rgba(240, 240, 240, .03) 0 1px, transparent 1px 44px),
-                repeating-linear-gradient(90deg, rgba(240, 240, 240, .03) 0 1px, transparent 1px 44px);
+        .shot__img {
+            display: block;
+            width: 100%;
+            height: auto;
+            border: 1px solid var(--line);
+            background: #0f0f0f;
         }
 
         .shot figcaption {
@@ -751,7 +741,7 @@ connect to [10.10.14.5] from (UNKNOWN) [10.10.10.3] 59771
 <span class="g">uid=0(root) gid=0(root) groups=0(root)</span></pre>
             </div>
             <figure class="shot reveal">
-                <div class="shot__box">[ Image placeholder — smbclient-reverse-shell.png ]</div>
+                <img class="shot__img" src="assets/diagrams/writeup-1.svg" alt="Diagram chain SMB RCE: attacker nc listener → write SMB :445 unattend .bat → NT AUTHORITY SYSTEM reverse connect → root shell" loading="lazy">
                 <figcaption>Fig. 01 — Root shell caught on the Netcat listener</figcaption>
             </figure>
 
