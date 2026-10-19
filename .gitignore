@@ -24,3 +24,4 @@ package-lock.json
 
 # 6. Freebuff internal project metadata (do not commit)
 .freebuff/
+screenshots/
