@@ -1212,7 +1212,7 @@
     </header>
 
     <div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Site menu" aria-hidden="true"
-        tabindex="-1">
+        tabindex="-1" inert>
         <nav class="menu__nav" aria-label="Main navigation">
             <a class="menu__link" href="#about">About</a>
             <a class="menu__link" href="#capabilities">Capabilities</a>
@@ -1629,6 +1629,7 @@
                 if (open === menu.classList.contains('is-open')) return;
 
                 menu.classList.toggle('is-open', open);
+                menu.inert = !open;
                 menu.setAttribute('aria-hidden', String(!open));
                 menuBtn.setAttribute('aria-expanded', String(open));
                 menuBtn.textContent = open ? '[ CLOSE ]' : '[ MENU ]';
