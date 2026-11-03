@@ -714,6 +714,64 @@
                 display: none;
             }
         }
+        /* ============ print ============ */
+        @media print {
+
+            :root {
+                --bg: #fff;
+                --fg: #000;
+                --dim: #444;
+                --accent: #000;
+                --line: #bbb;
+            }
+
+            body {
+                background: #fff !important;
+                color: #000 !important;
+                font-size: 11pt;
+            }
+
+            body::after,
+            .progress,
+            .cursor-dot,
+            .cursor-ring,
+            .skip-link,
+            .nav,
+            .menu,
+            .footer,
+            .marquee,
+            .preview {
+                display: none !important;
+            }
+
+            a {
+                color: #000;
+                text-decoration: underline;
+            }
+
+            .hero,
+            .section {
+                min-height: 0;
+                padding: 0 0 18pt;
+            }
+
+            .cap,
+            .cert,
+            .work__item,
+            .post,
+            .lab__card,
+            .shot,
+            .next,
+            pre {
+                break-inside: avoid;
+            }
+
+            h1,
+            h2,
+            h3 {
+                break-after: avoid;
+            }
+        }
     </style>
 </head>
 

@@ -373,6 +373,38 @@
                 display: none;
             }
         }
+        /* ============ print ============ */
+        @media print {
+
+            :root {
+                --bg: #fff;
+                --fg: #000;
+                --dim: #444;
+                --accent: #000;
+                --line: #bbb;
+            }
+
+            body {
+                background: #fff !important;
+                color: #000 !important;
+            }
+
+            body::after,
+            .progress,
+            .cursor-dot,
+            .cursor-ring,
+            .skip-link,
+            .nav,
+            .footer {
+                display: none !important;
+            }
+
+            .stage__code {
+                animation: none;
+                color: #000;
+                -webkit-text-stroke: 0;
+            }
+        }
     </style>
 </head>
 
