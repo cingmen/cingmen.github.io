@@ -14,13 +14,5 @@
       <description>Walkthrough of HackTheBox Lame: recon with nmap, exploiting CVE-2007-2447 (Samba username map script) for immediate root, and why legacy Samba instances remain pervasive.</description>
       <category>CTF</category>
     </item>
-    <item>
-      <title>Hunting living-off-the-land binaries in PowerShell telemetry</title>
-      <link>https://cingmen.github.io/writeup-1.html</link>
-      <guid isPermaLink="true">https://cingmen.github.io/writeup-1.html#lolbin</guid>
-      <pubDate>Tue, 27 Jan 2026 00:00:00 GMT</pubDate>
-      <description>Building detection rules for LOLBins on Windows endpoints using real adversary TTPs observed during red team engagements, with Sigma rules ready to drop into any SIEM.</description>
-      <category>Detection</category>
-    </item>
   </channel>
 </rss>
