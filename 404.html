@@ -12,7 +12,7 @@
     <script>
         document.documentElement.classList.add('js');
     </script>
-    <link rel="preload" href="assets/fonts/syne-800.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/assets/fonts/syne-800.woff2" as="font" type="font/woff2" crossorigin>
     <meta name="theme-color" content="#0a0a0a">
     <style>
         /* ============ self-hosted fonts (latin subset) ============ */
@@ -21,7 +21,7 @@
             font-style: normal;
             font-weight: 700 800;
             font-display: swap;
-            src: url('assets/fonts/syne-800.woff2') format('woff2');
+            src: url('/assets/fonts/syne-800.woff2') format('woff2');
         }
 
         @font-face {
@@ -29,7 +29,7 @@
             font-style: normal;
             font-weight: 300 500;
             font-display: swap;
-            src: url('assets/fonts/space-grotesk-500.woff2') format('woff2');
+            src: url('/assets/fonts/space-grotesk-500.woff2') format('woff2');
         }
 
         @font-face {
@@ -37,7 +37,7 @@
             font-style: normal;
             font-weight: 400;
             font-display: swap;
-            src: url('assets/fonts/space-mono-400.woff2') format('woff2');
+            src: url('/assets/fonts/space-mono-400.woff2') format('woff2');
         }
 
         @font-face {
@@ -45,7 +45,7 @@
             font-style: normal;
             font-weight: 700;
             font-display: swap;
-            src: url('assets/fonts/space-mono-700.woff2') format('woff2');
+            src: url('/assets/fonts/space-mono-700.woff2') format('woff2');
         }
 
         /* ============ design tokens ============ */
@@ -346,8 +346,8 @@
     <div class="cursor-ring" id="cursorRing"></div>
 
     <header class="nav">
-        <a class="nav__logo" href="index.html">SECURE_ID<span class="acc">://</span>ROOT</a>
-        <a class="nav__home" href="index.html">[ HOME ]</a>
+        <a class="nav__logo" href="/">SECURE_ID<span class="acc">://</span>ROOT</a>
+        <a class="nav__home" href="/">[ HOME ]</a>
     </header>
 
     <main class="stage">
@@ -361,7 +361,7 @@
             <div><span class="d">$</span> whoami &amp;&amp; pwd</div>
             <div class="g">guest@secure_id · /unknown/route</div>
         </div>
-        <a class="btn" href="index.html">[ Return to Home ] <span aria-hidden="true">→</span></a>
+        <a class="btn" href="/">[ Return to Home ] <span aria-hidden="true">→</span></a>
     </main>
 
     <footer class="footer">
