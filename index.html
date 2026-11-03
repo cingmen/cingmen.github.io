@@ -1211,7 +1211,8 @@
         <button class="nav__btn" id="menuBtn" aria-expanded="false" aria-controls="menu">[ MENU ]</button>
     </header>
 
-    <div class="menu" id="menu" aria-hidden="true">
+    <div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Site menu" aria-hidden="true"
+        tabindex="-1">
         <nav class="menu__nav" aria-label="Main navigation">
             <a class="menu__link" href="#about">About</a>
             <a class="menu__link" href="#capabilities">Capabilities</a>
@@ -1600,26 +1601,85 @@
                 });
             }
 
-            /* ---------- fullscreen menu ---------- */
+            /* ---------- fullscreen menu (modal: focus trapped, page inert) ---------- */
             var menu = document.getElementById('menu');
             var menuBtn = document.getElementById('menuBtn');
+            var pageRegions = [document.querySelector('main'), document.querySelector('footer')].filter(Boolean);
 
-            function setMenu(open) {
+            function menuFocusables() {
+                return Array.prototype.filter.call(
+                    menu.querySelectorAll('a[href], button, summary, [tabindex]:not([tabindex="-1"])'),
+                    function (el) { return el.getClientRects().length > 0; }
+                );
+            }
+
+            function setPageInert(inert) {
+                pageRegions.forEach(function (el) {
+                    if (inert) {
+                        if ('inert' in el) el.inert = true;
+                        el.setAttribute('aria-hidden', 'true');
+                    } else {
+                        if ('inert' in el) el.inert = false;
+                        el.removeAttribute('aria-hidden');
+                    }
+                });
+            }
+
+            function setMenu(open, restoreFocus) {
+                if (open === menu.classList.contains('is-open')) return;
+
                 menu.classList.toggle('is-open', open);
                 menu.setAttribute('aria-hidden', String(!open));
                 menuBtn.setAttribute('aria-expanded', String(open));
                 menuBtn.textContent = open ? '[ CLOSE ]' : '[ MENU ]';
                 document.body.style.overflow = open ? 'hidden' : '';
+                setPageInert(open);
+
+                if (open) {
+                    /* force style flush so visibility: visible is applied before focusing */
+                    void menu.offsetWidth;
+                    (menuFocusables()[0] || menu).focus();
+                } else if (restoreFocus !== false) {
+                    menuBtn.focus();
+                }
             }
 
             menuBtn.addEventListener('click', function () {
                 setMenu(!menu.classList.contains('is-open'));
             });
             menu.querySelectorAll('a').forEach(function (link) {
-                link.addEventListener('click', function () { setMenu(false); });
+                link.addEventListener('click', function () { setMenu(false, false); });
             });
             document.addEventListener('keydown', function (e) {
-                if (e.key === 'Escape') setMenu(false);
+                if (!menu.classList.contains('is-open')) return;
+
+                if (e.key === 'Escape') {
+                    e.preventDefault();
+                    setMenu(false);
+                    return;
+                }
+
+                if (e.key !== 'Tab') return;
+
+                var items = menuFocusables();
+                if (!items.length) {
+                    e.preventDefault();
+                    menu.focus();
+                    return;
+                }
+
+                var first = items[0];
+                var last = items[items.length - 1];
+                var active = document.activeElement;
+                var outside = !menu.contains(active);
+
+                if (e.shiftKey && (outside || active === first)) {
+                    e.preventDefault();
+                    last.focus();
+                } else if (!e.shiftKey && (outside || active === last)) {
+                    e.preventDefault();
+                    first.focus();
+                }
             });
 
             /* ---------- reveal on scroll ---------- */
