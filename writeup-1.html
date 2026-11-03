@@ -121,6 +121,40 @@
             text-decoration: none;
         }
 
+        /* ---------- skip link + focus visibility ---------- */
+        .skip-link {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 10001;
+            padding: 10px 16px;
+            background: var(--accent);
+            color: #0a0a0a;
+            font-family: var(--mono);
+            font-size: .78rem;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            transform: translateY(-180%);
+            transition: transform .2s ease-out;
+        }
+
+        .skip-link:focus {
+            transform: translateY(0);
+        }
+
+        main:focus {
+            outline: none;
+        }
+
+        a:focus-visible,
+        button:focus-visible,
+        summary:focus-visible,
+        [tabindex]:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 3px;
+        }
+
         button {
             font: inherit;
             color: inherit;
@@ -598,6 +632,8 @@
 </head>
 
 <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
     <div class="progress" id="progress"></div>
     <div class="cursor-dot" id="cursorDot"></div>
     <div class="cursor-ring" id="cursorRing"></div>
@@ -607,7 +643,7 @@
         <a class="nav__home" href="index.html">[ HOME ]</a>
     </header>
 
-    <main>
+    <main id="main" tabindex="-1">
         <!-- HERO -->
         <section class="wero">
             <p class="wero__kicker reveal">// CTF Write-up — HackTheBox</p>
