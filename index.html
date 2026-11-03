@@ -353,6 +353,87 @@
             color: var(--accent);
         }
 
+        /* ---------- menu dropdown (native disclosure, works without JS) ---------- */
+        .menu__group {
+            width: fit-content;
+        }
+
+        .menu__summary {
+            display: flex;
+            align-items: center;
+            gap: clamp(8px, 1.2vw, 16px);
+            list-style: none;
+            cursor: pointer;
+        }
+
+        .menu__summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .menu__chev {
+            font-family: var(--mono);
+            font-size: .34em;
+            color: var(--dim);
+            transition: color .3s;
+        }
+
+        .menu__chev::before {
+            content: '+';
+        }
+
+        .menu__group[open] .menu__chev::before {
+            content: '−';
+        }
+
+        .menu__group[open] .menu__chev {
+            color: var(--accent);
+        }
+
+        .menu__sub {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            margin: .55em 0 .2em;
+            padding-left: clamp(10px, 2vw, 26px);
+            border-left: 1px solid var(--line);
+        }
+
+        .menu__sublink {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 4px 14px;
+            padding: 10px 0;
+            font-family: var(--mono);
+            font-size: clamp(.8rem, 1.1vw, .95rem);
+            letter-spacing: .04em;
+            color: var(--fg);
+            transition: color .25s, transform .25s;
+        }
+
+        .menu__sublink:hover,
+        .menu__sublink:focus-visible {
+            color: var(--accent);
+            transform: translateX(8px);
+        }
+
+        .menu__sublink b {
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+
+        .menu__sublink span {
+            color: var(--dim);
+            font-size: .92em;
+        }
+
+        .menu__sublink .menu__ext {
+            margin-left: auto;
+            color: var(--accent);
+            font-size: 1em;
+        }
+
         /* ============ hero ============ */
         .hero {
             min-height: 100vh;
@@ -812,6 +893,87 @@
             transform: none;
         }
 
+        /* ============ lab / live tools ============ */
+        .lab {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 16px;
+        }
+
+        .lab__card {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            padding: clamp(22px, 3vw, 34px);
+            border: 1px solid var(--line);
+            background: linear-gradient(155deg, rgba(204, 255, 0, .055), transparent 60%);
+            transition: border-color .35s, transform .35s, background .35s;
+        }
+
+        .lab__card:hover,
+        .lab__card:focus-visible {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+            background: linear-gradient(155deg, rgba(204, 255, 0, .1), transparent 62%);
+        }
+
+        .lab__top {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            font-family: var(--mono);
+            font-size: .7rem;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--dim);
+        }
+
+        .lab__state {
+            color: var(--accent);
+        }
+
+        .lab__title {
+            font-family: var(--head);
+            font-weight: 800;
+            font-size: clamp(1.3rem, 2.4vw, 1.85rem);
+            letter-spacing: -.01em;
+            line-height: 1.1;
+        }
+
+        .lab__desc {
+            font-size: .95rem;
+            color: var(--dim);
+            max-width: 48ch;
+        }
+
+        .lab__foot {
+            margin-top: auto;
+            padding-top: 6px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px 18px;
+            font-family: var(--mono);
+            font-size: .68rem;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--dim);
+        }
+
+        .lab__cta {
+            color: var(--fg);
+            border: 1px solid var(--line);
+            padding: 7px 14px;
+            transition: color .3s, border-color .3s;
+        }
+
+        .lab__card:hover .lab__cta,
+        .lab__card:focus-visible .lab__cta {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
         .post__tag {
             margin-left: auto;
             font-family: var(--mono);
@@ -1054,6 +1216,19 @@
             <a class="menu__link" href="#arsenal">Arsenal</a>
             <a class="menu__link" href="#work">Case Studies</a>
             <a class="menu__link" href="#writeups">Write-ups</a>
+            <details class="menu__group">
+                <summary class="menu__link menu__summary">Lab <span class="menu__chev" aria-hidden="true"></span></summary>
+                <div class="menu__sub">
+                    <a class="menu__sublink" href="/osint-harian/" target="_blank" rel="noopener noreferrer">
+                        <b>osint-harian</b><span>Daily public-data tracker</span><span class="menu__ext"
+                            aria-hidden="true">↗</span>
+                    </a>
+                    <a class="menu__sublink" href="/phisquest/" target="_blank" rel="noopener noreferrer">
+                        <b>PhishQuest</b><span>Anti-phishing training game</span><span class="menu__ext"
+                            aria-hidden="true">↗</span>
+                    </a>
+                </div>
+            </details>
             <a class="menu__link" href="#contact">Contact</a>
         </nav>
         <div class="menu__foot">
@@ -1270,9 +1445,45 @@
             </div>
         </section>
 
-        <!-- 08 CONTACT -->
+        <!-- 08 LAB -->
+        <section class="section" id="lab">
+            <div class="section__head">
+                <div>
+                    <p class="section__label reveal">06 / Lab &amp; Tools</p>
+                    <h2 class="section__title reveal">Shipped &amp; running</h2>
+                </div>
+                <p class="section__aside reveal">Self-hosted tools I build and keep alive — public, no login, no
+                    telemetry.</p>
+            </div>
+            <div class="lab reveal">
+                <a class="lab__card" href="/osint-harian/" target="_blank" rel="noopener noreferrer">
+                    <span class="lab__top"><span>/ 01</span><span class="lab__state">Live ↗</span></span>
+                    <h3 class="lab__title">osint-harian</h3>
+                    <p class="lab__desc">Daily deterministic watcher for public data — BMKG, OFAC, CISA, NVD, WHO,
+                        USGS and news RSS. Every run publishes a diff, so a change is a verifiable record instead of
+                        another unread feed.</p>
+                    <span class="lab__foot">
+                        <span>OSINT / Automation / Diffing</span>
+                        <span class="lab__cta">Open tracker →</span>
+                    </span>
+                </a>
+                <a class="lab__card" href="/phisquest/" target="_blank" rel="noopener noreferrer">
+                    <span class="lab__top"><span>/ 02</span><span class="lab__state">Live ↗</span></span>
+                    <h3 class="lab__title">PhishQuest</h3>
+                    <p class="lab__desc">Indonesian anti-phishing training game — 40 email, SMS and WhatsApp
+                        scenarios in an arcade quiz, plus a CLI mode for workshops. Awareness training people
+                        actually finish.</p>
+                    <span class="lab__foot">
+                        <span>Security Awareness / Game</span>
+                        <span class="lab__cta">Play the game →</span>
+                    </span>
+                </a>
+            </div>
+        </section>
+
+        <!-- 09 CONTACT -->
         <section class="section contact" id="contact">
-            <p class="section__label reveal">06 / Contact</p>
+            <p class="section__label reveal">07 / Contact</p>
             <h2 class="contact__title reveal">Initiate<br>secure contact</h2>
             <div class="contact__row reveal">
                 <a class="btn-magnet" id="magnetBtn" href="mailto:joesavat@gmail.com?subject=Encrypted%20Channel">
