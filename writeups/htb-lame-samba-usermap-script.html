@@ -4,11 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>HTB — Lame Write-up | Joesavat Donovan</title>
     <meta name="description"
         content="CTF write-up: HackTheBox Lame — Samba 3.0.20 usermap_script RCE to root on Linux.">
     <link rel="canonical" href="https://cingmen.github.io/writeups/htb-lame-samba-usermap-script.html">
     <link rel="manifest" href="/site.webmanifest">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
     <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
     <script type="application/ld+json">
     {
@@ -287,11 +289,22 @@
             top: 0;
             left: 0;
             width: 100%;
-            padding: 22px var(--pad);
+            padding: 20px var(--pad);
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 950;
+            background: rgba(10, 10, 10, .82);
+            -webkit-backdrop-filter: blur(14px);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid transparent;
+            transition: background .3s, border-color .3s, padding .3s;
+        }
+
+        .nav.is-scrolled {
+            background: rgba(10, 10, 10, .94);
+            border-bottom-color: var(--line);
+            padding: 15px var(--pad);
         }
 
         .nav__logo {
@@ -381,6 +394,7 @@
             border-bottom: 1px solid var(--line);
             overflow-wrap: break-word;
             hyphens: auto;
+            scroll-margin-top: 84px;
         }
 
         .doc h2:first-child {
@@ -392,6 +406,7 @@
             font-size: .7em;
             color: var(--accent);
             margin-right: .35em;
+            border-bottom: 0;
         }
 
         .doc h3 {
@@ -752,7 +767,7 @@
             </div>
 
             <!-- 01 -->
-            <h2 id="recon"><span class="hash">#</span>Reconnaissance</h2>
+            <h2 id="recon"><a class="hash" href="#recon">#</a>Reconnaissance</h2>
             <div class="reveal">
                 <p>Standard first move: full port sweep with service detection and default scripts against the target
                     IP (<code class="inline">10.10.10.3</code>).</p>
@@ -779,7 +794,7 @@ Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel</pre>
             </div>
 
             <!-- 02 -->
-            <h2 id="enumeration"><span class="hash">#</span>Enumeration</h2>
+            <h2 id="enumeration"><a class="hash" href="#enumeration">#</a>Enumeration</h2>
             <div class="reveal">
                 <p>Version strings are only useful when checked against exploit databases — <code
                         class="inline">searchsploit</code> is fastest:</p>
@@ -810,7 +825,7 @@ Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel</pre>
             </div>
 
             <!-- 03 -->
-            <h2 id="exploitation"><span class="hash">#</span>Exploitation — usermap_script</h2>
+            <h2 id="exploitation"><a class="hash" href="#exploitation">#</a>Exploitation — usermap_script</h2>
             <div class="reveal">
                 <p>I scripted the exploit in Python for a clean reverse shell instead of the Metasploit module. The
                     payload is smuggled inside the SMB username:</p>
@@ -859,7 +874,7 @@ connect to [10.10.14.5] from (UNKNOWN) [10.10.10.3] 59771
             </figure>
 
             <!-- 04 -->
-            <h2 id="privesc"><span class="hash">#</span>Privilege Escalation</h2>
+            <h2 id="privesc"><a class="hash" href="#privesc">#</a>Privilege Escalation</h2>
             <div class="reveal">
                 <p>There is no escalation step — the Samba service runs as root, so we land straight at
                     <code class="inline">uid=0</code>. Grab the flags:</p>
@@ -883,7 +898,7 @@ connect to [10.10.14.5] from (UNKNOWN) [10.10.10.3] 59771
             </div>
 
             <!-- 05 -->
-            <h2 id="lessons"><span class="hash">#</span>Lessons Learned</h2>
+            <h2 id="lessons"><a class="hash" href="#lessons">#</a>Lessons Learned</h2>
             <ul class="reveal">
                 <li><strong>Version strings are leads, not noise.</strong> A dated <code class="inline">-Debian</code>
                     suffix mapped directly to a 2007 CVE with a five-line exploit.</li>
@@ -920,6 +935,7 @@ connect to [10.10.14.5] from (UNKNOWN) [10.10.10.3] 59771
 
             /* ---------- scroll progress (rAF-throttled, transform-only) ---------- */
             var bar = document.getElementById('progress');
+            var navEl = document.querySelector('.nav');
             var progressTick = false;
 
             function updateProgress() {
@@ -927,6 +943,7 @@ connect to [10.10.14.5] from (UNKNOWN) [10.10.10.3] 59771
                 var max = document.documentElement.scrollHeight - window.innerHeight;
                 var p = max > 0 ? window.scrollY / max : 0;
                 bar.style.transform = 'scaleX(' + Math.min(Math.max(p, 0), 1) + ')';
+                if (navEl) navEl.classList.toggle('is-scrolled', window.scrollY > 24);
             }
             function queueProgress() {
                 if (!progressTick) {

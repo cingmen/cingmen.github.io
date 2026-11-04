@@ -4,11 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>Operation Nightshade — Case Study | Joesavat Donovan</title>
     <meta name="description"
         content="Technical case study: internal Active Directory red-team engagement — Kerberoasting, lateral movement and tiered-model remediation.">
     <link rel="canonical" href="https://cingmen.github.io/projects/operation-nightshade-ad-red-team.html">
     <link rel="manifest" href="/site.webmanifest">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
     <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
     <script type="application/ld+json">
     {
@@ -287,11 +289,22 @@
             top: 0;
             left: 0;
             width: 100%;
-            padding: 22px var(--pad);
+            padding: 20px var(--pad);
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 950;
+            background: rgba(10, 10, 10, .82);
+            -webkit-backdrop-filter: blur(14px);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid transparent;
+            transition: background .3s, border-color .3s, padding .3s;
+        }
+
+        .nav.is-scrolled {
+            background: rgba(10, 10, 10, .94);
+            border-bottom-color: var(--line);
+            padding: 15px var(--pad);
         }
 
         .nav__logo {
@@ -395,6 +408,7 @@
         .block {
             padding: clamp(56px, 8vw, 110px) var(--pad);
             border-bottom: 1px solid var(--line);
+            scroll-margin-top: 72px;
         }
 
         .block__inner {
@@ -415,6 +429,11 @@
             color: var(--accent);
             letter-spacing: .1em;
             flex-shrink: 0;
+            transition: opacity .3s;
+        }
+
+        .block__num:hover {
+            opacity: .75;
         }
 
         .block__title {
@@ -861,10 +880,10 @@
         </section>
 
         <!-- 01 OVERVIEW -->
-        <section class="block">
+        <section class="block" id="overview">
             <div class="block__inner">
                 <div class="block__head reveal">
-                    <span class="block__num">01.</span>
+                    <a class="block__num" href="#overview">01.</a>
                     <h2 class="block__title">Overview</h2>
                 </div>
                 <div class="reveal">
@@ -883,10 +902,10 @@
         </section>
 
         <!-- 02 THE CHALLENGE -->
-        <section class="block">
+        <section class="block" id="challenge">
             <div class="block__inner">
                 <div class="block__head reveal">
-                    <span class="block__num">02.</span>
+                    <a class="block__num" href="#challenge">02.</a>
                     <h2 class="block__title">The Challenge</h2>
                 </div>
                 <div class="reveal">
@@ -908,10 +927,10 @@
         </section>
 
         <!-- 03 THE EXECUTION -->
-        <section class="block">
+        <section class="block" id="execution">
             <div class="block__inner">
                 <div class="block__head reveal">
-                    <span class="block__num">03.</span>
+                    <a class="block__num" href="#execution">03.</a>
                     <h2 class="block__title">The Execution</h2>
                 </div>
                 <div class="reveal">
@@ -1002,10 +1021,10 @@
         </section>
 
         <!-- 04 IMPACT & MITIGATION -->
-        <section class="block">
+        <section class="block" id="mitigation">
             <div class="block__inner">
                 <div class="block__head reveal">
-                    <span class="block__num">04.</span>
+                    <a class="block__num" href="#mitigation">04.</a>
                     <h2 class="block__title">The Impact &amp; Mitigation</h2>
                 </div>
                 <div class="reveal">
@@ -1100,6 +1119,7 @@
 
             /* ---------- scroll progress (rAF-throttled, transform-only) ---------- */
             var bar = document.getElementById('progress');
+            var navEl = document.querySelector('.nav');
             var progressTick = false;
 
             function updateProgress() {
@@ -1107,6 +1127,7 @@
                 var max = document.documentElement.scrollHeight - window.innerHeight;
                 var p = max > 0 ? window.scrollY / max : 0;
                 bar.style.transform = 'scaleX(' + Math.min(Math.max(p, 0), 1) + ')';
+                if (navEl) navEl.classList.toggle('is-scrolled', window.scrollY > 24);
             }
             function queueProgress() {
                 if (!progressTick) {

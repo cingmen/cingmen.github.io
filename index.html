@@ -5,11 +5,13 @@
     <link rel="alternate" type="application/rss+xml" title="Security Write-ups RSS" href="https://cingmen.github.io/feed.xml">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>Joesavat Donovan — Cyber Security &amp; Researcher</title>
     <meta name="description"
         content="Portfolio of Joesavat Donovan, cybersecurity practitioner — offensive security, threat hunting, malware analysis and vulnerability research.">
     <link rel="canonical" href="https://cingmen.github.io/">
     <link rel="manifest" href="/site.webmanifest">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
     <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
     <script type="application/ld+json">
     {
@@ -337,11 +339,22 @@
             top: 0;
             left: 0;
             width: 100%;
-            padding: 22px var(--pad);
+            padding: 20px var(--pad);
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 950;
+            background: rgba(10, 10, 10, .82);
+            -webkit-backdrop-filter: blur(14px);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid transparent;
+            transition: background .3s, border-color .3s, padding .3s;
+        }
+
+        .nav.is-scrolled {
+            background: rgba(10, 10, 10, .94);
+            border-bottom-color: var(--line);
+            padding: 15px var(--pad);
         }
 
         .nav__logo {
@@ -1123,6 +1136,29 @@
             border-color: var(--accent);
         }
 
+        .contact__mail-wrap {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .contact__copy {
+            font-family: var(--mono);
+            font-size: .68rem;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            color: var(--dim);
+            border: 1px solid var(--line);
+            padding: 6px 11px;
+            transition: color .3s, border-color .3s;
+        }
+
+        .contact__copy:hover,
+        .contact__copy:focus-visible {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
         .pgp {
             border: 1px dashed var(--line);
             padding: clamp(14px, 2vw, 22px);
@@ -1626,7 +1662,10 @@
                 <a class="btn-magnet" id="magnetBtn" href="mailto:joesavat@gmail.com?subject=Encrypted%20Channel">
                     Open Encrypted Channel <span class="arrow">→</span>
                 </a>
-                <a class="contact__mail" href="mailto:joesavat@gmail.com">joesavat@gmail.com</a>
+                <span class="contact__mail-wrap">
+                    <a class="contact__mail" href="mailto:joesavat@gmail.com">joesavat@gmail.com</a>
+                    <button class="contact__copy" type="button" id="copyEmailBtn" data-email="joesavat@gmail.com">[ COPY ]</button>
+                </span>
             </div>
             <div class="pgp reveal">
                 <p class="pgp__label">// SECURE COMMUNICATION — PGP ON REQUEST</p>
@@ -1678,6 +1717,7 @@
 
             /* ---------- scroll progress (rAF-throttled, transform-only) ---------- */
             var bar = document.getElementById('progress');
+            var navEl = document.querySelector('.nav');
             var progressTick = false;
 
             function updateProgress() {
@@ -1685,6 +1725,7 @@
                 var max = document.documentElement.scrollHeight - window.innerHeight;
                 var p = max > 0 ? window.scrollY / max : 0;
                 bar.style.transform = 'scaleX(' + Math.min(Math.max(p, 0), 1) + ')';
+                if (navEl) navEl.classList.toggle('is-scrolled', window.scrollY > 24);
             }
             function queueProgress() {
                 if (!progressTick) {
@@ -1880,6 +1921,21 @@
                         magnet.style.transform = 'translate(0,0)';
                     });
                 }
+            }
+
+            /* ---------- copy email ---------- */
+            var copyEmailBtn = document.getElementById('copyEmailBtn');
+            if (copyEmailBtn && navigator.clipboard && navigator.clipboard.writeText) {
+                copyEmailBtn.addEventListener('click', function () {
+                    var email = copyEmailBtn.getAttribute('data-email') || 'joesavat@gmail.com';
+                    navigator.clipboard.writeText(email).then(function () {
+                        copyEmailBtn.textContent = '[ COPIED ]';
+                        setTimeout(function () { copyEmailBtn.textContent = '[ COPY ]'; }, 1800);
+                    }).catch(function () {
+                        copyEmailBtn.textContent = '[ FAILED ]';
+                        setTimeout(function () { copyEmailBtn.textContent = '[ COPY ]'; }, 1800);
+                    });
+                });
             }
 
             /* ---------- footer year ---------- */
