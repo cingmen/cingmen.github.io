@@ -8,8 +8,8 @@
     <atom:link href="https://cingmen.github.io/feed.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>HTB — Lame: Samba usermap_script to root</title>
-      <link>https://cingmen.github.io/writeup-1.html</link>
-      <guid isPermaLink="true">https://cingmen.github.io/writeup-1.html</guid>
+      <link>https://cingmen.github.io/writeups/htb-lame-samba-usermap-script.html</link>
+      <guid isPermaLink="true">https://cingmen.github.io/writeups/htb-lame-samba-usermap-script.html</guid>
       <pubDate>Sun, 01 Mar 2026 00:00:00 GMT</pubDate>
       <description>Walkthrough of HackTheBox Lame: recon with nmap, exploiting CVE-2007-2447 (Samba username map script) for immediate root, and why legacy Samba instances remain pervasive.</description>
       <category>CTF</category>

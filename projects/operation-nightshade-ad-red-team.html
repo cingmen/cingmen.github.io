@@ -7,7 +7,7 @@
     <title>Operation Nightshade — Case Study | Joesavat Donovan</title>
     <meta name="description"
         content="Technical case study: internal Active Directory red-team engagement — Kerberoasting, lateral movement and tiered-model remediation.">
-    <link rel="canonical" href="https://cingmen.github.io/project-2.html">
+    <link rel="canonical" href="https://cingmen.github.io/projects/operation-nightshade-ad-red-team.html">
     <link rel="manifest" href="/site.webmanifest">
     <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
     <script type="application/ld+json">
@@ -16,32 +16,32 @@
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://cingmen.github.io/" },
-        { "@type": "ListItem", "position": 2, "name": "Operation Nightshade", "item": "https://cingmen.github.io/project-2.html" }
+        { "@type": "ListItem", "position": 2, "name": "Operation Nightshade", "item": "https://cingmen.github.io/projects/operation-nightshade-ad-red-team.html" }
       ]
     }
     </script>
-    <link rel="prev" href="https://cingmen.github.io/project-1.html">
-    <link rel="next" href="https://cingmen.github.io/project-3.html">
+    <link rel="prev" href="https://cingmen.github.io/projects/blackgate-perimeter-breach.html">
+    <link rel="next" href="https://cingmen.github.io/projects/iot-botnet-telemetry-study.html">
     <meta property="og:type" content="article">
     <meta property="og:site_name" content="Joesavat Donovan — SECURE_ID://ROOT">
     <meta property="og:title" content="Operation Nightshade — Case Study">
     <meta property="og:description" content="Internal Active Directory red-team engagement — Kerberoasting, lateral movement and tiered-model remediation.">
-    <meta property="og:url" content="https://cingmen.github.io/project-2.html">
-    <meta property="og:image" content="https://cingmen.github.io/og-operation.png">
+    <meta property="og:url" content="https://cingmen.github.io/projects/operation-nightshade-ad-red-team.html">
+    <meta property="og:image" content="https://cingmen.github.io/assets/og-operation.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Operation Nightshade — Case Study">
     <meta name="twitter:description" content="Internal AD red team — Kerberoasting, lateral movement, tiered remediation.">
-    <meta name="twitter:image" content="https://cingmen.github.io/og-operation.png">
+    <meta name="twitter:image" content="https://cingmen.github.io/assets/og-operation.png">
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Article",
       "headline": "Operation Nightshade — Case Study",
       "author": { "@type": "Person", "name": "Joesavat Donovan", "url": "https://cingmen.github.io/" },
-      "url": "https://cingmen.github.io/project-2.html",
-      "image": "https://cingmen.github.io/og-operation.png",
+      "url": "https://cingmen.github.io/projects/operation-nightshade-ad-red-team.html",
+      "image": "https://cingmen.github.io/assets/og-operation.png",
       "articleSection": "Case Study",
       "about": ["Red Teaming", "Active Directory", "Detection Engineering"]
     }
@@ -51,7 +51,7 @@
     <script>
         document.documentElement.classList.add('js');
     </script>
-    <link rel="preload" href="assets/fonts/syne-800.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="../assets/fonts/syne-800.woff2" as="font" type="font/woff2" crossorigin>
     <meta name="theme-color" content="#0a0a0a">
     <style>
         /* ============ self-hosted fonts (latin subset) ============ */
@@ -60,7 +60,7 @@
             font-style: normal;
             font-weight: 700 800;
             font-display: swap;
-            src: url('assets/fonts/syne-800.woff2') format('woff2');
+            src: url('../assets/fonts/syne-800.woff2') format('woff2');
         }
 
         @font-face {
@@ -68,7 +68,7 @@
             font-style: normal;
             font-weight: 300 500;
             font-display: swap;
-            src: url('assets/fonts/space-grotesk-500.woff2') format('woff2');
+            src: url('../assets/fonts/space-grotesk-500.woff2') format('woff2');
         }
 
         @font-face {
@@ -76,7 +76,7 @@
             font-style: normal;
             font-weight: 400;
             font-display: swap;
-            src: url('assets/fonts/space-mono-400.woff2') format('woff2');
+            src: url('../assets/fonts/space-mono-400.woff2') format('woff2');
         }
 
         @font-face {
@@ -84,7 +84,7 @@
             font-style: normal;
             font-weight: 700;
             font-display: swap;
-            src: url('assets/fonts/space-mono-700.woff2') format('woff2');
+            src: url('../assets/fonts/space-mono-700.woff2') format('woff2');
         }
 
         /* ============ design tokens ============ */
@@ -783,8 +783,8 @@
     <div class="cursor-ring" id="cursorRing"></div>
 
     <header class="nav">
-        <a class="nav__logo" href="index.html">SECURE_ID<span class="acc">://</span>ROOT</a>
-        <a class="nav__home" href="index.html">[ HOME ]</a>
+        <a class="nav__logo" href="../index.html">SECURE_ID<span class="acc">://</span>ROOT</a>
+        <a class="nav__home" href="../index.html">[ HOME ]</a>
     </header>
 
     <main id="main" tabindex="-1">
@@ -939,7 +939,7 @@
 <span class="d"># STOP: objective demonstrated - no KRBTGT dump, no persistence</span></pre>
                 </div>
                 <figure class="shot reveal">
-                    <img class="shot__img" src="assets/diagrams/nightshade-1.svg" alt="Diagram BloodHound shortest path 3 hop: jdoe workstation → HELPDESK_GRP → svc_backup kerberoastable → Domain Admin" loading="lazy">
+                    <img class="shot__img" src="../assets/diagrams/nightshade-1.svg" alt="Diagram BloodHound shortest path 3 hop: jdoe workstation → HELPDESK_GRP → svc_backup kerberoastable → Domain Admin" loading="lazy">
                     <figcaption>Fig. 01 — BloodHound shortest path: workstation user → svc_backup → DA</figcaption>
                 </figure>
                 <div class="reveal">
@@ -949,7 +949,7 @@
                         events silently dropped — hiding both the recon and the BloodHound collection phases.</p>
                 </div>
                 <figure class="shot reveal">
-                    <img class="shot__img" src="assets/diagrams/nightshade-2.svg" alt="Diagram purple-team debunk: 4 teknik AD vs status deteksi SOC, DCSYNC terdeteksi 4 menit" loading="lazy">
+                    <img class="shot__img" src="../assets/diagrams/nightshade-2.svg" alt="Diagram purple-team debunk: 4 teknik AD vs status deteksi SOC, DCSYNC terdeteksi 4 menit" loading="lazy">
                     <figcaption>Fig. 02 — Purple-team timeline: technique attempted vs SOC alert raised</figcaption>
                 </figure>
             </div>
@@ -1025,7 +1025,7 @@
         </section>
 
         <!-- NEXT PROJECT -->
-        <a class="next" href="project-3.html">
+        <a class="next" href="iot-botnet-telemetry-study.html">
             <span class="next__label">Next Project →</span>
             <span class="next__title">IoT Botnet Telemetry Study</span>
         </a>
@@ -1034,7 +1034,7 @@
     <footer class="footer">
         <span>© <span id="year">2026</span> JOESAVAT DONOVAN — CASE STUDY 02/03</span>
         <div class="footer__links">
-            <a href="index.html">HOME</a>
+            <a href="../index.html">HOME</a>
             <a href="mailto:joesavat@gmail.com">EMAIL</a>
             <a href="https://github.com/cingmen" target="_blank" rel="noopener noreferrer">GITHUB</a>
         </div>

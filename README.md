@@ -14,10 +14,10 @@ Live site: <https://cingmen.github.io/>
 | Path | Purpose |
 | --- | --- |
 | `index.html` | Homepage — hero, about, capabilities, arsenal & certifications, case studies, write-ups, lab, contact, fullscreen menu |
-| `project-1.html` | Case study 01 — BlackGate perimeter breach (web/network) |
-| `project-2.html` | Case study 02 — Operation Nightshade (Active Directory red team) |
-| `project-3.html` | Case study 03 — IoT botnet telemetry study (malware research) |
-| `writeup-1.html` | CTF write-up — HackTheBox Lame: Samba `usermap_script` to root |
+| `projects/blackgate-perimeter-breach.html` | Case study 01 — BlackGate perimeter breach (web/network) |
+| `projects/operation-nightshade-ad-red-team.html` | Case study 02 — Operation Nightshade (Active Directory red team) |
+| `projects/iot-botnet-telemetry-study.html` | Case study 03 — IoT botnet telemetry study (malware research) |
+| `writeups/htb-lame-samba-usermap-script.html` | CTF write-up — HackTheBox Lame: Samba `usermap_script` to root |
 | `404.html` | Custom not-found page (served by GitHub Pages for any missing path) |
 | `feed.xml` | RSS 2.0 feed of published write-ups |
 | `sitemap.xml`, `robots.txt` | Static SEO files |

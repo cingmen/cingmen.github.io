@@ -7,7 +7,7 @@
     <title>HTB — Lame Write-up | Joesavat Donovan</title>
     <meta name="description"
         content="CTF write-up: HackTheBox Lame — Samba 3.0.20 usermap_script RCE to root on Linux.">
-    <link rel="canonical" href="https://cingmen.github.io/writeup-1.html">
+    <link rel="canonical" href="https://cingmen.github.io/writeups/htb-lame-samba-usermap-script.html">
     <link rel="manifest" href="/site.webmanifest">
     <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
     <script type="application/ld+json">
@@ -16,7 +16,7 @@
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://cingmen.github.io/" },
-        { "@type": "ListItem", "position": 2, "name": "HTB — Lame Write-up", "item": "https://cingmen.github.io/writeup-1.html" }
+        { "@type": "ListItem", "position": 2, "name": "HTB — Lame Write-up", "item": "https://cingmen.github.io/writeups/htb-lame-samba-usermap-script.html" }
       ]
     }
     </script>
@@ -24,7 +24,7 @@
     <meta property="og:site_name" content="Joesavat Donovan — SECURE_ID://ROOT">
     <meta property="og:title" content="HTB — Lame Write-up">
     <meta property="og:description" content="HackTheBox Lame — Samba 3.0.20 usermap_script RCE to root on Linux.">
-    <meta property="og:url" content="https://cingmen.github.io/writeup-1.html">
+    <meta property="og:url" content="https://cingmen.github.io/writeups/htb-lame-samba-usermap-script.html">
     <meta property="og:image" content="https://cingmen.github.io/assets/og-writeup-lame.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -40,7 +40,7 @@
       "@type": "BlogPosting",
       "headline": "HTB — Lame Write-up",
       "author": { "@type": "Person", "name": "Joesavat Donovan", "url": "https://cingmen.github.io/" },
-      "url": "https://cingmen.github.io/writeup-1.html",
+      "url": "https://cingmen.github.io/writeups/htb-lame-samba-usermap-script.html",
       "image": "https://cingmen.github.io/assets/og-writeup-lame.png",
       "articleSection": "Write-up",
       "about": ["CTF", "HackTheBox", "Samba", "Linux Exploitation"]
@@ -51,7 +51,7 @@
     <script>
         document.documentElement.classList.add('js');
     </script>
-    <link rel="preload" href="assets/fonts/syne-800.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="../assets/fonts/syne-800.woff2" as="font" type="font/woff2" crossorigin>
     <meta name="theme-color" content="#0a0a0a">
     <style>
         /* ============ self-hosted fonts (latin subset) ============ */
@@ -60,7 +60,7 @@
             font-style: normal;
             font-weight: 700 800;
             font-display: swap;
-            src: url('assets/fonts/syne-800.woff2') format('woff2');
+            src: url('../assets/fonts/syne-800.woff2') format('woff2');
         }
 
         @font-face {
@@ -68,7 +68,7 @@
             font-style: normal;
             font-weight: 300 500;
             font-display: swap;
-            src: url('assets/fonts/space-grotesk-500.woff2') format('woff2');
+            src: url('../assets/fonts/space-grotesk-500.woff2') format('woff2');
         }
 
         @font-face {
@@ -76,7 +76,7 @@
             font-style: normal;
             font-weight: 400;
             font-display: swap;
-            src: url('assets/fonts/space-mono-400.woff2') format('woff2');
+            src: url('../assets/fonts/space-mono-400.woff2') format('woff2');
         }
 
         @font-face {
@@ -84,7 +84,7 @@
             font-style: normal;
             font-weight: 700;
             font-display: swap;
-            src: url('assets/fonts/space-mono-700.woff2') format('woff2');
+            src: url('../assets/fonts/space-mono-700.woff2') format('woff2');
         }
 
         /* ============ design tokens ============ */
@@ -711,8 +711,8 @@
     <div class="cursor-ring" id="cursorRing"></div>
 
     <header class="nav">
-        <a class="nav__logo" href="index.html">SECURE_ID<span class="acc">://</span>ROOT</a>
-        <a class="nav__home" href="index.html">[ HOME ]</a>
+        <a class="nav__logo" href="../index.html">SECURE_ID<span class="acc">://</span>ROOT</a>
+        <a class="nav__home" href="../index.html">[ HOME ]</a>
     </header>
 
     <main id="main" tabindex="-1">
@@ -851,7 +851,7 @@ connect to [10.10.14.5] from (UNKNOWN) [10.10.10.3] 59771
 <span class="g">uid=0(root) gid=0(root) groups=0(root)</span></pre>
             </div>
             <figure class="shot reveal">
-                <img class="shot__img" src="assets/diagrams/writeup-1.svg" alt="Diagram chain SMB RCE: attacker nc listener → write SMB :445 unattend .bat → NT AUTHORITY SYSTEM reverse connect → root shell" loading="lazy">
+                <img class="shot__img" src="../assets/diagrams/writeup-1.svg" alt="Diagram chain SMB RCE: attacker nc listener → write SMB :445 unattend .bat → NT AUTHORITY SYSTEM reverse connect → root shell" loading="lazy">
                 <figcaption>Fig. 01 — Root shell caught on the Netcat listener</figcaption>
             </figure>
 
@@ -903,8 +903,8 @@ connect to [10.10.14.5] from (UNKNOWN) [10.10.10.3] 59771
     <footer class="footer">
         <span>© <span id="year">2026</span> JOESAVAT DONOVAN — WRITE-UP / HTB LAME</span>
         <div class="footer__links">
-            <a href="index.html">HOME</a>
-            <a href="project-1.html">CASE STUDIES</a>
+            <a href="../index.html">HOME</a>
+            <a href="../projects/blackgate-perimeter-breach.html">CASE STUDIES</a>
             <a href="mailto:joesavat@gmail.com">EMAIL</a>
         </div>
         <span>HANDCRAFTED // ZERO-DEPENDENCY // NO TRACKERS</span>

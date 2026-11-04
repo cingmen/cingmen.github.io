@@ -64,31 +64,36 @@ def main():
     errors = []
     docs = {}
 
-    html_files = sorted(glob.glob(os.path.join(ROOT, "*.html")))
+    html_files = sorted(
+        glob.glob(os.path.join(ROOT, "*.html"))
+        + glob.glob(os.path.join(ROOT, "projects", "*.html"))
+        + glob.glob(os.path.join(ROOT, "writeups", "*.html"))
+    )
     if not html_files:
         errors.append("no HTML files found")
 
     for path in html_files:
-        name = os.path.basename(path)
+        rel_name = os.path.relpath(path, ROOT)
+        page_dir = os.path.dirname(path)
         doc = Doc()
         with open(path, encoding="utf-8") as fh:
             doc.feed(fh.read())
-        docs[name] = doc
+        docs[rel_name] = doc
 
         dupes = sorted({i for i in doc.ids if doc.ids.count(i) > 1})
         if dupes:
-            errors.append(f"{name}: duplicate id(s) {dupes}")
+            errors.append(f"{rel_name}: duplicate id(s) {dupes}")
 
         if doc.h1 != 1:
-            errors.append(f"{name}: expected exactly one <h1>, found {doc.h1}")
+            errors.append(f"{rel_name}: expected exactly one <h1>, found {doc.h1}")
         if not doc.has_description:
-            errors.append(f"{name}: missing meta description")
-        if name != "404.html" and not doc.has_canonical:
-            errors.append(f"{name}: missing rel=canonical")
+            errors.append(f"{rel_name}: missing meta description")
+        if rel_name != "404.html" and not doc.has_canonical:
+            errors.append(f"{rel_name}: missing rel=canonical")
 
         for img in doc.imgs:
             if img.get("alt") is None:
-                errors.append(f"{name}: <img src={img.get('src')!r}> has no alt attribute")
+                errors.append(f"{rel_name}: <img src={img.get('src')!r}> has no alt attribute")
 
         for href in doc.hrefs:
             if not href or href.startswith(("mailto:", "tel:", "data:", "javascript:")):
@@ -99,7 +104,7 @@ def main():
                     continue
                 local = page_path(href)
                 if local and not os.path.exists(os.path.join(ROOT, local[0])):
-                    errors.append(f"{name}: absolute link to missing page {href}")
+                    errors.append(f"{rel_name}: absolute link to missing page {href}")
                 continue
             if href.startswith("/"):
                 # Root-relative links point at sibling project pages or root files.
@@ -107,19 +112,20 @@ def main():
             if href.startswith("#"):
                 anchor = href[1:]
                 if anchor and anchor not in doc.ids:
-                    errors.append(f"{name}: missing anchor {href}")
+                    errors.append(f"{rel_name}: missing anchor {href}")
                 continue
             target, _, anchor = href.partition("#")
             target = target.split("?")[0]
             if not target:
                 continue
-            if not os.path.exists(os.path.join(ROOT, target)):
-                errors.append(f"{name}: broken local link {href}")
+            resolved = os.path.normpath(os.path.join(page_dir, target))
+            if not os.path.exists(resolved):
+                errors.append(f"{rel_name}: broken local link {href}")
                 continue
             if anchor:
-                target_name = os.path.basename(target)
-                if target_name in docs and anchor not in docs[target_name].ids:
-                    errors.append(f"{name}: link {href} points at missing anchor #{anchor}")
+                target_rel = os.path.relpath(resolved, ROOT)
+                if target_rel in docs and anchor not in docs[target_rel].ids:
+                    errors.append(f"{rel_name}: link {href} points at missing anchor #{anchor}")
 
     # RSS feed: every item must resolve to a real page, and a real anchor when given.
     feed_path = os.path.join(ROOT, "feed.xml")
@@ -140,8 +146,7 @@ def main():
                 if not os.path.exists(os.path.join(ROOT, target)):
                     errors.append(f"feed.xml: item {title!r} links to missing page {link}")
                 elif anchor:
-                    target_name = os.path.basename(target)
-                    doc = docs.get(target_name)
+                    doc = docs.get(target)
                     if doc is None:
                         with open(os.path.join(ROOT, target), encoding="utf-8") as fh:
                             doc = Doc()
