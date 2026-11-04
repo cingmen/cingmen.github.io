@@ -65,5 +65,8 @@ for gx in range(W - 360, W - 40, 40):
     for gy in range(150, 420, 40):
         d.ellipse([gx - 1, gy - 1, gx + 1, gy + 1], fill=(34, 34, 34))
 
-img.save("og-image.png", optimize=True)
-print("saved og-image.png", img.size)
+import os
+
+os.makedirs("assets", exist_ok=True)
+img.save("assets/og-home.png", optimize=True)
+print("saved assets/og-home.png", img.size)

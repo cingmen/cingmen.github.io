@@ -22,6 +22,7 @@ package-lock.json
 .env
 .env.local
 
-# 6. Freebuff internal project metadata (do not commit)
+# 6. Local / internal project metadata (do not commit)
 .freebuff/
+.cloud-attachments/
 screenshots/

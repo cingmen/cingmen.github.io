@@ -26,7 +26,7 @@ Live site: <https://cingmen.github.io/>
 | `assets/js/` | Locally bundled Motion runtime used for the hero entrance |
 | `assets/diagrams/` | Seven hand-generated SVG figures used by the case studies and write-up |
 | `assets/thumbs/` | Case-study hover previews |
-| `assets/og-*.png`, `og-image-v2.png` | Per-page Open Graph share images (1200×630) |
+| `assets/og-*.png` | Per-page Open Graph share images (1200×630) |
 | `assets/icons/` | PWA / touch icons |
 | `tools/` | Python scripts that generate brand assets and check the site |
 | `.github/workflows/` | GitHub Pages deployment and site checks |
