@@ -15,6 +15,7 @@ from urllib.parse import urlparse, unquote
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = "https://cingmen.github.io"
 SM_NS = "{http://www.sitemaps.org/schemas/sitemap/0.9}"
+SUBPROJECT_ROOTS = {"osint-harian/index.html", "phisquest/index.html"}
 
 
 class Doc(HTMLParser):
@@ -171,7 +172,7 @@ def main():
                 target = local[0]
                 if "404" in target:
                     errors.append(f"sitemap.xml: 404 page must not be listed ({url})")
-                if not os.path.exists(os.path.join(ROOT, target)):
+                if target not in SUBPROJECT_ROOTS and not os.path.exists(os.path.join(ROOT, target)):
                     errors.append(f"sitemap.xml: entry points at missing file {url}")
 
     if errors:
