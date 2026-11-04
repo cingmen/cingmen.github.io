@@ -36,6 +36,7 @@
     <meta name="twitter:title" content="Joesavat Donovan — Cyber Security &amp; Researcher">
     <meta name="twitter:description" content="Offensive security, threat hunting, malware analysis and vulnerability research.">
     <meta name="twitter:image" content="https://cingmen.github.io/assets/og-home.png">
+    <meta name="twitter:image:alt" content="SECURE_ID://ROOT — Joesavat Donovan, Cyber Security & Researcher">
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -357,6 +358,13 @@
             padding: 15px var(--pad);
         }
 
+        .nav.is-menu-open {
+            background: transparent;
+            border-bottom-color: transparent;
+            -webkit-backdrop-filter: none;
+            backdrop-filter: none;
+        }
+
         .nav__logo {
             font-family: var(--mono);
             font-size: .85rem;
@@ -624,6 +632,7 @@
         /* ============ generic sections ============ */
         .section {
             padding: clamp(70px, 10vw, 140px) var(--pad);
+            scroll-margin-top: 64px;
         }
 
         .section__label {
@@ -1804,6 +1813,7 @@
                 if (open === menu.classList.contains('is-open')) return;
 
                 menu.classList.toggle('is-open', open);
+                if (navEl) navEl.classList.toggle('is-menu-open', open);
                 menu.inert = !open;
                 menu.setAttribute('aria-hidden', String(!open));
                 menuBtn.setAttribute('aria-expanded', String(open));

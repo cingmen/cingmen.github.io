@@ -108,7 +108,11 @@ def main():
                     errors.append(f"{rel_name}: absolute link to missing page {href}")
                 continue
             if href.startswith("/"):
-                # Root-relative links point at sibling project pages or root files.
+                local = page_path(href)
+                if local:
+                    root_target = local[0]
+                    if root_target not in SUBPROJECT_ROOTS and not os.path.exists(os.path.join(ROOT, root_target)):
+                        errors.append(f"{rel_name}: broken root-relative link {href}")
                 continue
             if href.startswith("#"):
                 anchor = href[1:]
