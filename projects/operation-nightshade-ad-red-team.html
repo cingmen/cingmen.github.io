@@ -40,9 +40,12 @@
       "@type": "Article",
       "headline": "Operation Nightshade — Case Study",
       "author": { "@type": "Person", "name": "Joesavat Donovan", "url": "https://cingmen.github.io/" },
+      "datePublished": "2025-08-22",
+      "dateModified": "2026-11-05",
       "url": "https://cingmen.github.io/projects/operation-nightshade-ad-red-team.html",
       "image": "https://cingmen.github.io/assets/og-operation.png",
       "articleSection": "Case Study",
+      "timeRequired": "PT7M",
       "about": ["Red Teaming", "Active Directory", "Detection Engineering"]
     }
     </script>
@@ -515,6 +518,23 @@
             margin-left: 8px;
         }
 
+        .term__copy {
+            margin-left: auto;
+            font-family: var(--mono);
+            font-size: .66rem;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--dim);
+            padding: 4px 8px;
+            border: 1px solid var(--line);
+            transition: color .3s, border-color .3s;
+        }
+
+        .term__copy:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
         .term pre {
             font-family: var(--mono);
             font-size: .8rem;
@@ -616,11 +636,22 @@
             color: var(--fg);
         }
 
-        /* ============ next project ============ */
+        /* ============ prev / next project ============ */
+        .pnav {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-bottom: 1px solid var(--line);
+        }
+
         .next {
             display: block;
-            padding: clamp(60px, 10vw, 130px) var(--pad);
-            text-align: center;
+            padding: clamp(48px, 8vw, 100px) var(--pad);
+            text-align: left;
+        }
+
+        .next--right {
+            text-align: right;
+            border-left: 1px solid var(--line);
         }
 
         .next__label {
@@ -630,25 +661,26 @@
             text-transform: uppercase;
             color: var(--dim);
             display: block;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         .next__title {
             font-family: var(--head);
             font-weight: 800;
-            font-size: clamp(1.5rem, 7.6vw, 7rem);
-            line-height: .95;
+            font-size: clamp(1.35rem, 4.2vw, 3.6rem);
+            line-height: 1;
             text-transform: uppercase;
             letter-spacing: -.03em;
             color: transparent;
             -webkit-text-stroke: 1.5px var(--fg);
+            display: inline-block;
             transition: color .4s, -webkit-text-stroke-color .4s, transform .5s cubic-bezier(.16, 1, .3, 1);
         }
 
         .next:hover .next__title {
             color: var(--accent);
             -webkit-text-stroke-color: var(--accent);
-            transform: translateY(-6px);
+            transform: translateY(-4px);
         }
 
         /* ============ footer ============ */
@@ -683,6 +715,16 @@
         @media (max-width: 860px) {
             .phero__meta {
                 grid-template-columns: repeat(2, 1fr);
+            }
+
+            .pnav {
+                grid-template-columns: 1fr;
+            }
+
+            .next--right {
+                border-left: 0;
+                border-top: 1px solid var(--line);
+                text-align: left;
             }
 
             .findings th:nth-child(3),
@@ -784,7 +826,7 @@
 
     <header class="nav">
         <a class="nav__logo" href="../index.html">SECURE_ID<span class="acc">://</span>ROOT</a>
-        <a class="nav__home" href="../index.html">[ HOME ]</a>
+        <a class="nav__home" href="../index.html#work">[ ← CASE STUDIES ]</a>
     </header>
 
     <main id="main" tabindex="-1">
@@ -795,6 +837,7 @@
                 <span>Internal Red Team</span>
                 <span>Active Directory</span>
                 <span>MITRE ATT&amp;CK</span>
+                <span>// 7 Min Read</span>
             </div>
             <h1 class="phero__title reveal">Operation Nightshade</h1>
             <div class="phero__meta reveal">
@@ -894,6 +937,7 @@
                     <div class="term__bar">
                         <span class="term__dot"></span><span class="term__dot"></span><span class="term__dot"></span>
                         <span class="term__name">terminal — bloodhound collection</span>
+                        <button class="term__copy" type="button" data-copy>Copy</button>
                     </div>
                     <pre><span class="d">$ bloodhound-python -d corp.redacted -u jdoe -p 'Redacted!' \
         -ns 10.10.10.10 -c All --zip</span>
@@ -912,6 +956,7 @@
                     <div class="term__bar">
                         <span class="term__dot"></span><span class="term__dot"></span><span class="term__dot"></span>
                         <span class="term__name">terminal — rubeus kerberoast</span>
+                        <button class="term__copy" type="button" data-copy>Copy</button>
                     </div>
                     <pre><span class="d">$ Rubeus.exe kerberoast /outfile:tgs.txt /rc4opsec</span>
 <span class="c">[*] Action: Request TGS tickets (RC4)</span>
@@ -931,6 +976,7 @@
                     <div class="term__bar">
                         <span class="term__dot"></span><span class="term__dot"></span><span class="term__dot"></span>
                         <span class="term__name">poc — dcsync (proof of concept)</span>
+                        <button class="term__copy" type="button" data-copy>Copy</button>
                     </div>
                     <pre><span class="d">$ secretsdump.py corp.redacted/svc_backup@10.10.10.10 -just-dc-user administrator</span>
 <span class="c"># Impacket v0.12.0</span>
@@ -1024,17 +1070,24 @@
             </div>
         </section>
 
-        <!-- NEXT PROJECT -->
-        <a class="next" href="iot-botnet-telemetry-study.html">
-            <span class="next__label">Next Project →</span>
-            <span class="next__title">IoT Botnet Telemetry Study</span>
-        </a>
+        <!-- PREV / NEXT PROJECT -->
+        <nav class="pnav" aria-label="Case study pagination">
+            <a class="next" href="blackgate-perimeter-breach.html">
+                <span class="next__label">← Prev Project</span>
+                <span class="next__title">BlackGate Perimeter Breach</span>
+            </a>
+            <a class="next next--right" href="iot-botnet-telemetry-study.html">
+                <span class="next__label">Next Project →</span>
+                <span class="next__title">IoT Botnet Telemetry Study</span>
+            </a>
+        </nav>
     </main>
 
     <footer class="footer">
         <span>© <span id="year">2026</span> JOESAVAT DONOVAN — CASE STUDY 02/03</span>
         <div class="footer__links">
             <a href="../index.html">HOME</a>
+            <a href="../index.html#work">CASE STUDIES</a>
             <a href="mailto:joesavat@gmail.com">EMAIL</a>
             <a href="https://github.com/cingmen" target="_blank" rel="noopener noreferrer">GITHUB</a>
         </div>
@@ -1119,6 +1172,24 @@
             } else {
                 revealEls.forEach(function (el) { el.classList.add('is-in'); });
             }
+
+            /* ---------- copy code ---------- */
+            document.querySelectorAll('[data-copy]').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var container = btn.closest('.term, .code');
+                    var pre = container ? container.querySelector('pre') : null;
+                    var text = pre ? pre.innerText : '';
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text).then(function () {
+                            btn.textContent = 'Copied';
+                            setTimeout(function () { btn.textContent = 'Copy'; }, 1600);
+                        }).catch(function () {
+                            btn.textContent = 'Failed';
+                            setTimeout(function () { btn.textContent = 'Copy'; }, 1600);
+                        });
+                    }
+                });
+            });
 
             /* ---------- footer year ---------- */
             var year = document.getElementById('year');
