@@ -52,4 +52,4 @@ python3 tools/check_site.py     # Validate links, anchors, alt text, feed & site
 ## Contact
 
 Available for **penetration testing engagements, red/purple team exercises, security research, and engineering roles**.  
-Reach out at **[joesavat@gmail.com](mailto:joesavat@gmail.com)** *(PGP public key fingerprint available on request)*.
+Reach out at **[joesavat@gmail.com](mailto:joesavat@gmail.com)** *(PGP Fingerprint: `C0AF 2A9B 2CFA BC60 25D4  DD85 C8FB E0D5 211D A1E9` / Key ID: `0xC8FBE0D5211DA1E9`)*.

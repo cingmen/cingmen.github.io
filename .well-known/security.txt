@@ -1,5 +1,7 @@
 Contact: mailto:joesavat@gmail.com
 Expires: 2027-12-31T23:59:59.000Z
+Encryption: openpgp4fpr:C0AF2A9B2CFABC6025D4DD85C8FBE0D5211DA1E9
+Encryption: https://cingmen.github.io/#contact
 Preferred-Languages: en, id
 Canonical: https://cingmen.github.io/.well-known/security.txt
 Policy: https://cingmen.github.io/#contact

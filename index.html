@@ -1174,6 +1174,19 @@
             max-width: 760px;
         }
 
+        .pgp__header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .pgp__header .pgp__label {
+            margin-bottom: 0;
+        }
+
         .pgp__label {
             font-family: var(--mono);
             font-size: .68rem;
@@ -1186,11 +1199,35 @@
         .pgp__key {
             font-family: var(--mono);
             font-size: .68rem;
-            line-height: 1.55;
+            line-height: 1.6;
             color: var(--dim);
-            white-space: pre-wrap;
-            word-break: break-all;
+            word-break: break-word;
             margin: 0;
+        }
+
+        .pgp__fp {
+            display: inline-block;
+            font-family: var(--mono);
+            font-size: .78rem;
+            color: var(--accent);
+            background: rgba(204, 255, 0, .08);
+            border: 1px solid rgba(204, 255, 0, .25);
+            padding: 4px 10px;
+            border-radius: 2px;
+            letter-spacing: .1em;
+            font-weight: 700;
+            margin-bottom: 8px;
+            word-break: break-all;
+        }
+
+        .pgp__key code {
+            font-family: var(--mono);
+            font-size: .72rem;
+            color: var(--fg);
+            background: rgba(255, 255, 255, .05);
+            padding: 1px 5px;
+            border-radius: 2px;
+            letter-spacing: .05em;
         }
 
         /* ============ footer ============ */
@@ -1677,9 +1714,11 @@
                 </span>
             </div>
             <div class="pgp reveal">
-                <p class="pgp__label">// SECURE COMMUNICATION — PGP ON REQUEST</p>
-                <p class="pgp__key">Public key available before any engagement — email me and I'll send the key
-                    fingerprint, then verify via a second channel before you encrypt anything sensitive.</p>
+                <div class="pgp__header">
+                    <p class="pgp__label">// SECURE COMMUNICATION — PGP FINGERPRINT</p>
+                    <button class="contact__copy" type="button" id="copyPgpBtn" data-key="C0AF2A9B2CFABC6025D4DD85C8FBE0D5211DA1E9" aria-label="Copy PGP Fingerprint">[ COPY FINGERPRINT ]</button>
+                </div>
+                <p class="pgp__key"><span class="pgp__fp">C0AF 2A9B 2CFA BC60 25D4  DD85 C8FB E0D5 211D A1E9</span><br>Primary OpenPGP key for encrypted advisory disclosures, security engagements, and verification. Key ID: <code>0xC8FBE0D5211DA1E9</code>.</p>
             </div>
         </section>
     </main>
@@ -1944,6 +1983,21 @@
                     }).catch(function () {
                         copyEmailBtn.textContent = '[ FAILED ]';
                         setTimeout(function () { copyEmailBtn.textContent = '[ COPY ]'; }, 1800);
+                    });
+                });
+            }
+
+            /* ---------- copy pgp fingerprint ---------- */
+            var copyPgpBtn = document.getElementById('copyPgpBtn');
+            if (copyPgpBtn && navigator.clipboard && navigator.clipboard.writeText) {
+                copyPgpBtn.addEventListener('click', function () {
+                    var key = copyPgpBtn.getAttribute('data-key') || 'C0AF2A9B2CFABC6025D4DD85C8FBE0D5211DA1E9';
+                    navigator.clipboard.writeText(key).then(function () {
+                        copyPgpBtn.textContent = '[ COPIED ]';
+                        setTimeout(function () { copyPgpBtn.textContent = '[ COPY FINGERPRINT ]'; }, 1800);
+                    }).catch(function () {
+                        copyPgpBtn.textContent = '[ FAILED ]';
+                        setTimeout(function () { copyPgpBtn.textContent = '[ COPY FINGERPRINT ]'; }, 1800);
                     });
                 });
             }
