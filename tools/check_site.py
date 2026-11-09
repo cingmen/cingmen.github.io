@@ -15,7 +15,7 @@ from urllib.parse import urlparse, unquote
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = "https://cingmen.github.io"
 SM_NS = "{http://www.sitemaps.org/schemas/sitemap/0.9}"
-SUBPROJECT_ROOTS = {"osint-harian/index.html", "phisquest/index.html"}
+SUBPROJECT_ROOTS = {"osint-harian/index.html", "phisquest/index.html", "scamurai/index.html"}
 
 
 class Doc(HTMLParser):

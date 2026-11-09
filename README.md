@@ -21,7 +21,7 @@ I am **Joesavat Donovan**, a cybersecurity practitioner working with an offense-
 **Highlights on the site:**
 - **Case Studies:** [BlackGate Perimeter Breach](https://cingmen.github.io/projects/blackgate-perimeter-breach.html) (Web/Network) · [Operation Nightshade](https://cingmen.github.io/projects/operation-nightshade-ad-red-team.html) (AD Red Team) · [IoT Botnet Telemetry Study](https://cingmen.github.io/projects/iot-botnet-telemetry-study.html) (Malware Research)
 - **Write-ups:** [HTB — Lame: Samba `usermap_script` to root](https://cingmen.github.io/writeups/htb-lame-samba-usermap-script.html) (`CVE-2007-2447`)
-- **Live Lab Tools:** [osint-harian](https://cingmen.github.io/osint-harian/) (daily public-data diff tracker) · [PhishQuest](https://cingmen.github.io/phisquest/) (Indonesian anti-phishing training game)
+- **Live Lab Tools:** [osint-harian](https://cingmen.github.io/osint-harian/) (daily public-data diff tracker) · [PhishQuest](https://cingmen.github.io/phisquest/) (Indonesian anti-phishing training game) · [Scamurai](https://cingmen.github.io/scamurai/) (Indonesian anti-scam simulation dojo)
 
 ---
 
