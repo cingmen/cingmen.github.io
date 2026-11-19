@@ -26,3 +26,4 @@ package-lock.json
 .freebuff/
 .cloud-attachments/
 screenshots/
+*.pftrace

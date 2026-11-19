@@ -17,10 +17,11 @@
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
+      "@id": "https://cingmen.github.io/#website",
       "name": "SECURE_ID://ROOT — Joesavat Donovan",
       "url": "https://cingmen.github.io/",
       "inLanguage": "en",
-      "author": { "@type": "Person", "name": "Joesavat Donovan", "url": "https://cingmen.github.io/" }
+      "author": { "@type": "Person", "@id": "https://cingmen.github.io/#person", "name": "Joesavat Donovan", "alternateName": "cingmen", "url": "https://cingmen.github.io/" }
     }
     </script>
     <meta property="og:type" content="website">
@@ -33,6 +34,8 @@
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="SECURE_ID://ROOT — Joesavat Donovan, Cyber Security & Researcher">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@cingmen">
+    <meta name="twitter:creator" content="@cingmen">
     <meta name="twitter:title" content="Joesavat Donovan — Cyber Security &amp; Researcher">
     <meta name="twitter:description" content="Offensive security, threat hunting, malware analysis and vulnerability research.">
     <meta name="twitter:image" content="https://cingmen.github.io/assets/og-home.png">
@@ -41,14 +44,20 @@
     {
       "@context": "https://schema.org",
       "@type": "Person",
+      "@id": "https://cingmen.github.io/#person",
       "name": "Joesavat Donovan",
+      "alternateName": "cingmen",
       "url": "https://cingmen.github.io/",
+      "mainEntityOfPage": "https://cingmen.github.io/",
       "image": "https://cingmen.github.io/assets/og-home.png",
       "jobTitle": "Cybersecurity Practitioner",
       "description": "Offensive security, threat intelligence and vulnerability research.",
+      "email": "mailto:joesavat@gmail.com",
       "sameAs": [
         "https://github.com/cingmen",
-        "https://linkedin.com/in/joesavatdonovan"
+        "https://linkedin.com/in/joesavatdonovan",
+        "https://x.com/cingmen",
+        "https://profile.hackthebox.com/profile/01a11023-b9d5-7329-beb7-510274d56bdd"
       ],
       "knowsAbout": ["Penetration Testing", "Threat Hunting", "Malware Analysis", "Red Teaming", "Vulnerability Research", "Incident Response"]
     }
@@ -67,7 +76,7 @@
           "applicationCategory": "SecurityApplication",
           "operatingSystem": "Web",
           "description": "Daily deterministic watcher for public data — BMKG, OFAC, CISA, NVD, WHO, USGS and news RSS with published diffs.",
-          "author": { "@type": "Person", "name": "Joesavat Donovan", "url": "https://cingmen.github.io/" }
+          "author": { "@type": "Person", "@id": "https://cingmen.github.io/#person", "name": "Joesavat Donovan", "alternateName": "cingmen", "url": "https://cingmen.github.io/" }
         },
         {
           "@type": "SoftwareApplication",
@@ -77,7 +86,7 @@
           "applicationCategory": "SecurityApplication",
           "operatingSystem": "Web, CLI",
           "description": "Indonesian anti-phishing training game — 40 email, SMS and WhatsApp scenarios in an arcade quiz plus CLI mode.",
-          "author": { "@type": "Person", "name": "Joesavat Donovan", "url": "https://cingmen.github.io/" }
+          "author": { "@type": "Person", "@id": "https://cingmen.github.io/#person", "name": "Joesavat Donovan", "alternateName": "cingmen", "url": "https://cingmen.github.io/" }
         },
         {
           "@type": "SoftwareApplication",
@@ -88,7 +97,7 @@
           "operatingSystem": "Web",
           "inLanguage": "id",
           "description": "Indonesian anti-scam simulation dojo — 8 scam scenarios with scammer-side debriefs, ScamDEX, a 40-question exam and a certificate. Offline-first PWA, no account.",
-          "author": { "@type": "Person", "name": "Joesavat Donovan", "url": "https://cingmen.github.io/" }
+          "author": { "@type": "Person", "@id": "https://cingmen.github.io/#person", "name": "Joesavat Donovan", "alternateName": "cingmen", "url": "https://cingmen.github.io/" }
         }
       ]
     }
@@ -1266,7 +1275,8 @@
 
         .footer__links {
             display: flex;
-            gap: 22px;
+            flex-wrap: wrap;
+            gap: 10px 22px;
         }
 
         /* ============ responsive ============ */
@@ -1468,9 +1478,12 @@
         <div class="menu__foot">
             <span>JOESAVAT DONOVAN</span>
             <a href="mailto:joesavat@gmail.com">joesavat@gmail.com</a>
-            <a href="https://github.com/cingmen" target="_blank" rel="noopener noreferrer">GITHUB/@CINGMEN</a>
+            <a href="https://github.com/cingmen" target="_blank" rel="noopener noreferrer me">GITHUB/@CINGMEN</a>
             <a href="https://linkedin.com/in/joesavatdonovan" target="_blank"
-                rel="noopener noreferrer">LINKEDIN/JOESAVATDONOVAN</a>
+                rel="noopener noreferrer me">LINKEDIN/JOESAVATDONOVAN</a>
+            <a href="https://x.com/cingmen" target="_blank" rel="noopener noreferrer me">X/@CINGMEN</a>
+            <a href="https://profile.hackthebox.com/profile/01a11023-b9d5-7329-beb7-510274d56bdd" target="_blank"
+                rel="noopener noreferrer me">HACKTHEBOX</a>
         </div>
     </div>
 
@@ -1753,8 +1766,10 @@
         <span>© <span id="year">2026</span> JOESAVAT DONOVAN — SECURE_ID://ROOT</span>
         <div class="footer__links">
             <a href="mailto:joesavat@gmail.com">EMAIL</a>
-            <a href="https://github.com/cingmen" target="_blank" rel="noopener noreferrer">GITHUB</a>
-            <a href="https://linkedin.com/in/joesavatdonovan" target="_blank" rel="noopener noreferrer">LINKEDIN</a>
+            <a href="https://github.com/cingmen" target="_blank" rel="noopener noreferrer me">GITHUB</a>
+            <a href="https://linkedin.com/in/joesavatdonovan" target="_blank" rel="noopener noreferrer me">LINKEDIN</a>
+            <a href="https://x.com/cingmen" target="_blank" rel="noopener noreferrer me">X</a>
+            <a href="https://profile.hackthebox.com/profile/01a11023-b9d5-7329-beb7-510274d56bdd" target="_blank" rel="noopener noreferrer me">HTB</a>
             <a href="/feed.xml" title="RSS Feed">RSS</a>
         </div>
         <span>HANDCRAFTED // ZERO-DEPENDENCY // NO TRACKERS</span>
